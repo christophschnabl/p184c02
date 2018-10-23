@@ -1,3 +1,3 @@
-import Hello from './script.js';
+import Hello from './script';
 
 Hello();

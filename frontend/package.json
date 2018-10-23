@@ -2,7 +2,6 @@
   "name": "frauddetection",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "author": "",
   "license": "",
   "devDependencies": {
@@ -10,6 +9,9 @@
     "@babel/preset-env": "^7.1.0",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
     "http-server": "^0.11.1",
     "less": "^3.8.1",
     "uglify-js": "^3.4.9"
@@ -18,11 +20,13 @@
   "scripts": {
     "buildJS": "node node_modules/browserify/bin/cmd.js  assets/javascript/index.js -t babelify --outfile public/javascript/bundle.js",
     "minifyJS": " node node_modules/uglify-js/bin/uglifyjs public/javascript/bundle.js -o public/javascript/bundle.min.js",
+    "lintJS": "node node_modules/eslint/bin/eslint.js assets/javascript",
     "buildHTML": "cp html/*.html public/",
     "buildCSS": "node node_modules/less/bin/lessc assets/styles/index.less public/styles/index.css --compress",
     "copyIMG": "cp assets/images/*.* public/images/",
-    "build": "npm run-script buildJS && npm run-script minifyJS &&npm run-script buildHTML && npm run-script copyIMG && npm run-script buildCSS",
+    "build": "npm run-script buildJS && npm run-script minifyJS && npm run-script buildHTML && npm run-script copyIMG && npm run-script buildCSS",
     "clean": "rm -rf public && mkdir -p public/images && mkdir public/javascript && mkdir public/styles",
-    "start": "npm run-script clean && npm run-script build && http-server"
+    "start": "npm run-script clean && npm run-script build && http-server",
+    "test": "npm run-script lintJS"
   }
 }
