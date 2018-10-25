@@ -24,9 +24,9 @@
     "buildHTML": "cp html/*.html public/",
     "buildCSS": "node node_modules/less/bin/lessc assets/styles/index.less public/styles/index.css --compress",
     "copyIMG": "cp assets/images/*.* public/images/",
-    "build": "npm run-script buildJS && npm run-script minifyJS && npm run-script buildHTML && npm run-script copyIMG && npm run-script buildCSS",
     "clean": "rm -rf public && mkdir -p public/images && mkdir public/javascript && mkdir public/styles",
-    "start": "npm run-script clean && npm run-script build && http-server",
+    "build": "npm run-script clean && npm run-script buildJS && npm run-script minifyJS && npm run-script buildHTML && npm run-script copyIMG && npm run-script buildCSS",
+    "start": "npm run-script build && npm test && http-server",
     "test": "npm run-script lintJS"
   }
 }
