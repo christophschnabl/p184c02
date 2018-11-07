@@ -14,19 +14,26 @@
     "eslint-plugin-import": "^2.14.0",
     "http-server": "^0.11.1",
     "less": "^3.8.1",
-    "uglify-js": "^3.4.9"
+    "uglify-js": "^3.4.9",
+    "watch": "^1.0.2"
   },
   "dependencies": {},
   "scripts": {
     "buildJS": "node node_modules/browserify/bin/cmd.js  assets/javascript/index.js -t babelify --outfile public/javascript/bundle.js",
     "minifyJS": " node node_modules/uglify-js/bin/uglifyjs public/javascript/bundle.js -o public/javascript/bundle.min.js",
+    "buildMinifiedJS": "",
     "lintJS": "node node_modules/eslint/bin/eslint.js assets/javascript",
     "buildHTML": "cp html/*.html public/",
     "buildCSS": "node node_modules/less/bin/lessc assets/styles/index.less public/styles/index.css --compress",
     "copyIMG": "cp assets/images/*.* public/images/",
     "clean": "rm -rf public && mkdir -p public/images && mkdir public/javascript && mkdir public/styles",
-    "build": "npm run-script clean && npm run-script buildJS && npm run-script minifyJS && npm run-script buildHTML && npm run-script copyIMG && npm run-script buildCSS",
-    "start": "npm run-script build && npm test && http-server",
-    "test": "npm run-script lintJS"
+    "build": "npm run clean && npm run buildJS && npm run minifyJS && npm run buildHTML && npm run copyIMG && npm run buildCSS",
+    "watch:css": "watch 'npm run buildCSS' ./assets/styles &",
+    "watch:js": "watch 'npm run buildJS && npm run minifyJS' ./assets/javascript &",
+    "watch:html": "watch 'npm run buildHTML' ./html &",
+    "watch:img": "watch 'npm run copyIMG' ./assets/images &",
+    "watch": "npm run watch:css && npm run watch:js && npm run watch:html && npm run watch:img",
+    "start": "npm run build && npm test && npm run watch && http-server",
+    "test": "npm run lintJS"
   }
 }
