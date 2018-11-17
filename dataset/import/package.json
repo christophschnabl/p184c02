@@ -1,0 +1,10 @@
+{
+  "name": "import",
+  "version": "0.0.0",
+  "description": "Data import package",
+  "main": "main.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "echo no tests yet..."
+  },
+}
