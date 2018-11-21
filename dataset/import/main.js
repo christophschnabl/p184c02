@@ -1,15 +1,8 @@
 const fs = require('fs');
 const util = require('util');
-const mysql = require('mysql');
+const pool = require('./modules/database.js');
 
 const readFile = util.promisify(fs.readFile);
-
-
-const con = mysql.createConnection({
-    host: 'localhost',
-    user: 'frauddetection',
-    password: 'frauddetection'
-});
 
 
 /**
