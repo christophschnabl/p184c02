@@ -11,8 +11,8 @@
     "eslint-plugin-import": "^2.14.0"
   },
   "scripts": {
-    "start": "node main.js",
-    "test": "node node_modules/eslint/bin/eslint.js main.js"
+    "start": "node app.js",
+    "test": "node node_modules/eslint/bin/eslint.js app.js modules/*.js"
   },
   "dependencies": {
     "mysql": "^2.16.0"
