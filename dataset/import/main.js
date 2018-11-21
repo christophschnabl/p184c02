@@ -1,9 +1,22 @@
 const fs = require('fs');
 const util = require('util');
+const mysql = require('mysql');
 
 const readFile = util.promisify(fs.readFile);
 
 
+const con = mysql.createConnection({
+    host: 'localhost',
+    user: 'frauddetection',
+    password: 'frauddetection'
+});
+
+
+/**
+ * trims the leading A and converts the string into an integer
+ * @param {String} str
+ * @returns {Number}
+ */
 const trimA = str => parseInt(str.substr(1), 10);
 
 /**
