@@ -1,17 +1,29 @@
 const fs = require('fs');
+const util = require('util');
 
-let assign = function(element) {
-    return element + hansi';
+const readFile = util.promisify(fs.readFile);
+
+
+const trimA = str => parseInt(str.substr(1), 10);
+
+/**
+ * reads from a file
+ * @param {String} filename
+ */
+async function read(filename) {
+    const data = (await readFile(filename)).toString();
+    const lines = data.split('\n');
+
+    for (const line of lines) {
+        const [
+            status, duration, history, purpose, amount,
+            savings, employment, installment, personal,
+            otherDebtors, residence, property, age,
+            otherInstallMentPlans, housing, numberCreditCards,
+            job, liableMaintenance, telephone, foreignWorker
+        ] = line.split(' ');
+    }
 }
 
-const fileStream = fs.createReadStream('../german-credit.data');
 
-fileStream.on('data', function(data) {
-    const chunk = data.toString();
-
-    const lines = chunk.split('\n'); //split the chunks into lines
-
-    lines.forEach(function(line) {
-        line.split(' ').map(assign)); //split the lines into columns due to their seperation by a space
-    });
-});
+read('../german-credit.data');
