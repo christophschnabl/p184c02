@@ -4,13 +4,20 @@ const pool = require('./modules/database.js');
 
 const readFile = util.promisify(fs.readFile);
 
+/**
+ * converts a string into an integer
+ * @param {String} str
+ * @returns {Number}
+ */
+const toNum = str => parseInt(str, 10);
 
 /**
  * trims the leading A and converts the string into an integer
  * @param {String} str
  * @returns {Number}
  */
-const trimA = str => parseInt(str.substr(1), 10);
+const trimA = str => toNum(str.substr(1));
+
 
 /**
  * reads from a file
@@ -25,7 +32,7 @@ async function read(filename) {
             status, duration, history, purpose, amount,
             savings, employment, installment, personal,
             otherDebtors, residence, property, age,
-            otherInstallMentPlans, housing, numberCreditCards,
+            otherInstallmentPlans, housing, numberCreditCards,
             job, liableMaintenance, telephone, foreignWorker
         ] = line.split(' ');
     }
