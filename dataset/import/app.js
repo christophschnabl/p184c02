@@ -1,5 +1,7 @@
 const readGermanCreditData = require('./modules/customers.js');
 const readCreditCards = require('./modules/creditCards.js');
+const pool = require('./modules/database.js');
+
 
 async function importFromFile() {
     const customerData = await readGermanCreditData('../german-credit.data');
