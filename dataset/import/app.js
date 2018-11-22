@@ -20,10 +20,10 @@ const trimA = str => toNum(str.substr(1));
 
 
 /**
- * reads from a file
+ * reads from german credit data file
  * @param {String} filename
  */
-async function read(filename) {
+async function readGermanCreditData(filename) {
     const data = (await readFile(filename)).toString();
     const lines = data.split('\n');
 
@@ -38,5 +38,20 @@ async function read(filename) {
     }
 }
 
+/**
+ * reads a JSON file
+ * @param {String} filename
+ */
+async function readJSON(filename) {
+    const dataString = (await readFile(filename)).toString();
+    const a = JSON.parse(dataString);
+}
 
-read('../german-credit.data');
+
+readGermanCreditData('../german-credit.data');
+
+readJSON('../credit-cards/credit-cards-1:5.json');
+readJSON('../credit-cards/credit-cards-2:5.json');
+readJSON('../credit-cards/credit-cards-3:5.json');
+readJSON('../credit-cards/credit-cards-4:5.json');
+readJSON('../credit-cards/credit-cards-5:5.json');
