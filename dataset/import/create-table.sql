@@ -34,3 +34,12 @@ create table Customer (
 , 	Cost					int		not null
 ,	primary key (CustomerUUID)
 );
+
+create table CreditCard (
+    CardNumber      int     not null
+,   IssuingNetwork  text    not null
+,   CVV             int     not null
+,   Expiration      date    not null
+,   CustomerUUID    int     not null    references Customer
+,   primary key (CardNumber)
+);
