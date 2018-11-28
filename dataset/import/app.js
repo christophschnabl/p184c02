@@ -19,10 +19,11 @@ async function importFromFile() {
         customerData[index] = `(${customerData[index].split(' ').join(', ')})`;
     });
 
-    console.log(customerData);
+    // console.log(customerData);
     // console.log(creditCardData);
 
-    await pool.query(queries.customerInsert, customerData, (error, result) => {
+    // console.log(`${queries.customerInsert} ${customerData[0]}`);
+    await pool.query(queries.customerInsert, customerData[0], (error, result) => {
         if (err) throw err;
         console.log(`Number of rows inserted: ${result.affectedRows}`);
     });
