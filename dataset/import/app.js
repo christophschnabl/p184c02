@@ -4,6 +4,7 @@ const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
 
 
+/** This function performs inserts for german-credit.data and credit-cards[1-5:5].json */
 async function importFromFile() {
     const customerData = await readGermanCreditData('../german-credit.data');
     const creditCardData = await readCreditCards([
@@ -18,17 +19,17 @@ async function importFromFile() {
         customerData[index] = customerData[index].split(' ').join(', ');
     });
     
-    console.log(customerData);
-    //console.log(creditCardData);
+    // console.log(customerData);
+    // console.log(creditCardData);
 
-    /*await pool.query(queries.customerInsert, [customerData], function(error, result) {
+    await pool.query(queries.customerInsert, [customerData], (error, result) => {
+        if (err) throw err;
+        // console.log('Number of rows inserted: ${result.affectedRows}');
+    });
+    /* await pool.query(queries.creditCardInsert, [creditCardData], function(error, result) {
         if (err) throw err;
         console.log("Number of rows inserted: " + result.affectedRows);
-    });*/
-    /*await pool.query(queries.creditCardInsert, [creditCardData], function(error, result) {
-        if (err) throw err;
-        console.log("Number of rows inserted: " + result.affectedRows);
-    });*/
+    }); */
 
     await pool.end();
 }
