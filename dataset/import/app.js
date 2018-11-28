@@ -14,17 +14,17 @@ async function importFromFile() {
         '../credit-cards/credit-cards-4:5.json',
         '../credit-cards/credit-cards-5:5.json'
     ]);
-    
+
     customerData.forEach((element, index) => {
-        customerData[index] = customerData[index].split(' ').join(', ');
+        customerData[index] = `(${customerData[index].split(' ').join(', ')})`;
     });
-    
-    // console.log(customerData);
+
+    console.log(customerData);
     // console.log(creditCardData);
 
-    await pool.query(queries.customerInsert, [customerData], (error, result) => {
+    await pool.query(queries.customerInsert, customerData, (error, result) => {
         if (err) throw err;
-        // console.log('Number of rows inserted: ${result.affectedRows}');
+        console.log(`Number of rows inserted: ${result.affectedRows}`);
     });
     /* await pool.query(queries.creditCardInsert, [creditCardData], function(error, result) {
         if (err) throw err;
