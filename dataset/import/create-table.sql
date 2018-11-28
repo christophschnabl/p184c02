@@ -43,3 +43,10 @@ create table CreditCard (
 ,   CustomerUUID    int     not null    references Customer
 ,   primary key (CardNumber)
 );
+
+create table Transaction (
+    TransactionID       int     not null    AUTO_INCREMENT
+,   Date                date    not null
+,   Amount              float   not null 
+,   CardNumber          int     not null    references CreditCard
+);
