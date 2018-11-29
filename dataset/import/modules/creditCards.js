@@ -17,15 +17,19 @@ async function readJSON(filename) {
 /**
  * reads credit card files and merges contents
  * @param {Array.<String>} filenames
- * @returns {Array}
+ * @returns {Array.<Object>}
  */
 async function readCreditCards(filenames) {
     const arrays = await Promise.all(
         filenames
             .map(filename => readJSON(filename))
     );
+
+    // merge arrays
     const arr = arrays.pop();
-    return arr.concat(...arrays);
+    const mergedArray = arr.concat(...arrays);
+
+    return mergedArray.map(el => Object.values(el.CreditCard));
 }
 
 module.exports = readCreditCards;
