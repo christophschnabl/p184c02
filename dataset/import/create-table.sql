@@ -1,8 +1,8 @@
 create table Customer (
-    CustomerUUID			int		not null AUTO_INCREMENT
+    CustomerUUID			integer not null AUTO_INCREMENT
 ,	Address         		text    not null
 ,   AccountStatus   		enum('<0', '0-200', '>200', 'no checking account')	not null
-,   Duration        		int     not null
+,   Duration        		integer not null
 ,   CreditHistory   		enum('no credits/all paid back',
                                  'credits paid back at this bank ',
                                  'credits paid back till now',
@@ -11,42 +11,42 @@ create table Customer (
 ,   Purpose        	 		enum('car (new)', 'car (used)', 'furniture/equipment',
                                  'radio/television', 'domestic appliances', 'repairs',
                                  'education', 'vacation', 'retraining', 'business', 'others')	not null
-,	CreditAmount			int		not null
-,	Savings					enum('<100', '<500', '<1000', '>1000', 'unknown')
-,	Employment				enum('unemployed', '<1', '1-4', '4-7', '>7')	not null
-,	InstallmentRate			int		not null
+,	CreditAmount			integer not null
+,	Savings                 enum('<100', '<500', '<1000', '>1000', 'unknown')
+,	Employment              enum('unemployed', '<1', '1-4', '4-7', '>7')	not null
+,	InstallmentRate			integer		not null
 ,	PersonalStatus			enum('single', 'divorced/separated', 'married/widowed', 'divorced/separated/married')	not null
 ,	sex						enum('male', 'female')	not null
 ,	Debtors					enum('none', 'co-applicant', 'guarantor')	not null
-,	Residence				int
+,	Residence				integer
 ,	Property				enum('real estate', 'building society savings agreement/life insurance','car or other', 'unknown / no property')	not null
-,	Age						int		not null
+,	Age						integer		not null
 , 	OtherInstallmentPlans	enum('bank', 'stores', 'none')	not null
 ,	Housing					enum('rent', 'own', 'for free')	not null
-,	NumberOfCredits			int		not null
+,	NumberOfCredits			integer		not null
 ,	Job						enum('unskilled - none-resident',
                                 'unskilled - resident',
                                 'skilled employee',
                                 'highly qualified employee')	not null
-,	LiableMaintenance		int		not null
+,	LiableMaintenance		integer		not null
 ,	Telephone				boolean	not null
 ,	ForeignWorker			boolean	not null
 , 	Cost					enum('good','bad')		not null
-,	primary key (CustomerUUID)
+,   primary key (CustomerUUID)
 );
 
 create table CreditCard (
-    CardNumber      int     not null
+    CardNumber      integer     not null
 ,   IssuingNetwork  text    not null
-,   CVV             int     not null
+,   CVV             integer     not null
 ,   Expiration      date    not null
-,   CustomerUUID    int     not null    references Customer
+,   CustomerUUID    integer     not null    references Customer
 ,   primary key (CardNumber)
 );
 
 create table Transaction (
-    TransactionID   int             not null    AUTO_INCREMENT
+    TransactionID   integer             not null    AUTO_INCREMENT primary key
 ,   Date            date            not null
 ,   Amount          decimal(12,2)   not null
-,   CardNumber      int             not null    references CreditCard
+,   CardNumber      integer             not null    references CreditCard
 );
