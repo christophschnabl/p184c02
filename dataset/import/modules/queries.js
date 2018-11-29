@@ -1,6 +1,7 @@
 module.exports = {
-    customerInsert: `insert into customer (CustomerUUID, Address, AccountStatus, Duration, CreditHistory, Purpose, CreditAmount, Savings, 
-        Employment, InstallmentRate, PersonalStatus, sex, Debtors, Residence, Property, Age, 
-        OtherInstallmentPlans, Housing, NumberOfCredits, Job, LiableMaintenance, Telephone, ForeignWorker, Cost) values ?`,
+    customerInsert: `insert into customer (status, duration, history, purpose, amount,
+        savings, employment, installment, personal, otherDebtors, residence, property, age,
+        otherInstallmentPlans, housing, numberCreditCards, job, liableMaintenance, telephone, foreignWorker)
+        values ?`,
     creditCardInsert: `insert into creditcard () values ?`
 };
