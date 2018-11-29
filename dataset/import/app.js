@@ -15,6 +15,10 @@ async function importFromFile() {
         '../credit-cards/credit-cards-5:5.json'
     ]);
 
+    console.log(customerData);
+    console.log(creditCardData);
+
+    /*
     customerData.forEach((element, index) => {
         customerData[index] = `(${customerData[index].split(' ').join(', ')})`;
     });
