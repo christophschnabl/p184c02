@@ -1,0 +1,156 @@
+{
+    "extends": "airbnb-base",
+    "parserOptions": {
+        "ecmaVersion": 8,
+        "sourceType": "module"
+    },
+    "rules": {
+        "callback-return": [
+            2,
+            [
+                "callback",
+                "cb",
+                "next",
+                "done",
+                "proceed"
+            ]
+        ],
+        "camelcase": [
+            1,
+            {
+                "properties": "always"
+            }
+        ],
+        "comma-style": [
+            2,
+            "last"
+        ],
+        "curly": [
+            0
+        ],
+        "eqeqeq": [
+            2,
+            "always"
+        ],
+        "eol-last": [
+            0
+        ],
+        "handle-callback-err": [
+            2
+        ],
+        "indent": [
+            1,
+            4,
+            {
+                "SwitchCase": 1
+            }
+        ],
+        "linebreak-style": [
+            0,
+            "unix"
+        ],
+        "no-mixed-spaces-and-tabs": [
+            2,
+            "smart-tabs"
+        ],
+        "no-return-assign": [
+            2,
+            "always"
+        ],
+        "no-sequences": [
+            2
+        ],
+        "no-trailing-spaces": [
+            1
+        ],
+        "no-undef": [
+            0
+        ],
+        "no-unexpected-multiline": [
+            1
+        ],
+        "no-unused-vars": [
+            1
+        ],
+        "one-var": [
+            2,
+            "never"
+        ],
+        "quotes": [
+            2,
+            "single",
+            {
+                "avoidEscape": false,
+                "allowTemplateLiterals": true
+            }
+        ],
+        "semi": [
+            2,
+            "always"
+        ],
+        "no-unreachable": [
+            1
+        ],
+        "valid-typeof": [
+            2
+        ],
+        "no-eval": [
+            2
+        ],
+        "no-invalid-this": [
+            2
+        ],
+        "no-return-await": [
+            2
+        ],
+        "require-await": [
+            2
+        ],
+        "global-require": [
+            1
+        ],
+        "comma-spacing": [
+            1
+        ],
+        "require-jsdoc": [
+            2
+        ],
+        "arrow-spacing": [
+            1
+        ],
+        "no-const-assign": [
+            2
+        ],
+        "no-var": [
+            2
+        ],
+        "prefer-const": [
+            1
+        ],
+        "max-depth": [
+            2,
+            5
+        ],
+        "max-len": [
+            1,
+            120
+        ],
+        "max-lines": [
+            1,
+            350
+        ],
+        "max-params": [
+            2,
+            5
+        ],
+        "no-extra-semi": [
+            0
+        ],
+        "no-restricted-syntax": [
+            0
+        ],
+        "comma-dangle": [
+            0
+        ]
+    }
+}

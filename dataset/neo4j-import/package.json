@@ -1,0 +1,19 @@
+{
+  "name": "frauddetection_neo4j_import",
+  "version": "0.1.0",
+  "description": "FraudDetection Data neo4j import package",
+  "main": "main.js",
+  "author": "",
+  "license": "",
+  "devDependencies": {
+    "eslint": "^5.7.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "test": "node node_modules/eslint/bin/eslint.js app.js modules/*.js"
+  },
+  "dependencies": {
+  }
+}
