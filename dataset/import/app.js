@@ -24,7 +24,7 @@ async function importFromFile() {
 
     // console.log(`${queries.customerInsert} ${customerData[0]}`);
     await pool.query(queries.customerInsert, customerData[0], (error, result) => {
-        if (err) throw err;
+        if (error) throw error;
         console.log(`Number of rows inserted: ${result.affectedRows}`);
     });
     /* await pool.query(queries.creditCardInsert, [creditCardData], function(error, result) {
