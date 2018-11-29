@@ -15,26 +15,11 @@ async function importFromFile() {
         '../credit-cards/credit-cards-5:5.json'
     ]);
 
-    console.log(customerData);
-    console.log(creditCardData);
-
-    /*
-    customerData.forEach((element, index) => {
-        customerData[index] = `(${customerData[index].split(' ').join(', ')})`;
-    });
-
-    // console.log(customerData);
-    // console.log(creditCardData);
-
-    // console.log(`${queries.customerInsert} ${customerData[0]}`);
-    await pool.query(queries.customerInsert, customerData[0], (error, result) => {
-        if (error) throw error;
-        console.log(`Number of rows inserted: ${result.affectedRows}`);
-    });
-    /* await pool.query(queries.creditCardInsert, [creditCardData], function(error, result) {
-        if (err) throw err;
-        console.log("Number of rows inserted: " + result.affectedRows);
-    }); */
+    try {
+        await pool.query(queries.customerInsert, [customerData]);
+    } catch (e) {
+        console.log('An error occured', e);
+    }
 
     await pool.end();
 }
