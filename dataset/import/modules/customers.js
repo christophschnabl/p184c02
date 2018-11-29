@@ -126,6 +126,8 @@ async function readGermanCreditData(filename) {
     const data = (await readFile(filename)).toString();
     const lines = data.split('\n');
 
+    lines.pop(); // remove empty line at the end
+
     const values = lines.map((line) => {
         const [
             status, duration, history, purpose, amount,
@@ -157,7 +159,7 @@ async function readGermanCreditData(filename) {
             liableMaintenance,
             formatTelephone(telephone),
             formatForeignWorker(foreignWorker),
-            formatCost(cost),
+            formatCost(cost)
         ]
     });
 
