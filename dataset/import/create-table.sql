@@ -4,13 +4,13 @@ create table Customer (
 ,   AccountStatus   		enum('<0', '0-200', '>200', 'no checking account')	not null
 ,   Duration        		int     not null
 ,   CreditHistory   		enum('no credits/all paid back',
-								 'credits paid back at this bank ',
-								 'credits paid back till now',
-								 'delay in paying',
-								 'critical account') not null
+                                 'credits paid back at this bank ',
+                                 'credits paid back till now',
+                                 'delay in paying',
+                                 'critical account') not null
 ,   Purpose        	 		enum('car (new)', 'car (used)', 'furniture/equipment',
-								 'radio/television', 'domestic appliances', 'repairs',
-								 'education', 'vacation', 'retraining', 'business', 'others')	not null
+                                 'radio/television', 'domestic appliances', 'repairs',
+                                 'education', 'vacation', 'retraining', 'business', 'others')	not null
 ,	CreditAmount			int		not null
 ,	Savings					enum('<100', '<500', '<1000', '>1000', 'unknown')
 ,	Employment				enum('unemployed', '<1', '1-4', '4-7', '>7')	not null
@@ -25,9 +25,9 @@ create table Customer (
 ,	Housing					enum('rent', 'own', 'for free')	not null
 ,	NumberOfCredits			int		not null
 ,	Job						enum('unskilled - none-resident',
-								'unskilled - resident',
-								'skilled employee',
-								'highly qualified employee')	not null
+                                'unskilled - resident',
+                                'skilled employee',
+                                'highly qualified employee')	not null
 ,	LiableMaintenance		int		not null
 ,	Telephone				boolean	not null
 ,	ForeignWorker			boolean	not null
@@ -45,8 +45,8 @@ create table CreditCard (
 );
 
 create table Transaction (
-    TransactionID       int     not null    AUTO_INCREMENT
-,   Date                date    not null
-,   Amount              float   not null
-,   CardNumber          int     not null    references CreditCard
+    TransactionID   int             not null    AUTO_INCREMENT
+,   Date            date            not null
+,   Amount          decimal(12,2)   not null
+,   CardNumber      int             not null    references CreditCard
 );
