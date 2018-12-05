@@ -1,6 +1,8 @@
 create table Customer (
-    CustomerUUID			integer         not null AUTO_INCREMENT
-,	Address         		text            not null
+    CustomerUUID			integer         not null
+,   Name                    varchar(255)    not null
+,   Country                 varchar(255)    not null
+,	Address         		varchar(255)    not null
 ,   AccountStatus   		enum('<0', '0-200', '>200', 'no checking account')	not null
 ,   Duration        		integer         not null
 ,   CreditHistory   		enum('no credits/all paid back',
@@ -36,11 +38,12 @@ create table Customer (
 );
 
 create table CreditCard (
-    CardNumber      integer     not null
-,   IssuingNetwork  text        not null
-,   CVV             integer     not null
-,   Expiration      date        not null
-,   CustomerUUID    integer     not null    references Customer
+    CardNumber      varchar(64) not null
+,   IssuingNetwork  varchar(64) not null
+,   CVV             varchar(16) not null
+,   ExpirationMonth integer     not null
+,   ExpirationYear  integer     not null
+,   CustomerUUID    integer     references Customer
 ,   primary key (CardNumber)
 );
 
