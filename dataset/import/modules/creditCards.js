@@ -29,7 +29,7 @@ async function readCreditCards(filenames) {
     const arr = arrays.pop();
     const mergedArray = arr.concat(...arrays);
 
-    return mergedArray.map(el => Object.values(el.CreditCard));
+    return mergedArray.map(el => el.CreditCard);
 }
 
 module.exports = readCreditCards;
