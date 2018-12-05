@@ -4,7 +4,9 @@ const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
 
 
-/** This function performs inserts for german-credit.data and credit-cards[1-5:5].json */
+/**
+ * This function performs inserts for german-credit.data and credit-cards[1-5:5].json
+ */
 async function importFromFile() {
     const customerData = await readGermanCreditData('../german-credit.data');
     const creditCardData = await readCreditCards([
@@ -15,11 +17,25 @@ async function importFromFile() {
         '../credit-cards/credit-cards-5:5.json'
     ]);
 
-    try {
-        await pool.query(queries.customerInsert, [customerData]);
-    } catch (e) {
-        console.log('An error occured', e);
+    const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
+    let customerInsertData = [];
+    for (let i = 0; i < customerData.length; i++) {
+        customerInsertData[i] = [i + 1, ...customerNameAddressData[i].concat(...customerData[i])];
     }
+
+    const creditCardInsertData = creditCardData.map((entry, i) => {
+        const expYear = parseInt(entry.Exp.split('/')[1], 10);
+        const expMonth = parseInt(entry.Exp.split('/')[0], 10);
+        return [entry.CardNumber, entry.IssuingNetwork, entry.CVV, expYear, expMonth, i + 1];
+    });
+
+    try {
+        await pool.query(queries.customerInsert, [customerInsertData]);
+        await pool.query(queries.creditCardInsert, [creditCardInsertData]);
+    } catch (e) {
+        console.warn('An error occured', e);
+    }
+
 
     await pool.end();
 }
