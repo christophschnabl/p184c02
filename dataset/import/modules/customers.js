@@ -114,7 +114,7 @@ const formatTelephone = tel => tel === 'A192';
 
 const formatForeignWorker = foreignWorker => foreignWorker === 'A201';
 
-const formatCost = cost => cost === '1' ? 'good' : 'bad';
+const formatCost = cost => (cost === '1' ? 'good' : 'bad');
 
 
 /**
@@ -160,7 +160,7 @@ async function readGermanCreditData(filename) {
             formatTelephone(telephone),
             formatForeignWorker(foreignWorker),
             formatCost(cost)
-        ]
+        ];
     });
 
     return values;
