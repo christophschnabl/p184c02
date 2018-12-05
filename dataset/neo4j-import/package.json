@@ -2,7 +2,7 @@
   "name": "frauddetection_neo4j_import",
   "version": "0.1.0",
   "description": "FraudDetection Data neo4j import package",
-  "main": "main.js",
+  "main": "app.js",
   "author": "",
   "license": "",
   "devDependencies": {
@@ -15,5 +15,6 @@
     "test": "node node_modules/eslint/bin/eslint.js app.js modules/*.js"
   },
   "dependencies": {
+    "mysql2": "^1.6.4"
   }
 }
