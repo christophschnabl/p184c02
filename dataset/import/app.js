@@ -8,6 +8,8 @@ const queries = require('./modules/queries.js');
  * This function performs inserts for german-credit.data and credit-cards[1-5:5].json
  */
 async function importFromFile() {
+    console.log('Reading files...');
+
     const customerData = await readGermanCreditData('../german-credit.data');
     const creditCardData = await readCreditCards([
         '../credit-cards/credit-cards-1:5.json',
@@ -29,6 +31,8 @@ async function importFromFile() {
         return [entry.CardNumber, entry.IssuingNetwork, entry.CVV, expYear, expMonth, i + 1];
     });
 
+    console.log('Inserting ' + creditCardInsertData.length + ' rows...');
+
     try {
         await pool.query(queries.customerInsert, [customerInsertData]);
         await pool.query(queries.creditCardInsert, [creditCardInsertData]);
@@ -36,6 +40,7 @@ async function importFromFile() {
         console.warn('An error occured', e);
     }
 
+    console.log('Inserted  ' + creditCardInsertData.length + ' rows.');
 
     await pool.end();
 }
