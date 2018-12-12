@@ -1,10 +1,4 @@
-/** Creates a telephone number with 12 random digits */
+/** Creates a 12-digit Telephone number */
 function createTelephoneNumber() {
-    let telNum = '';
-    for (let i = 0; i < 12; i += 1) {
-        telNum += Math.floor(Math.random() * 9);
-    }
-    return telNum;
+    return Math.floor(Math.random() * 899999999999) + 100000000000;
 }
-
-module.exports = createTelephoneNumber;

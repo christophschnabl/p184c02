@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8"></meta>
+    </head>
+    <body>
+        <h1>Random TelephoneNumber</h1>
+        <script>
+            function createTelephoneNumber() {
+                return Math.floor(Math.random() * 899999999999) + 100000000000;
+            }
+
+            for(let i = 0; i < 100000; i += 1) {
+                let telNum = createTelephoneNumber();
+                if(telNum.toString().length != 12) console.log(telNum);
+            }
+
+            console.log('Finished!');
+        </script>
+    </body>
+</html>
