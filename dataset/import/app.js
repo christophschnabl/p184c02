@@ -37,7 +37,7 @@ async function importFromFile() {
         return [entry.CardNumber, entry.IssuingNetwork, entry.CVV, expYear, expMonth, i + 1];
     });
 
-    console.log('Inserting ' + creditCardInsertData.length + ' rows...');
+    console.log(`Inserting ${creditCardInsertData.length} rows...`);
 
     try {
         await pool.query(queries.customerInsert, [customerInsertData]);
@@ -46,7 +46,7 @@ async function importFromFile() {
         console.warn('An error occured', e);
     }
 
-    console.log('Inserted  ' + creditCardInsertData.length + ' rows.');
+    console.log(`Inserted ${creditCardInsertData.length} rows.`);
 
     await pool.end();
 }
