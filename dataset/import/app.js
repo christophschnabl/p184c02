@@ -3,6 +3,8 @@ const readCreditCards = require('./modules/creditCards.js');
 const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
 
+const generateTelephone = () => Math.floor(Math.random() * 1000000000);
+
 
 /**
  * This function performs inserts for german-credit.data and credit-cards[1-5:5].json
@@ -22,7 +24,11 @@ async function importFromFile() {
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
     for (let i = 0; i < customerData.length; i++) {
-        customerInsertData[i] = [i + 1, ...customerNameAddressData[i].concat(...customerData[i])];
+        customerInsertData[i] = [
+            i + 1,
+            generateTelephone(),
+            ...customerNameAddressData[i].concat(...customerData[i])
+        ];
     }
 
     const creditCardInsertData = creditCardData.map((entry, i) => {

@@ -157,7 +157,6 @@ async function readGermanCreditData(filename) {
             numberOfCredits,
             formatJob(job),
             liableMaintenance,
-            formatTelephone(telephone),
             formatForeignWorker(foreignWorker),
             formatCost(cost)
         ];

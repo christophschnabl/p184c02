@@ -3,6 +3,7 @@ create table Customer (
 ,   Name                    varchar(255)    not null
 ,   Country                 varchar(255)    not null
 ,	Address         		varchar(255)    not null
+,	Telephone				varchar(32)     not null
 ,   AccountStatus   		enum('<0', '0-200', '>200', 'no checking account')	not null
 ,   Duration        		integer         not null
 ,   CreditHistory   		enum('no credits/all paid back',
@@ -31,7 +32,6 @@ create table Customer (
                                 'skilled employee',
                                 'highly qualified employee')	not null
 ,	LiableMaintenance		integer		    not null
-,	Telephone				boolean	        not null
 ,	ForeignWorker			boolean	        not null
 , 	Cost					enum('good','bad')		not null
 ,   primary key (CustomerUUID)
