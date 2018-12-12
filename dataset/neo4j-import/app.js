@@ -11,15 +11,65 @@ async function importFromMysql() {
         const [creditcards, _crfields] =
             await pool.query(queries.creditCardSelect);
 
-        for (const customer of customers) {
+        if (customers.length != creditcards.length)
+            throw 'Number of rows not matching!';
+
+        console.log('Inserting ' + customers.length + ' rows...\n');
+
+        for (let i = 0; i < customers.length; i++) {
+            console.log(`Inserting row number ${i}.`);
+
+            const customer = customers[i];
+            const creditcard = creditcards[i];
+
             await session.run(`CREATE (customer:Customer {
                 id: {CustomerUUID},
                 name: {Name},
-                country: {Country},
-                address: {Address},
                 accountStatus: {AccountStatus}
             })`, customer);
+            await session.run(`CREATE (phone: Phone {
+                telephone: {Telephone}
+            })`, customer);
+            await session.run(`CREATE (address: Address {
+                country: {Country},
+                address: {Address}
+            })`, customer);
+            await session.run(`CREATE (creditcard: CreditCard {
+                cardNumber: {CardNumber},
+                issuingNetwork: {IssuingNetwork},
+                CVV: {CVV},
+                expirationMonth: {ExpirationMonth},
+                expirationYear: {ExpirationYear}
+            })`, creditcard);
+
+            await session.run(`
+            MATCH (a:Customer),(b:Phone)
+            WHERE a.id = {CustomerUUID}
+              AND b.telephone = {Telephone}
+            CREATE (a)-[r:USES_PHONENUMBER]->(b)
+            RETURN type(r)`, customer);
+
+            await session.run(`
+            MATCH (a:Customer),(b:Address)
+            WHERE a.id = {CustomerUUID}
+              AND b.address = {Address}
+              AND b.country = {Country}
+            CREATE (a)-[r:HAS_ADDRESS]->(b)
+            RETURN type(r)`, customer);
+
+            await session.run(`
+            MATCH (a:Customer),(b:CreditCard)
+            WHERE a.id = {CustomerUUID}
+              AND b.cardNumber = {CardNumber}
+            CREATE (a)-[r:USES_CREDITCARD]->(b)
+            RETURN type(r)`, {
+                    CustomerUUID: customer.CustomerUUID,
+                    CardNumber: creditcard.CardNumber
+                }
+            );
         }
+
+        console.log('\nInserted ' + customers.length + ' rows.');
 
     } catch (e) {
         console.warn('An error occured', e);
