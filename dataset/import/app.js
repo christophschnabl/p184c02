@@ -21,7 +21,7 @@ async function importFromFile() {
 
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
-    for (let i = 0; i < customerData.length; i++) {
+    for (let i = 0; i < customerData.length; i += 1) {
         customerInsertData[i] = [i + 1, ...customerNameAddressData[i].concat(...customerData[i])];
     }
 
@@ -31,7 +31,7 @@ async function importFromFile() {
         return [entry.CardNumber, entry.IssuingNetwork, entry.CVV, expYear, expMonth, i + 1];
     });
 
-    console.log('Inserting ' + creditCardInsertData.length + ' rows...');
+    console.log(`Inserting ${creditCardInsertData.length} rows...`);
 
     try {
         await pool.query(queries.customerInsert, [customerInsertData]);
@@ -40,7 +40,7 @@ async function importFromFile() {
         console.warn('An error occured', e);
     }
 
-    console.log('Inserted  ' + creditCardInsertData.length + ' rows.');
+    console.log(`Inserted ${creditCardInsertData.length} rows.`);
 
     await pool.end();
 }
