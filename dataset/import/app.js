@@ -2,6 +2,11 @@ const readGermanCreditData = require('./modules/customers.js');
 const readCreditCards = require('./modules/creditCards.js');
 const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
+const fs = require('fs');
+const util = require('util');
+
+const readFile = util.promisify(fs.readFile);
+
 
 const generateTelephone = () => Math.floor(Math.random() * 1000000000);
 
@@ -20,13 +25,14 @@ async function importFromFile() {
         '../credit-cards/credit-cards-4:5.json',
         '../credit-cards/credit-cards-5:5.json'
     ]);
+    const telephoneData = (await readFile('../telephone.data')).split('\n');
 
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
     for (let i = 0; i < customerData.length; i++) {
         customerInsertData[i] = [
             i + 1,
-            generateTelephone(),
+            telephoneData[i],
             ...customerNameAddressData[i].concat(...customerData[i])
         ];
     }
