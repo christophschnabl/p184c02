@@ -17,7 +17,7 @@ async function importFromMysql() {
         console.log('Inserting ' + customers.length + ' rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
-            console.log(`Inserting row number ${i}.`);
+            console.log(`Inserting row number ${i}..`);
 
             const customer = customers[i];
             const creditcard = creditcards[i];
