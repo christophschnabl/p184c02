@@ -1,17 +1,16 @@
 module.exports = [
-    // fix bug here
     `update Customer
-        set SSN = (select CustomerUUID
-                     from (select CustomerUUID
-                             from Customer) c
-                    where CustomerUUID = 1)
+        set SSN = (select SSN
+                     from (select SSN
+                             from Customer
+                            where CustomerUUID = 1) c)
       where CustomerUUID = 2;
     `,
     `update Customer
-        set SSN = (select CustomerUUID
-                     from (select CustomerUUID
-                             from Customer) c
-                    where CustomerUUID = 1)
+        set SSN = (select SSN
+                     from (select SSN
+                             from Customer
+                            where CustomerUUID = 1) c)
       where CustomerUUID = 3;
     `
 ];
