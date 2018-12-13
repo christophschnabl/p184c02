@@ -151,6 +151,9 @@
         ],
         "comma-dangle": [
             0
+        ],
+        "no-await-in-loop": [
+            1
         ]
     }
 }
