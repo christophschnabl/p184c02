@@ -29,7 +29,7 @@ async function importFromFile() {
 
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
-    for (let i = 0; i < customerData.length; i++) {
+    for (let i = 0; i < customerData.length; i += 1) {
         customerInsertData[i] = [
             i + 1,
             telephoneData[i],
