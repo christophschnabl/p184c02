@@ -49,11 +49,10 @@ async function importFromFile() {
         await pool.query(queries.creditCardDelete);
         await pool.query(queries.customerInsert, [customerInsertData]);
         await pool.query(queries.creditCardInsert, [creditCardInsertData]);
+        console.log(`Inserted ${creditCardInsertData.length} rows.`);
     } catch (e) {
         console.warn('An error occured', e);
     }
-
-    console.log(`Inserted ${creditCardInsertData.length} rows.`);
 
     await pool.end();
 }
