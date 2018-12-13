@@ -8,9 +8,6 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
 
-const generateTelephone = () => Math.floor(Math.random() * 1000000000);
-
-
 /**
  * This function performs inserts for german-credit.data and credit-cards[1-5:5].json
  */
@@ -25,14 +22,16 @@ async function importFromFile() {
         '../credit-cards/credit-cards-4:5.json',
         '../credit-cards/credit-cards-5:5.json'
     ]);
-    const telephoneData = (await readFile('../telephone.data')).split('\n');
+    const telephoneData = ((await readFile('../telephone.data')).toString()).split('\n');
+    const SSNData = ((await readFile('../SSN.data')).toString()).split('\n');
 
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
-    for (let i = 0; i < customerData.length; i++) {
+    for (let i = 0; i < customerData.length; i += 1) {
         customerInsertData[i] = [
             i + 1,
             telephoneData[i],
+            SSNData[i],
             ...customerNameAddressData[i].concat(...customerData[i])
         ];
     }
@@ -46,6 +45,8 @@ async function importFromFile() {
     console.log(`Inserting ${creditCardInsertData.length} rows...`);
 
     try {
+        await pool.query(queries.customerDelete);
+        await pool.query(queries.creditCardDelete);
         await pool.query(queries.customerInsert, [customerInsertData]);
         await pool.query(queries.creditCardInsert, [creditCardInsertData]);
     } catch (e) {

@@ -17,7 +17,7 @@ async function importFromMysql() {
         console.log('Inserting ' + customers.length + ' rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
-            console.log(`Inserting row number ${i}.`);
+            console.log(`Inserting row number ${i}..`);
 
             const customer = customers[i];
             const creditcard = creditcards[i];
@@ -34,6 +34,9 @@ async function importFromMysql() {
                 country: {Country},
                 address: {Address}
             })`, customer);
+            await session.run(`CREATE (ssn: SSN {
+                SSN: {SSN}
+            })`, customer);
             await session.run(`CREATE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
                 issuingNetwork: {IssuingNetwork},
@@ -47,6 +50,13 @@ async function importFromMysql() {
             WHERE a.id = {CustomerUUID}
               AND b.telephone = {Telephone}
             CREATE (a)-[r:USES_PHONENUMBER]->(b)
+            RETURN type(r)`, customer);
+
+            await session.run(`
+            MATCH (a:Customer),(b:SSN)
+            WHERE a.id = {CustomerUUID}
+              AND b.SSN = {SSN}
+            CREATE (a)-[r:HAS_SSN]->(b)
             RETURN type(r)`, customer);
 
             await session.run(`
