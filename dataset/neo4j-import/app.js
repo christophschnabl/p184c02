@@ -34,6 +34,9 @@ async function importFromMysql() {
                 country: {Country},
                 address: {Address}
             })`, customer);
+            await session.run(`CREATE (ssn: SSN {
+                SSN: {SSN}
+            })`, customer);
             await session.run(`CREATE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
                 issuingNetwork: {IssuingNetwork},
@@ -47,6 +50,13 @@ async function importFromMysql() {
             WHERE a.id = {CustomerUUID}
               AND b.telephone = {Telephone}
             CREATE (a)-[r:USES_PHONENUMBER]->(b)
+            RETURN type(r)`, customer);
+
+            await session.run(`
+            MATCH (a:Customer),(b:SSN)
+            WHERE a.id = {CustomerUUID}
+              AND b.SSN = {SSN}
+            CREATE (a)-[r:HAS_SSN]->(b)
             RETURN type(r)`, customer);
 
             await session.run(`
