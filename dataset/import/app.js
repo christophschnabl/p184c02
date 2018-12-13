@@ -8,9 +8,6 @@ const util = require('util');
 const readFile = util.promisify(fs.readFile);
 
 
-const generateTelephone = () => Math.floor(Math.random() * 1000000000);
-
-
 /**
  * This function performs inserts for german-credit.data and credit-cards[1-5:5].json
  */
@@ -26,6 +23,7 @@ async function importFromFile() {
         '../credit-cards/credit-cards-5:5.json'
     ]);
     const telephoneData = (await readFile('../telephone.data')).split('\n');
+    const SSNData = (await readFile('../SSN.data')).split('\n');
 
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
@@ -33,6 +31,7 @@ async function importFromFile() {
         customerInsertData[i] = [
             i + 1,
             telephoneData[i],
+            SSNData[i],
             ...customerNameAddressData[i].concat(...customerData[i])
         ];
     }
