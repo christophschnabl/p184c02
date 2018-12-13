@@ -6,6 +6,10 @@ async function importFromMysql() {
     const session = driver.session();
 
     try {
+        console.log('Deleting DB contents...');
+        await session.run(`MATCH (n)
+                           DETACH DELETE n`);
+
         const [customers, _cufields] =
             await pool.query(queries.customerSelect);
         const [creditcards, _crfields] =
@@ -14,7 +18,7 @@ async function importFromMysql() {
         if (customers.length != creditcards.length)
             throw 'Number of rows not matching!';
 
-        console.log('Inserting ' + customers.length + ' rows...\n');
+        console.log('\nInserting ' + customers.length + ' rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
             console.log(`Inserting row number ${i}..`);
