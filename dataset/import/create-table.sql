@@ -3,6 +3,7 @@ create table Customer (
 ,   Name                    varchar(255)    not null
 ,   Country                 varchar(255)    not null
 ,	Address         		varchar(255)    not null
+,   SSN         		    varchar(255)    not null
 ,	Telephone				varchar(32)     not null
 ,   AccountStatus   		enum('<0', '0-200', '>200', 'no checking account')	not null
 ,   Duration        		integer         not null
