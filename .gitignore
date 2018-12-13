@@ -3,3 +3,6 @@ public
 
 #macOS
 .DS_Store
+
+#server
+.env
