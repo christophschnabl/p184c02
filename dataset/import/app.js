@@ -22,8 +22,8 @@ async function importFromFile() {
         '../credit-cards/credit-cards-4:5.json',
         '../credit-cards/credit-cards-5:5.json'
     ]);
-    const telephoneData = (await readFile('../telephone.data')).split('\n');
-    const SSNData = (await readFile('../SSN.data')).split('\n');
+    const telephoneData = ((await readFile('../telephone.data')).toString()).split('\n');
+    const SSNData = ((await readFile('../SSN.data')).toString()).split('\n');
 
     const customerNameAddressData = creditCardData.map(e => [e.Name, e.Country, e.Address]);
     let customerInsertData = [];
@@ -45,6 +45,8 @@ async function importFromFile() {
     console.log(`Inserting ${creditCardInsertData.length} rows...`);
 
     try {
+        await pool.query(queries.customerDelete);
+        await pool.query(queries.creditCardDelete);
         await pool.query(queries.customerInsert, [customerInsertData]);
         await pool.query(queries.creditCardInsert, [creditCardInsertData]);
     } catch (e) {
