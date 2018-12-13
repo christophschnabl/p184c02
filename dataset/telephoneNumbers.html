@@ -13,7 +13,7 @@
             function createTelephoneNumbers(num) {
                 let numbers = '';
                 for(let i = 0; i < num; i += 1) {
-                    numbers += createTelephoneNumber.toString() + '\n';
+                    numbers += createTelephoneNumber().toString() + '\n';
                 }
                 return numbers;
             }
@@ -26,6 +26,8 @@
 
                 console.log('Finished!');
             }
+
+            console.log(createTelephoneNumbers(1000));
         </script>
     </body>
 </html>
