@@ -1,3 +1,7 @@
+"""
+This script generates a query specifically for the frauddetection graph database
+"""
+
 nodes = [":SSN", ":Address", ":Phone", ":CreditCard"]
 relations = [":HAS_SSN", ":HAS_ADDRESS", ":USES_PHONENUMBER", ":USES_CREDITCARD"]
 filename = str(input("Filename: "))
