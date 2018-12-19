@@ -1,5 +1,7 @@
-FRAUDDETECTION MIT NEO4J
+# FRAUDDETECTION MIT NEO4J
 ------------------------
+
+### Wie man das Projekt ausführt
 
 1. Mysql & Neo4j installieren und einrichten
 2. Mysql-User und frauddetection-DB erstellen und enstprechende Rechte zuweisen (siehe import/mysql-init.sql)
