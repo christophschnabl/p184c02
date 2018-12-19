@@ -2,7 +2,7 @@
   "name": "frauddetection_import",
   "version": "0.1.0",
   "description": "FraudDetection Data import package",
-  "main": "main.js",
+  "main": "app.js",
   "author": "",
   "license": "",
   "devDependencies": {
