@@ -9,6 +9,7 @@ async function createTable() {
 
     try {
         await pool.query(sql);
+        await pool.end();
     } catch (e) {
         console.warn('An error occured', e);
     }
