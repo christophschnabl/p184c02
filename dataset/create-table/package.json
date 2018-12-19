@@ -1,0 +1,11 @@
+{
+  "name": "create-table",
+  "version": "0.0.1",
+  "description": "create table",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "ffromwald",
+  "license": "ISC"
+}
