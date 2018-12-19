@@ -26,22 +26,22 @@ async function importFromMysql() {
             const customer = customers[i];
             const creditcard = creditcards[i];
 
-            await session.run(`CREATE (customer:Customer {
+            await session.run(`MERGE (customer:Customer {
                 id: {CustomerUUID},
                 name: {Name},
                 accountStatus: {AccountStatus}
             })`, customer);
-            await session.run(`CREATE (phone: Phone {
+            await session.run(`MERGE (phone: Phone {
                 telephone: {Telephone}
             })`, customer);
-            await session.run(`CREATE (address: Address {
+            await session.run(`MERGE (address: Address {
                 country: {Country},
                 address: {Address}
             })`, customer);
-            await session.run(`CREATE (ssn: SSN {
+            await session.run(`MERGE (ssn: SSN {
                 SSN: {SSN}
             })`, customer);
-            await session.run(`CREATE (creditcard: CreditCard {
+            await session.run(`MERGE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
                 issuingNetwork: {IssuingNetwork},
                 CVV: {CVV},
@@ -53,14 +53,14 @@ async function importFromMysql() {
             MATCH (a:Customer),(b:Phone)
             WHERE a.id = {CustomerUUID}
               AND b.telephone = {Telephone}
-            CREATE (a)-[r:USES_PHONENUMBER]->(b)
+            MERGE (a)-[r:USES_PHONENUMBER]->(b)
             RETURN type(r)`, customer);
 
             await session.run(`
             MATCH (a:Customer),(b:SSN)
             WHERE a.id = {CustomerUUID}
               AND b.SSN = {SSN}
-            CREATE (a)-[r:HAS_SSN]->(b)
+            MERGE (a)-[r:HAS_SSN]->(b)
             RETURN type(r)`, customer);
 
             await session.run(`
@@ -68,14 +68,14 @@ async function importFromMysql() {
             WHERE a.id = {CustomerUUID}
               AND b.address = {Address}
               AND b.country = {Country}
-            CREATE (a)-[r:HAS_ADDRESS]->(b)
+            MERGE (a)-[r:HAS_ADDRESS]->(b)
             RETURN type(r)`, customer);
 
             await session.run(`
             MATCH (a:Customer),(b:CreditCard)
             WHERE a.id = {CustomerUUID}
               AND b.cardNumber = {CardNumber}
-            CREATE (a)-[r:USES_CREDITCARD]->(b)
+            MERGE (a)-[r:USES_CREDITCARD]->(b)
             RETURN type(r)`, {
                     CustomerUUID: customer.CustomerUUID,
                     CardNumber: creditcard.CardNumber
