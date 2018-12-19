@@ -1,11 +1,14 @@
 {
   "name": "create-table",
-  "version": "0.0.1",
-  "description": "create table",
+  "version": "0.1.0",
+  "description": "FraudDetection Data create table package",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "ffromwald",
-  "license": "ISC"
+  "license": "",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "mysql2": "^1.6.4"
+  }
 }
