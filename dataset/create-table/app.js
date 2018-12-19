@@ -1,8 +1,11 @@
 const pool = require('./modules/database.js');
 const fs = require('fs');
+const util = require('util');
+
+const readFile = util.promisify(fs.readFile);
 
 async function createTable() {
-    const sql = fs.readFile('./create-table.sql');
+    const sql = (await readFile('./create-table.sql')).toString();
 
     try {
         await pool.query(sql);
