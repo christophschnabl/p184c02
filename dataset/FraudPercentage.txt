@@ -1,0 +1,23 @@
+Common Address:                                 1%;
+
+Common PhoneNumber:                            20%;
+
+Common CreditCard:                             30%;
+
+Common SSN:                                    40%;
+
+Common Address & (PhoneNumber | CreditCard):   35%;
+
+Common Address & SSN:                          60%;
+
+Common PhoneNumber & CreditCard:               75%;
+
+Common PhoneNumber & SSN:                      85%;
+
+Common CreditCard & SSN:                       90%;
+
+Common 3:                                      95%;
+
+Common 4:                                     100%;
+
+>=20% = Lookworthy
