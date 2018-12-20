@@ -10,3 +10,16 @@
 5. addFraud script ausführen (um Betrungsringe in die Mysql-DB einzubauen)
 6. neo4j-import script ausführen (Achtung, alle Tabelleninhalte werden gelöscht!) (Dauert mehrere Minuten)
 7. Graph im neo4j-Browser betrachten
+
+
+####Die Scripts beachten folgende Umgebungsvariablen:
+
+* MYSQL_HOST
+* MYSQL_USER
+* MYSQL_PASSWORD
+* MYSQL_DB
+* NEO4J_USER
+* NEO4J_PASSWORD
+* NEO4J_URI
+
+Wenn diese Variablen nicht definiert werden, verwenden die scripts default-Parameter.
