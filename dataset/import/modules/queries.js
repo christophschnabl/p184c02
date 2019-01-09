@@ -3,7 +3,9 @@ module.exports = {
         Savings, Employment, InstallmentRate, PersonalStatus, sex, Debtors, Residence, Property, Age,
         OtherInstallmentPlans, Housing, NumberOfCredits, Job, LiableMaintenance, ForeignWorker, Cost)
         values ?`,
-    creditCardInsert: `insert into CreditCard (CardNumber, IssuingNetwork, CVV, ExpirationYear, ExpirationMonth, CustomerUUID) values ?`,
+    creditCardInsert: `insert into CreditCard (CardNumber, IssuingNetwork, CVV, ExpirationYear, ExpirationMonth) values ?`,
+    customerCreditCardInsert: `insert into CustomerCreditCard (CustomerUUID, CardNumber) values ?`,
     customerDelete: 'delete from Customer',
-    creditCardDelete: 'delete from CreditCard'
+    creditCardDelete: 'delete from CreditCard',
+    customerCreditCardDelete: 'delete from CreditCard'
 };

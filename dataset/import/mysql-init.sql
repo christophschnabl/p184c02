@@ -1,7 +1,7 @@
 create database frauddetection;
 use frauddetection;
 
-create     user 'frauddetection'@'localhost' 
+create     user 'frauddetection'@'localhost'
 identified by 'frauddetection';
 
 select Host, User
@@ -20,6 +20,11 @@ grant select, insert, update, delete
 
 grant select, insert, update, delete
    on CreditCard
+   to 'frauddetection'@'localhost'
+;
+
+grant select, insert, update, delete
+   on CustomerCreditCard
    to 'frauddetection'@'localhost'
 ;
 

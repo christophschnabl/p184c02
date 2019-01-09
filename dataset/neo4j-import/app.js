@@ -16,17 +16,30 @@ async function importFromMysql() {
             await pool.query(queries.customerSelect);
         const [creditcards, _crfields] =
             await pool.query(queries.creditCardSelect);
+        const [customerCreditCard, _ccrfields] =
+            await pool.query(queries.customerCreditCardSelect);
+
+        const customerToCreditCard = customerCreditCard.reduce((obj, v) => {
+            obj[v.CustomerUUID] = v.CardNumber;
+            return obj;
+        }, {});
+
+        const creditCardToCustomer = customerCreditCard.reduce((obj, v) => {
+            obj[v.CardNumber] = v.CustomerUUID;
+            return obj;
+        }, {});
+
+        const getCustomerUUIDForCreditCardNumber = (cardNumber) => creditCardToCustomer[cardNumber];
 
         if (customers.length != creditcards.length)
             throw 'Number of rows not matching!';
 
-        console.log('\nInserting ' + customers.length + ' rows...\n');
+        console.log('\nInserting ' + customers.length + ' customer rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
             console.log(`Inserting row number ${i}..`);
 
             const customer = customers[i];
-            const creditcard = creditcards[i];
 
             await session.run(`MERGE (customer:Customer {
                 id: {CustomerUUID},
@@ -43,13 +56,7 @@ async function importFromMysql() {
             await session.run(`MERGE (ssn: SSN {
                 SSN: {SSN}
             })`, customer);
-            await session.run(`MERGE (creditcard: CreditCard {
-                cardNumber: {CardNumber},
-                issuingNetwork: {IssuingNetwork},
-                CVV: {CVV},
-                expirationMonth: {ExpirationMonth},
-                expirationYear: {ExpirationYear}
-            })`, creditcard);
+
 
             await session.run(`
             MATCH (a:Customer),(b:Phone)
@@ -72,14 +79,27 @@ async function importFromMysql() {
               AND b.country = {Country}
             MERGE (a)-[r:HAS_ADDRESS]->(b)
             RETURN type(r)`, customer);
+        }
 
+        console.log('Inserting Credit Card data...');
+
+        for (const creditcard of creditcards) {
+            console.log(`Inserting Credit Card row ...`);
+
+            await session.run(`MERGE (creditcard: CreditCard {
+                cardNumber: {CardNumber},
+                issuingNetwork: {IssuingNetwork},
+                CVV: {CVV},
+                expirationMonth: {ExpirationMonth},
+                expirationYear: {ExpirationYear}
+            })`, creditcard);
             await session.run(`
-            MATCH (a:Customer),(b:CreditCard)
-            WHERE a.id = {CustomerUUID}
-              AND b.cardNumber = {CardNumber}
-            MERGE (a)-[r:USES_CREDITCARD]->(b)
-            RETURN type(r)`, {
-                    CustomerUUID: customer.CustomerUUID,
+                MATCH (a:Customer),(b:CreditCard)
+                WHERE a.id = {CustomerUUID}
+                AND b.cardNumber = {CardNumber}
+                MERGE (a)-[r:USES_CREDITCARD]->(b)
+                RETURN type(r)`, {
+                    CustomerUUID: getCustomerUUIDForCreditCardNumber(creditcard.CardNumber),
                     CardNumber: creditcard.CardNumber
                 }
             );

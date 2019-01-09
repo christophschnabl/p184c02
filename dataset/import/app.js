@@ -39,16 +39,23 @@ async function importFromFile() {
     const creditCardInsertData = creditCardData.map((entry, i) => {
         const expYear = parseInt(entry.Exp.split('/')[1], 10);
         const expMonth = parseInt(entry.Exp.split('/')[0], 10);
-        return [entry.CardNumber, entry.IssuingNetwork, entry.CVV, expYear, expMonth, i + 1];
+        return [entry.CardNumber, entry.IssuingNetwork, entry.CVV, expYear, expMonth];
     });
+
+    const customerCreditCardInsertData = [];
+    for (let i = 0; i < customerInsertData.length; i++) {
+        customerCreditCardInsertData[i] = [i + 1, creditCardInsertData[i][0]];
+    }
 
     console.log(`Inserting ${creditCardInsertData.length} rows...`);
 
     try {
         await pool.query(queries.customerDelete);
         await pool.query(queries.creditCardDelete);
+        await pool.query(queries.customerCreditCardDelete);
         await pool.query(queries.customerInsert, [customerInsertData]);
         await pool.query(queries.creditCardInsert, [creditCardInsertData]);
+        await pool.query(queries.customerCreditCardInsert, [customerCreditCardInsertData]);
         console.log(`Inserted ${creditCardInsertData.length} rows.`);
     } catch (e) {
         console.warn('An error occured', e);
