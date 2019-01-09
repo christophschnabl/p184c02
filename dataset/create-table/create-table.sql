@@ -44,8 +44,12 @@ create table CreditCard (
 ,   CVV             varchar(16) not null
 ,   ExpirationMonth integer     not null
 ,   ExpirationYear  integer     not null
-,   CustomerUUID    integer     references Customer
 ,   primary key (CardNumber)
+);
+
+create table CustomerCreditCard (
+    CustomerUUID    integer     not null references Customer
+,   CardNumber      varchar(64) not null references CreditCard
 );
 
 create table Transaction (
