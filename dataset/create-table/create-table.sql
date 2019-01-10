@@ -38,14 +38,14 @@ create table Customer (
 ,   primary key (CustomerUUID)
 );
 
---create table CreditCard (
---    CardNumber      varchar(64) not null
---,   IssuingNetwork  varchar(64) not null
---,   CVV             varchar(16) not null
---,   ExpirationMonth integer     not null
---,   ExpirationYear  integer     not null
---,   primary key (CardNumber)
---);
+create table CreditCard (
+    CardNumber      varchar(64) not null
+,   IssuingNetwork  varchar(64) not null
+,   CVV             varchar(16) not null
+,   ExpirationMonth integer     not null
+,   ExpirationYear  integer     not null
+,   primary key (CardNumber)
+);
 
 create table CustomerCreditCard (
     CustomerUUID    integer     not null references Customer
