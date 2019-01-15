@@ -10,3 +10,9 @@ create trigger AfterUpdCustomer
     for each row
     insert into Customer_Polling (CustomerUUID) values (new.CustomerUUID)
 ;
+
+create trigger AfterInsCreditCard
+after update on CreditCard 
+    for each row
+    insert into CreditCard_Polling (CardNumber) values (new.CardNumber)
+;
