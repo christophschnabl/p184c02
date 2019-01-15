@@ -1,13 +1,10 @@
-create trigger AfterInsUpdCustomer
+create trigger AfterInsCustomer
     after insert on Customer 
     for each row
-begin
     insert into Customer_Polling values (new.CustomerUUID);
-end;
 
-create trigger AfterInsUpdCustomer
+
+create trigger AfterUpdCustomer
     after update on Customer 
     for each row
-begin
-    insert into Customer_Polling values (new.CustomerUUID);
-end;
+    insert into Customer_Polling (CustomerUUID) values (new.CustomerUUID);
