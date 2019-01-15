@@ -61,13 +61,13 @@ create table Transaction (
 
 
 create table Customer_Polling (
-    CustomerUUID    integer     not null
+    CustomerUUID    integer     not null    primary key
 );
 
 create table CreditCard_Polling (
-    CardNumber      varchar(64) not null
+    CardNumber      varchar(64) not null    primary key
 );
 
 create table Transaction_Polling (
-    TransactionID   integer     not null   
+    TransactionID   integer     not null    primary key 
 );
