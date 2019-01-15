@@ -12,6 +12,12 @@ create trigger AfterUpdCustomer
 ;
 
 create trigger AfterInsCreditCard
+after insert on CreditCard 
+    for each row
+    insert into CreditCard_Polling (CardNumber) values (new.CardNumber)
+;
+
+create trigger AfterUpdCreditCard
 after update on CreditCard 
     for each row
     insert into CreditCard_Polling (CardNumber) values (new.CardNumber)
