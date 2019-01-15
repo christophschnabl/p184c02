@@ -67,3 +67,7 @@ create table Customer_Polling (
 create table CreditCard_Polling (
     CardNumber      varchar(64) not null
 );
+
+create table Transaction_Polling (
+    TransactionID   integer     not null   
+);
