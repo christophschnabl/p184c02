@@ -63,3 +63,7 @@ create table Transaction (
 create table Customer_Polling (
     CustomerUUID    integer     not null
 );
+
+create table CreditCard_Polling (
+    CardNumber      varchar(64) not null
+);
