@@ -1,10 +1,6 @@
 const pool = require('./modules/database.js');
+const wait = require('./modules/wait.js');
 
-function wait(ms) {
-    return new Promise((resolve, reject) => {
-        setTimeout(resolve, ms);
-    })
-}
 
 async function replicationLoop() {
     while (true) {
