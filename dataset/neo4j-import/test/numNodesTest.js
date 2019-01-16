@@ -36,4 +36,14 @@ describe('Dataset', () => {
             chai.assert.equal(res.records.length, 1000);
         });
     });
+
+    it('should have an address node per customer', () => {
+        const result = session.run(
+            'match (c:Customer)-[:HAS_ADDRESS]->(a:Address) return a'
+        );
+
+        result.then((res) => {
+            chai.assert.equal(res.records.length, 1000);
+        });
+    });
 });
