@@ -25,4 +25,15 @@ describe('Dataset', () => {
             chai.assert.equal(res.records.length, 1000);
         });
     });
+
+
+    it('should have a phonenumber node per customer', () => {
+        const result = session.run(
+            'match (c:Customer)-[:USES_PHONENUMBER]->(p:Phone) return p'
+        );
+
+        result.then((res) => {
+            chai.assert.equal(res.records.length, 1000);
+        });
+    });
 });
