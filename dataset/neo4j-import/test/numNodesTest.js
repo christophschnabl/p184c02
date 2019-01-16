@@ -15,4 +15,14 @@ describe('Dataset', () => {
             chai.assert.equal(res.records.length, 1000);
         });
     });
+
+    it('should have a ssn node per customer', () => {
+        const result = session.run(
+            'match (c:Customer)-[:HAS_SSN]->(s:SSN) return s;'
+        );
+
+        result.then((res) => {
+            chai.assert.equal(res.records.length, 1000);
+        });
+    });
 });
