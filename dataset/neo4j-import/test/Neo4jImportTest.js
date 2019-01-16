@@ -56,4 +56,14 @@ describe('Dataset', () => {
             chai.assert.equal(res.records.length, 1000);
         });
     });
+
+    it('should have relations between customer (built in fraud should work)', () => {
+        const result = session.run(
+            'match (c:Customer)--(r)--(c2:Customer) return c'
+        );
+
+        result.then((res) => {
+            chai.assert.notEqual(res.records.length, 0);
+        });
+    });
 });
