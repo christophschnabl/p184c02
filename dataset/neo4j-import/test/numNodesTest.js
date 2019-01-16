@@ -49,7 +49,7 @@ describe('Dataset', () => {
 
     it('should have a creditcard node per customer', () => {
         const result = session.run(
-            'match (c:Customer)-[:USES_CREDITCARD]->(c:CreditCard) return c'
+            'match (c:Customer)-[:USES_CREDITCARD]->(cc:CreditCard) return cc'
         );
 
         result.then((res) => {
