@@ -46,4 +46,14 @@ describe('Dataset', () => {
             chai.assert.equal(res.records.length, 1000);
         });
     });
+
+    it('should have a creditcard node per customer', () => {
+        const result = session.run(
+            'match (c:Customer)-[:USES_CREDITCARD]->(c:CreditCard) return c'
+        );
+
+        result.then((res) => {
+            chai.assert.equal(res.records.length, 1000);
+        });
+    });
 });
