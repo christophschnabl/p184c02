@@ -58,3 +58,16 @@ create table Transaction (
 ,   Amount          decimal(12,2)       not null
 ,   CardNumber      integer             not null    references CreditCard
 );
+
+
+create table Customer_Polling (
+    CustomerUUID    integer     not null    primary key
+);
+
+create table CreditCard_Polling (
+    CardNumber      varchar(64) not null    primary key
+);
+
+create table Transaction_Polling (
+    TransactionID   integer     not null    primary key 
+);
