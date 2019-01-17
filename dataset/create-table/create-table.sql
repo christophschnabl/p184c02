@@ -61,6 +61,8 @@ create table Transaction (
 );
 
 
+--Polling Tables
+
 create table Customer_Polling (
     CustomerUUID    integer     not null    primary key
 );
@@ -71,4 +73,10 @@ create table CreditCard_Polling (
 
 create table Transaction_Polling (
     TransactionID   integer     not null    primary key 
+);
+
+create table CustomerCreditCard_Polling (
+    CustomerUUID    integer     not null references Customer
+,   CardNumber      varchar(64) not null references CreditCard
+,   primary key (CustomerUUID, CardNumber)
 );
