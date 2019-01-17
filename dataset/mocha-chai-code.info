@@ -1,0 +1,2 @@
+sudo npm install mocha chai --save-dev
+sudo npm install -g mocha
