@@ -65,18 +65,22 @@ create table Transaction (
 
 create table Customer_Polling (
     CustomerUUID    integer     not null    primary key
+,   Deleted         boolean     not null
 );
 
 create table CreditCard_Polling (
     CardNumber      varchar(64) not null    primary key
+,   Deleted         boolean     not null
 );
 
 create table Transaction_Polling (
-    TransactionID   integer     not null    primary key 
+    TransactionID   integer     not null    primary key
+,   Deleted         boolean     not null
 );
 
 create table CustomerCreditCard_Polling (
     CustomerUUID    integer     not null references Customer
 ,   CardNumber      varchar(64) not null references CreditCard
+,   Deleted         boolean     not null
 ,   primary key (CustomerUUID, CardNumber)
 );
