@@ -50,6 +50,7 @@ create table CreditCard (
 create table CustomerCreditCard (
     CustomerUUID    integer     not null references Customer
 ,   CardNumber      varchar(64) not null references CreditCard
+,   primary key (CustomerUUID, CardNumber)
 );
 
 create table Transaction (
