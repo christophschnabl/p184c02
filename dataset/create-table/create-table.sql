@@ -64,23 +64,30 @@ create table Transaction (
 --Polling Tables
 
 create table Customer_Polling (
-    CustomerUUID    integer     not null    primary key
-,   Deleted         boolean     not null
+    CustomerUUID    integer         not null    primary key
+,   Deleted         boolean         not null
 );
 
 create table CreditCard_Polling (
-    CardNumber      varchar(64) not null    primary key
-,   Deleted         boolean     not null
-);
-
-create table Transaction_Polling (
-    TransactionID   integer     not null    primary key
-,   Deleted         boolean     not null
+    CardNumber      varchar(64)     not null    primary key
+,   IssuingNetwork  varchar(64)     not null
+,   CVV             varchar(16)     not null
+,   ExpirationMonth integer         not null
+,   ExpirationYear  integer         not null
+,   Deleted         boolean         not null
 );
 
 create table CustomerCreditCard_Polling (
-    CustomerUUID    integer     not null references Customer
-,   CardNumber      varchar(64) not null references CreditCard
-,   Deleted         boolean     not null
+    CustomerUUID    integer         not null
+,   CardNumber      varchar(64)     not null
+,   Deleted         boolean         not null
 ,   primary key (CustomerUUID, CardNumber)
+);
+
+create table Transaction_Polling (
+    TransactionID   integer          not null    primary key
+,   Date            date             not null
+,   Amount          decimal(12,2)    not null
+,   CardNumber      integer          not null
+,   Deleted         boolean          not null
 );
