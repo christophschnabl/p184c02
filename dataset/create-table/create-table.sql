@@ -38,6 +38,8 @@ create table Customer (
 ,   primary key (CustomerUUID)
 );
 
+
+
 create table CreditCard (
     CardNumber      varchar(64) not null
 ,   IssuingNetwork  varchar(64) not null
@@ -61,7 +63,7 @@ create table Transaction (
 );
 
 
---Polling Tables
+/*Polling Tables*/
 
 create table Customer_Polling (
     CustomerUUID            integer          not null
