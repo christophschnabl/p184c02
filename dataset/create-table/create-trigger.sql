@@ -56,7 +56,7 @@ after update on CreditCard
     for each row
 begin
     insert into CreditCard_Polling values (new.CardNumber, new.IssuingNetwork, new.CVV,
-                                           new.ExpirationMonth, new.ExpirationYear, false)
+                                           new.ExpirationMonth, new.ExpirationYear, false);
 end;
 
 create trigger AfterDelCreditCard
