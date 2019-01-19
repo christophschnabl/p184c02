@@ -45,8 +45,8 @@ end;
 
 create trigger AfterInsCreditCard
 after insert on CreditCard
+for each row
 begin
-    for each row
     insert into CreditCard_Polling values (new.CardNumber, new.IssuingNetwork, new.CVV,
                                            new.ExpirationMonth, new.ExpirationYear, false);
 end;
@@ -58,9 +58,6 @@ begin
     insert into CreditCard_Polling values (new.CardNumber, new.IssuingNetwork, new.CVV,
                                            new.ExpirationMonth, new.ExpirationYear, false)
 end;
-
-
-drop trigger if exists AfterDelCreditCard;
 
 create trigger AfterDelCreditCard
 after delete on CreditCard 
