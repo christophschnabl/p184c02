@@ -1,3 +1,16 @@
+/*drop tables*/
+drop table if exists Customer;
+drop table if exists CreditCard;
+drop table if exists CustomerCreditCard;
+drop table if exists Transaction;
+drop table if exists Customer_Polling;
+drop table if exists CreditCard_Polling;
+drop table if exists CustomerCreditCard_Polling;
+drop table if exists Transaction_Polling;
+
+
+/*data tables*/
+
 create table Customer (
     CustomerUUID            integer          not null
 ,   Name                    varchar(255)     not null
@@ -37,8 +50,6 @@ create table Customer (
 ,   Cost                    enum('good','bad')    not null
 ,   primary key (CustomerUUID)
 );
-
-
 
 create table CreditCard (
     CardNumber      varchar(64) not null
