@@ -1,4 +1,4 @@
--- Customer Triggers
+/*Customer Triggers*/
 
 create trigger AfterInsCustomer
     after insert on Customer 
@@ -41,7 +41,7 @@ end;
 
 
 
---CreditCard Triggers
+/*CreditCard Triggers*/
 
 create trigger AfterInsCreditCard
 after insert on CreditCard
