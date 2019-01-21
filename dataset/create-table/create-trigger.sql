@@ -66,3 +66,28 @@ begin
     insert into CreditCard_Polling values (old.CardNumber, old.IssuingNetwork, old.CVV,
                                            old.ExpirationMonth, old.ExpirationYear, true);
 end;
+
+
+
+/*CustomerCreditCard Triggers*/
+
+create trigger AfterInsCustomerCreditCard
+after insert on CustomerCreditCard
+for each row
+begin
+    insert into CustomerCreditCard_Polling values (new.CustomerUUID, new.CardNumber, false);
+end;
+
+create trigger AfterUpdCustomerCreditCard
+after update on CustomerCreditCard
+for each row
+begin
+    insert into CustomerCreditCard_Polling values (new.CustomerUUID, new.CardNumber, false);
+end;
+
+create trigger AfterDelCustomerCreditCard
+after delete on CustomerCreditCard
+for each row
+begin
+    insert into CustomerCreditCard_Polling values (old.CustomerUUID, old.CardNumber, true);
+end;
