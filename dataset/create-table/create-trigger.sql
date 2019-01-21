@@ -1,5 +1,10 @@
 /*Customer Triggers*/
 
+drop trigger if exists AfterInsCustomer;
+drop trigger if exists AfterUpdCustomer;
+drop trigger if exists AfterDelCustomer;
+
+
 create trigger AfterInsCustomer
     after insert on Customer 
     for each row
@@ -43,6 +48,11 @@ end;
 
 /*CreditCard Triggers*/
 
+drop trigger if exists AfterInsCreditCard;
+drop trigger if exists AfterUpdCreditCard;
+drop trigger if exists AfterDelCreditCard;
+
+
 create trigger AfterInsCreditCard
 after insert on CreditCard
 for each row
@@ -71,6 +81,11 @@ end;
 
 /*CustomerCreditCard Triggers*/
 
+drop trigger if exists AfterInsCustomerCreditCard;
+drop trigger if exists AfterUpdCustomerCreditCard;
+drop trigger if exists AfterDelCustomerCreditCard;
+
+
 create trigger AfterInsCustomerCreditCard
 after insert on CustomerCreditCard
 for each row
@@ -95,6 +110,11 @@ end;
 
 
 /*Transaction Triggers*/
+
+drop trigger if exists AfterInsTransaction;
+drop trigger if exists AfterUpdTransaction;
+drop trigger if exists AfterDelTransaction;
+
 
 create trigger AfterInsTransaction
 after insert on Transaction
