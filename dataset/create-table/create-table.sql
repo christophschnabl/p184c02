@@ -113,30 +113,30 @@ create table Customer_Polling (
 ,   LiableMaintenance       integer          not null
 ,   ForeignWorker           boolean          not null
 ,   Cost                    enum('good','bad')    not null
-,   Deleted         boolean         not null
+,   Action                  enum('ins', 'upd', 'del')   not null
 ,   primary key (CustomerUUID)
 );
 
 create table CreditCard_Polling (
-    CardNumber      varchar(64)     not null    primary key
-,   IssuingNetwork  varchar(64)     not null
-,   CVV             varchar(16)     not null
-,   ExpirationMonth integer         not null
-,   ExpirationYear  integer         not null
-,   Deleted         boolean         not null
+    CardNumber      varchar(64)                 not null    primary key
+,   IssuingNetwork  varchar(64)                 not null
+,   CVV             varchar(16)                 not null
+,   ExpirationMonth integer                     not null
+,   ExpirationYear  integer                     not null
+,   Action          enum('ins', 'upd', 'del')   not null
 );
 
 create table CustomerCreditCard_Polling (
-    CustomerUUID    integer         not null
-,   CardNumber      varchar(64)     not null
-,   Deleted         boolean         not null
+    CustomerUUID    integer                     not null
+,   CardNumber      varchar(64)                 not null
+,   Action          enum('ins', 'upd', 'del')   not null
 ,   primary key (CustomerUUID, CardNumber)
 );
 
 create table Transaction_Polling (
-    TransactionID   integer          not null    primary key
-,   Date            date             not null
-,   Amount          decimal(12,2)    not null
-,   CardNumber      integer          not null
-,   Deleted         boolean          not null
+    TransactionID   integer                     not null    primary key
+,   Date            date                        not null
+,   Amount          decimal(12,2)               not null
+,   CardNumber      integer                     not null
+,   Action          enum('ins', 'upd', 'del')   not null
 );
