@@ -91,3 +91,28 @@ for each row
 begin
     insert into CustomerCreditCard_Polling values (old.CustomerUUID, old.CardNumber, true);
 end;
+
+
+
+/*Transaction Triggers*/
+
+create trigger AfterInsTransaction
+after insert on Transaction
+for each row
+begin
+    insert into Transaction_Polling values (new.TransactionID, new.Date, new.Amount, new.CardNumber, false);
+end;
+
+create trigger AfterUpdTransaction
+after update on Transaction
+for each row
+begin
+    insert into Transaction_Polling values (new.TransactionID, new.Date, new.Amount, new.CardNumber, false);
+end;
+
+create trigger AfterDelTransaction
+after delete on Transaction
+for each row
+begin
+    insert into Transaction_Polling values (old.TransactionID, old.Date, old.Amount, old.CardNumber, true);
+end;
