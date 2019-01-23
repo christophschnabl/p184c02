@@ -18,11 +18,11 @@ async function replicationLoop() {
         console.log(customers, creditcards, customerCreditCard);
 
         //delete polling tables after polling
-        await pool.query(queries.customerPollingDelete);
+        //await pool.query(queries.customerPollingDelete);
 
-        await pool.query(queries.creditCardPollingDelete);
+        //await pool.query(queries.creditCardPollingDelete);
 
-        await pool.query(queries.customerCreditCardDelete);
+        //await pool.query(queries.customerCreditCardDelete);
 
         await wait(10000);
     }
