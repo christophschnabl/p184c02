@@ -4,7 +4,6 @@ const wait = require('./modules/wait.js');
 
 async function replicationLoop() {
     while (true) {
-
         await wait(10000);
     }
 }

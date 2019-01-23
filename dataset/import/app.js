@@ -58,7 +58,7 @@ async function importFromFile() {
         await pool.query(queries.customerCreditCardInsert, [customerCreditCardInsertData]);
         console.log(`Inserted ${creditCardInsertData.length} rows.`);
     } catch (e) {
-        console.warn('An error occured', e);
+        console.warn('An error occured...', e);
     }
 
     await pool.end();
