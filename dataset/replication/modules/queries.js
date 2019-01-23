@@ -3,6 +3,5 @@ module.exports = {
         Savings, Employment, InstallmentRate, PersonalStatus, sex, Debtors, Residence, Property, Age,
         OtherInstallmentPlans, Housing, NumberOfCredits, Job, LiableMaintenance, Telephone, ForeignWorker, Cost from Customer_Polling`,
     creditCardPollingSelect: `select CardNumber, IssuingNetwork, CVV, ExpirationYear, ExpirationMonth from CreditCard_Polling`,
-    customerCreditCardPollingSelect: `select CustomerUUID, CardNumber from CustomerCreditCard_Polling`,
-    myCreditCardPollingSelect: `select CardNumber, IssuingNetwork, CVV, ExpirationYear, ExpirationMonth from CreditCard_Polling where CustomerUUID = ?`
+    customerCreditCardPollingSelect: `select CustomerUUID, CardNumber from CustomerCreditCard_Polling`
 };
