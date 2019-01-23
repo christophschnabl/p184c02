@@ -105,11 +105,10 @@ create table Customer_Polling (
 ,   ForeignWorker           boolean             not null
 ,   Cost                    varchar(5)          not null
 ,   Action                  enum('ins', 'upd', 'del')   not null
-,   primary key (CustomerUUID)
 );
 
 create table CreditCard_Polling (
-    CardNumber      varchar(64)                 not null    primary key
+    CardNumber      varchar(64)                 not null
 ,   IssuingNetwork  varchar(64)                 not null
 ,   CVV             varchar(16)                 not null
 ,   ExpirationMonth integer                     not null
@@ -121,11 +120,10 @@ create table CustomerCreditCard_Polling (
     CustomerUUID    integer                     not null
 ,   CardNumber      varchar(64)                 not null
 ,   Action          enum('ins', 'upd', 'del')   not null
-,   primary key (CustomerUUID, CardNumber)
 );
 
 create table Transaction_Polling (
-    TransactionID   integer                     not null    primary key
+    TransactionID   integer                     not null
 ,   Date            date                        not null
 ,   Amount          decimal(12,2)               not null
 ,   CardNumber      integer                     not null
