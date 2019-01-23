@@ -1,0 +1,25 @@
+{
+  "name": "add-tests",
+  "version": "1.0.0",
+  "description": "Add unittests to the testdocuments automatically",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/git.d474base.eu/p184c02.git"
+  },
+  "keywords": [
+    "app-test"
+  ],
+  "author": "pkain",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/git.d474base.eu/p184c02/issues"
+  },
+  "homepage": "https://github.com/git.d474base.eu/p184c02#readme",
+  "dependencies": {
+    "googleapis": "^27.0.0"
+  }
+}
