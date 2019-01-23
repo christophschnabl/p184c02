@@ -6,5 +6,5 @@ module.exports = {
     customerCreditCardPollingSelect: `select CustomerUUID, CardNumber from CustomerCreditCard_Polling`,
     customerPollingDelete: `delete from CustomerCreditCard_Polling`,
     creditCardPollingDelete: `delete from CustomerCreditCard_Polling`,
-    customerCreditCardPollingDelete: `delete from CustomerCreditCard_Polling`,
+    customerCreditCardPollingDelete: `delete from CustomerCreditCard_Polling`
 };
