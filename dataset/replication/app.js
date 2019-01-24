@@ -7,16 +7,16 @@ async function replicationLoop() {
     while (true) {
         console.log('Polling tables...');
 
-        const [customers, _cfields] =
-            await pool.query(queries.customerPollingSelect);
-        const [creditcards, _crfields] =
-            await pool.query(queries.creditCardPollingSelect);
-        const [customerCreditCard, _ccrfields] =
-            await pool.query(queries.customerCreditCardPollingSelect);
+        const [customers, creditcards, customerCreditCard] = (await Promise.all([
+            await pool.query(queries.customerPollingSelect),
+            await pool.query(queries.creditCardPollingSelect),
+            await pool.query(queries.customerCreditCardPollingSelect)
+        ])).map(el => el[0]);
 
         console.log("Veränderungen:");
         console.log(customers, creditcards, customerCreditCard);
 
+        // nur die löschen, die gelesaen wurden
         //delete polling tables after polling
         //await pool.query(queries.customerPollingDelete);
 
