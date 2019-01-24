@@ -1,7 +1,7 @@
 {
   "name": "add-tests",
   "version": "1.0.0",
-  "description": "Add unittests to the testdocuments automatically",
+  "description": "Adds unit tests to the test documents automatically",
   "main": "app.js",
   "scripts": {
     "test": "mocha"
@@ -11,7 +11,7 @@
     "url": "git+https://github.com/git.d474base.eu/p184c02.git"
   },
   "keywords": [
-    "app-test"
+    "add-tests"
   ],
   "author": "pkain",
   "license": "UNLICENSED",

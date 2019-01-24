@@ -18,6 +18,8 @@ async function replicationLoop() {
 
         // nur die löschen, die gelesaen wurden
         //delete polling tables after polling
+
+        console.log(customers);
         //await pool.query(queries.customerPollingDelete);
 
         //await pool.query(queries.creditCardPollingDelete);
