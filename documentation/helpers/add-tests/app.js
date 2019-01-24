@@ -97,7 +97,7 @@ function addTests(auth) {
         if(err) return console.log('The API returned an error: ' + err);
         const rows = res.data.values;
         if(rows.length) {
-            console.log(Testfallnummer, Beschreibung, Status, Ticket:');
+            
         } else {
             console.log('No data found.');
         }
