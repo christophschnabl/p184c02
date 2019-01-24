@@ -28,12 +28,12 @@ async function replicationLoop() {
 
             const customerPromises = Promise.all(
                 customers.map(
-                    customer => pool.query(queries.customerPollingDelete, customer.CustomerUUID)
+                    el => pool.query(queries.customerPollingDelete, el.CustomerUUID)
                 )
             );
             const creditCardPromises = Promise.all(
                 creditcards.map(
-                    creditcard => pool.query(queries.creditCardPollingDelete, creditcard.CardNumber)
+                    el => pool.query(queries.creditCardPollingDelete, el.CardNumber)
                 )
             );
             const customerCreditCardPromises = Promise.all(
