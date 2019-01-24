@@ -4,7 +4,7 @@ module.exports = {
         OtherInstallmentPlans, Housing, NumberOfCredits, Job, LiableMaintenance, Telephone, ForeignWorker, Cost from Customer_Polling`,
     creditCardPollingSelect: `select CardNumber, IssuingNetwork, CVV, ExpirationYear, ExpirationMonth from CreditCard_Polling`,
     customerCreditCardPollingSelect: `select CustomerUUID, CardNumber from CustomerCreditCard_Polling`,
-    customerPollingDelete: `delete from CustomerCreditCard_Polling`,
-    creditCardPollingDelete: `delete from CustomerCreditCard_Polling`,
-    customerCreditCardPollingDelete: `delete from CustomerCreditCard_Polling`
+    customerPollingDelete: `delete from Customer_Polling where CustomerUUID = ?`,
+    creditCardPollingDelete: `delete from CreditCard_Polling where CardNumber = ?`,
+    customerCreditCardPollingDelete: `delete from CustomerCreditCard_Polling where CustomerUUID = ? and CardNumber = ?`
 };
