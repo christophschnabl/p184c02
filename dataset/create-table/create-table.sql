@@ -77,7 +77,8 @@ create table Transaction (
 /*Polling Tables*/
 
 create table Customer_Polling (
-    CustomerUUID            integer             not null
+    PollingID               integer             not null     AUTO_INCREMENT primary key
+,   CustomerUUID            integer             not null
 ,   Name                    varchar(255)        not null
 ,   Country                 varchar(255)        not null
 ,   Address                 varchar(255)        not null
@@ -108,7 +109,8 @@ create table Customer_Polling (
 );
 
 create table CreditCard_Polling (
-    CardNumber      varchar(64)                 not null
+    PollingID               integer             not null     AUTO_INCREMENT primary key
+,   CardNumber      varchar(64)                 not null
 ,   IssuingNetwork  varchar(64)                 not null
 ,   CVV             varchar(16)                 not null
 ,   ExpirationMonth integer                     not null
@@ -117,13 +119,15 @@ create table CreditCard_Polling (
 );
 
 create table CustomerCreditCard_Polling (
-    CustomerUUID    integer                     not null
+    PollingID               integer             not null     AUTO_INCREMENT primary key
+,   CustomerUUID    integer                     not null
 ,   CardNumber      varchar(64)                 not null
 ,   Action          enum('ins', 'upd', 'del')   not null
 );
 
 create table Transaction_Polling (
-    TransactionID   integer                     not null
+    PollingID               integer             not null     AUTO_INCREMENT primary key
+,   TransactionID   integer                     not null
 ,   Date            date                        not null
 ,   Amount          decimal(12,2)               not null
 ,   CardNumber      integer                     not null
