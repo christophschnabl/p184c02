@@ -17,15 +17,23 @@ async function replicationLoop() {
             console.log("Veränderungen:");
             console.log(customers, creditcards, customerCreditCard);
 
-            // nur die löschen, die gelesaen wurden
-            //delete polling tables after polling
+            const customerPromises = Promise.all(
+                customers.map(
+                    customer => pool.query(queries.customerPollingDelete, customer.CustomerUUID)
+                )
+            );
+            const creditCardPromises = Promise.all(
+                creditcards.map(
+                    creditcard => pool.query(queries.creditCardPollingDelete, creditcard.CardNumber)
+                )
+            );
+            const customerCreditCardPromises = Promise.all(
+                customerCreditCard.map(
+                    el => pool.query(queries.customerCreditCardPollingDelete, [el.CustomerUUID, el.CardNumber])
+                )
+            );
 
-            console.log(customers);
-            //await pool.query(queries.customerPollingDelete);
-
-            //await pool.query(queries.creditCardPollingDelete);
-
-            //await pool.query(queries.customerCreditCardDelete);
+            await Promise.all([customerPromises, creditCardPromises, customerCreditCardPromises]);
 
         } catch (e) {
             console.warn(e);
