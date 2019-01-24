@@ -93,13 +93,6 @@ begin
     insert into CustomerCreditCard_Polling values (new.CustomerUUID, new.CardNumber, 'ins');
 end;
 
-create trigger AfterUpdCustomerCreditCard
-after update on CustomerCreditCard
-for each row
-begin
-    insert into CustomerCreditCard_Polling values (new.CustomerUUID, new.CardNumber, 'upd');
-end;
-
 create trigger AfterDelCustomerCreditCard
 after delete on CustomerCreditCard
 for each row
