@@ -1,6 +1,7 @@
 const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
 const wait = require('./modules/wait.js');
+const driver = require('./modules/neo4j.js');
 
 
 async function replicationLoop() {
@@ -8,6 +9,8 @@ async function replicationLoop() {
         console.log('Polling tables...');
 
         try {
+            // read rows...
+
             const [customers, creditcards, customerCreditCard] = (await Promise.all([
                 await pool.query(queries.customerPollingSelect),
                 await pool.query(queries.creditCardPollingSelect),
@@ -16,6 +19,12 @@ async function replicationLoop() {
 
             console.log("Veränderungen:");
             console.log(customers, creditcards, customerCreditCard);
+
+
+
+
+
+            // delete rows..
 
             const customerPromises = Promise.all(
                 customers.map(
