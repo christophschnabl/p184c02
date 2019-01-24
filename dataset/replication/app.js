@@ -7,17 +7,23 @@ async function replicationLoop() {
     while (true) {
         console.log('Polling tables...');
 
-        const [customers, _cfields] =
-            await pool.query(queries.customerPollingSelect);
-        const [creditcards, _crfields] =
-            await pool.query(queries.creditCardPollingSelect);
-        const [customerCreditCard, _ccrfields] =
-            await pool.query(queries.customerCreditCardPollingSelect);
+        try {
+            const [customers, _cfields] =
+                await pool.query(queries.customerPollingSelect);
+            const [creditcards, _crfields] =
+                await pool.query(queries.creditCardPollingSelect);
+            const [customerCreditCard, _ccrfields] =
+                await pool.query(queries.customerCreditCardPollingSelect);
+        } catch(e) {
+            console.error(e);
+        }
 
         console.log("Veränderungen:");
         console.log(customers, creditcards, customerCreditCard);
 
         //delete polling tables after polling
+
+        console.log(customers);
         //await pool.query(queries.customerPollingDelete);
 
         //await pool.query(queries.creditCardPollingDelete);
