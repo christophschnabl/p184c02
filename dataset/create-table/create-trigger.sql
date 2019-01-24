@@ -22,13 +22,25 @@ create trigger AfterUpdCustomer
     after update on Customer 
     for each row
 begin
-    insert into Customer_Polling values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
-                                         new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
-                                         new.Purpose, new.CreditAmount, new.Savings, new.Employment, 
-                                         new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
-                                         new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
-                                         new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
-                                         new.ForeignWorker, new.Cost, 'upd');
+    if exists (select * from Customer_Polling where CustomerUUID = new.CustomerUUID) then
+        update Customer_Polling
+           set Name = new.Name, Country = new.Country, Address = new.Address, SSN = new.SSN,
+               Telephone = new.Telephone, AccountStatus = new.AccountStatus, Duration = new.Duration, CreditHistory = new.CreditHistory,
+               Purpose = new.Purpose, CreditAmount = new.CreditAmount, Savings = new.Savings, Employment = new.Employment, 
+               InstallmentRate = new.InstallmentRate, PersonalStatus = new.PersonalStatus,sex = new.sex, Debtors = new.Debtors,
+               Residence = new.Residence, Property = new.Property, Age = new.Age, OtherInstallmentPlans = new.OtherInstallmentPlans,
+               Housing = new.Housing, NumberOfCredits = new.NumberOfCredits, Job = new.Job, LiableMaintenance = new.LiableMaintenance,
+               ForeignWorker = new.ForeignWorker, Cost = new.Cost, Action = 'upd'  
+         where CustomerUUID = new.CustomerUUID;
+    else
+       insert into Customer_Polling values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
+                                            new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
+                                            new.Purpose, new.CreditAmount, new.Savings, new.Employment, 
+                                            new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
+                                            new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
+                                            new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
+                                            new.ForeignWorker, new.Cost, 'upd'); 
+    end if;  
 end;
 
 create trigger AfterDelCustomer
@@ -65,8 +77,15 @@ create trigger AfterUpdCreditCard
 after update on CreditCard 
     for each row
 begin
-    insert into CreditCard_Polling values (new.CardNumber, new.IssuingNetwork, new.CVV,
-                                           new.ExpirationMonth, new.ExpirationYear, 'upd');
+    if exists (select * from CreditCard_Polling where CardNumber = new.CardNumber) then
+        update CreditCard_Polling
+           set IssuingNetwork = new.IssuingNetwork, CVV = new.CVV, 
+               ExpirationMonth = new.ExpirationMonth, ExpirationYear = new.ExpirationYear, Action = 'upd'
+         where CardNumber = new.CardNumber;
+    else
+        insert into CreditCard_Polling values (new.CardNumber, new.IssuingNetwork, new.CVV,
+                                               new.ExpirationMonth, new.ExpirationYear, 'upd');
+    end if;
 end;
 
 create trigger AfterDelCreditCard
@@ -127,7 +146,13 @@ create trigger AfterUpdTransaction
 after update on Transaction
 for each row
 begin
-    insert into Transaction_Polling values (new.TransactionID, new.Date, new.Amount, new.CardNumber, 'upd');
+    if exists (select * from CreditCard_Polling where CardNumber = new.CardNumber) then
+        update CreditCard_Polling
+           set Date = new.Date, Amount = new.Amount, CardNumber =  new.CardNumber
+         where CardNumber = new.CardNumber;
+    else
+        insert into Transaction_Polling values (new.TransactionID, new.Date, new.Amount, new.CardNumber, 'upd');
+    end if;
 end;
 
 create trigger AfterDelTransaction
