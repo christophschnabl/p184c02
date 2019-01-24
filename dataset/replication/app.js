@@ -13,7 +13,7 @@ async function readRows() {
 }
 
 
-async function deleteRows() {
+async function deleteRows(customers, creditcards, customerCreditCard) {
     const customerPromises = Promise.all(
         customers.map(
             el => pool.query(queries.customerPollingDelete, el.CustomerUUID)
@@ -34,8 +34,22 @@ async function deleteRows() {
 }
 
 
-async function updateCustomers() {
-
+async function updateCustomers(customers) {
+    // @todo use Promise.all
+    for (const customer of customers) {
+        if (customer.Action === 'upd' || customer.Action === 'ins') {
+            await session.run(`MERGE (customer:Customer {
+            id: {CustomerUUID},
+            name: {Name},
+            accountStatus: {AccountStatus}
+        })`, customer);
+        } else {
+            await session.run(`
+            MATCH (a:Customer)
+            WHERE a.id = {CustomerUUID}
+            DELETE a`, customer);
+        }
+    }
 }
 
 async function updateCreditCards() {
@@ -57,9 +71,9 @@ async function replicationLoop() {
             console.log("Veränderungen:");
             console.log(customers, creditcards, customerCreditCard);
 
-            await Promise.all([updateCustomers(), updateCreditCards(), updateCustomerCreditCards()]);
+            await Promise.all([updateCustomers(customers), updateCreditCards(), updateCustomerCreditCards()]);
 
-            await deleteRows();
+            await deleteRows(customers, creditcards, customerCreditCard);
         } catch (e) {
             console.warn(e);
         }
