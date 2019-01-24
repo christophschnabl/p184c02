@@ -13,7 +13,7 @@ const TOKEN_PATH = 'token.json';
 fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
-  authorize(JSON.parse(content), listMajors);
+  authorize(JSON.parse(content), listTests);
 });
 
 /**
@@ -71,19 +71,19 @@ function getNewToken(oAuth2Client, callback) {
  * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-function listMajors(auth) {
+function listTests(auth) {
   const sheets = google.sheets({version: 'v4', auth});
   sheets.spreadsheets.values.get({
-    spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
-    range: 'Class Data!A2:E',
+    spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+    range: 'Protokoll!A2:D',
   }, (err, res) => {
     if (err) return console.log('The API returned an error: ' + err);
     const rows = res.data.values;
     if (rows.length) {
-      console.log('Name, Major:');
+      console.log('Testfallnummer, Beschreibung, Status, Ticket:');
       // Print columns A and E, which correspond to indices 0 and 4.
       rows.map((row) => {
-        console.log(`${row[0]}, ${row[4]}`);
+        console.log(`${row[0]}, ${row[1]}, ${row[2]}, ${row[3]}`);
       });
     } else {
       console.log('No data found.');
