@@ -18,6 +18,26 @@
 			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 			  crossorigin="anonymous"></script>
 
+<script type="text/javascript">
+  $(document).ready(function() {
+     $("#send").click(function(e) {
+         e.preventDefault();
+
+         const name = $("#name").val();
+         const add = $("#add").val();
+         const svn = $("#svn").val();
+         const phone = $("#phone").val();
+         console.log(name, add, svn, phone);
+         $.get("https://frauddetection-p18c02.appspot.com?name=" + name + "&address=" + add + "&ssn=" + svn + "&phone=" + phone, function(data, status) {
+           alert(data);
+         });
+       /*$.get("https://jsonplaceholder.typicode.com/todos/1", function(data) {
+          console.log(data);
+      });*/
+     });
+  });
+</script>
+
 </head>
 <body>
     <nav class="uk-navbar-container" uk-navbar>
@@ -25,7 +45,7 @@
         <div class="uk-navbar-left">
 
             <ul class="uk-navbar-nav">
-                <li class="uk-active"><a id="title" href="#">Sprint4 Demo</a></li>
+                <li class="uk-active"><a id="title" href="#">Sprint 4 Demo</a></li>
             </ul>
 
         </div>
@@ -54,32 +74,32 @@
         <div class="uk-margin">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
-                <input class="uk-input" type="text" placeholder="Name">
+                <input id="name" class="uk-input" type="text" placeholder="Name">
             </div>
         </div>
 
         <div class="uk-margin">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: credit-card"></span>
-                <input class="uk-input" type="text" placeholder="Sozialversicherungsnummer">
+                <input id="svn" class="uk-input" type="text" placeholder="Sozialversicherungsnummer">
             </div>
         </div>
 
         <div class="uk-margin">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: location"></span>
-                <input class="uk-input" type="text" placeholder="Adresse">
+                <input id="add" class="uk-input" type="text" placeholder="Adresse">
             </div>
         </div>
 
         <div class="uk-margin">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: phone"></span>
-                <input class="uk-input" type="text" placeholder="Telefonnummer">
+                <input id="phone" class="uk-input" type="text" placeholder="Telefonnummer">
             </div>
         </div>
 
-        <button id="#send" class="uk-button uk-button-primary">Primary</button>
+        <button id="send" style="width: 258px;" class="uk-button uk-button-primary">Erstellen</button>
       </form>
     </div>
 </body>
