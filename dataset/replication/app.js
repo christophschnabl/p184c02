@@ -89,7 +89,7 @@ async function updateCustomers(customers) {
                 AND c.country = {Country}
                 AND c.address = {Address}
                 AND d.SSN = {SSN}
-                DELETE a, b, c, d`, customer);
+                DETACH DELETE a, b, c, d`, customer);
         }
     }
 }
@@ -108,21 +108,21 @@ async function updateCreditCards(creditcards) {
             await session.run(`
                 MATCH (a:CreditCard)
                 WHERE a.id = {CardNumber}
-                DELETE a`, creditcard);
+                DETACH DELETE a`, creditcard);
         }
     }
 }
 
 async function updateCustomerCreditCards(customerCreditCards) {
     for (const customerCreditCard of customerCreditCards) {
-        if (creditcard.Action === 'ins') {
+        if (customerCreditCard.Action === 'ins') {
             await session.run(`
                 MATCH (a:Customer),(b:CreditCard)
                 WHERE a.id = {CustomerUUID}
                 AND b.cardNumber = {CardNumber}
                 MERGE (a)-[r:USES_CREDITCARD]->(b)
                 RETURN type(r)`, customerCreditCard);
-        } else if (creditcard.Action === 'del') {
+        } else if (customerCreditCard.Action === 'del') {
             await session.run(`
             MATCH (a:Customer)-[r:USES_CREDITCARD]->(b:CreditCard)
             WHERE a.id = {CustomerUUID}
