@@ -27,13 +27,9 @@
          const add = $("#add").val();
          const svn = $("#svn").val();
          const phone = $("#phone").val();
-         console.log(name, add, svn, phone);
          $.get("https://frauddetection-p18c02.appspot.com?name=" + name + "&address=" + add + "&ssn=" + svn + "&phone=" + phone, function(data, status) {
            alert(data);
          });
-       /*$.get("https://jsonplaceholder.typicode.com/todos/1", function(data) {
-          console.log(data);
-      });*/
      });
   });
 </script>
@@ -51,21 +47,6 @@
         </div>
 
         <div class="uk-navbar-right">
-
-            <!--<ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#">Active</a></li>
-                <li>
-                    <a href="#">Parent</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Active</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li><a href="#">Item</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="#">Item</a></li>
-            </ul>-->
         </div>
 
     </nav>
