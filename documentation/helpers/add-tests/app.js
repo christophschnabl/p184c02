@@ -3,7 +3,7 @@ const readline = require('readline');
 const {google} = require('googleapis');
 
 // If modifying these scopes, delete token.json.
-const SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // The file token.json stores the user's access and refresh tokens, and is
 // created automatically when the authorization flow completes for the first
 // time.
@@ -14,7 +14,7 @@ fs.readFile('credentials.json', (err, content) => {
   if (err) return console.log('Error loading client secret file:', err);
   // Authorize a client with credentials, then call the Google Sheets API.
   var credentials = JSON.parse(content);
-  authorize(credentials, listTests);
+  //authorize(credentials, listTests);
   authorize(credentials, addTests);
 });
 
@@ -89,6 +89,7 @@ function listTests(auth) {
 }
 
 function addTests(auth) {
+    let values = Array();
     const sheets = google.sheets({version: 'v4', auth});
     sheets.spreadsheets.values.get({
         spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
@@ -97,9 +98,43 @@ function addTests(auth) {
         if(err) return console.log('The API returned an error: ' + err);
         const rows = res.data.values;
         if(rows.length) {
-            
+            let lastTNR = parseInt(rows[rows.length - 1][0].substring(1));
+            fs.readFile('../../../dataset/neo4j-import/tests.txt', 'utf-8',
+            (err, data) => {
+                if(err) {
+                    console.log(err);
+                }
+                let valuesTemp = [];
+                let lines = data.split('\n');
+                let topic = undefined;
+                for(let i = 0; i < lines.length; i++) {
+                    lines[i] = lines[i].trim();
+                    if(lines[i].startsWith('✓')) {
+                        if(topic === undefined) {
+                            topic = lines[i - 1];
+                        }
+                        valuesTemp.push(['T' + String(++lastTNR > 99 ? '' + lastTNR : lastTNR > 9 ? '0' + lastTNR : '00' + lastTNR),
+                                    topic + ' ' + lines[i].substring(2), 'OK', '-']);
+                    }
+                }
+                values = Array.from(valuesTemp);
+            });
+            console.log(values);
         } else {
             console.log('No data found.');
+        }
+    });
+    let resource = { values };
+    sheets.spreadsheets.values.append({
+        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+        range: 'Protokoll!A1:D1',
+        valueInputOption: 'RAW',
+        resource
+    }, (err, res) => {
+        if(err) {
+            console.log(err)
+        } else {
+            //console.log(res.updates);
         }
     });
 }
