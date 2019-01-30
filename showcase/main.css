@@ -2,3 +2,8 @@
     font-size: 22px;
     text-transform: none;
 }
+
+.container {
+    margin: 32px auto;
+    display: table;
+}
