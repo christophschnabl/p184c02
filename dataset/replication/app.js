@@ -36,23 +36,22 @@ async function deleteRows(customers, creditcards, customerCreditCard) {
 
 
 async function updateCustomers(customers) {
-    // @todo use Promise.all
     for (const customer of customers) {
         if (customer.Action === 'upd' || customer.Action === 'ins') {
             await session.run(`MERGE (customer:Customer {
-            id: {CustomerUUID},
-            name: {Name},
-            accountStatus: {AccountStatus}
+                id: {CustomerUUID},
+                name: {Name},
+                accountStatus: {AccountStatus}
                 })`, customer);
             await session.run(`MERGE (phone: Phone {
-            telephone: {Telephone}
+                telephone: {Telephone}
                 })`, customer);
             await session.run(`MERGE (address: Address {
-            country: {Country},
-            address: {Address}
+                country: {Country},
+                address: {Address}
                 })`, customer);
             await session.run(`MERGE (ssn: SSN {
-            SSN: {SSN}
+                SSN: {SSN}
                 })`, customer);
             await session.run(`
                 MATCH (a:Customer { id: {CustomerUUID} })-[r:USES_PHONENUMBER]->()
@@ -96,7 +95,6 @@ async function updateCustomers(customers) {
 }
 
 async function updateCreditCards(creditcards) {
-    // @todo use Promise.all
     for (const creditcard of creditcards) {
         if (creditcard.Action === 'upd' || creditcard.Action === 'ins') {
             await session.run(`MERGE (creditcard: CreditCard {
@@ -105,18 +103,33 @@ async function updateCreditCards(creditcards) {
                 CVV: {CVV},
                 expirationMonth: {ExpirationMonth},
                 expirationYear: {ExpirationYear}
-            })`, creditcard);
+                })`, creditcard);
         } else {
             await session.run(`
-            MATCH (a:CreditCard)
-            WHERE a.id = {CardNumber}
-            DELETE a`, creditcard);
+                MATCH (a:CreditCard)
+                WHERE a.id = {CardNumber}
+                DELETE a`, creditcard);
         }
     }
 }
 
 async function updateCustomerCreditCards(customerCreditCards) {
-
+    for (const customerCreditCard of customerCreditCards) {
+        if (creditcard.Action === 'ins') {
+            await session.run(`
+                MATCH (a:Customer),(b:CreditCard)
+                WHERE a.id = {CustomerUUID}
+                AND b.cardNumber = {CardNumber}
+                MERGE (a)-[r:USES_CREDITCARD]->(b)
+                RETURN type(r)`, customerCreditCard);
+        } else if (creditcard.Action === 'del') {
+            await session.run(`
+            MATCH (a:Customer)-[r:USES_CREDITCARD]->(b:CreditCard)
+            WHERE a.id = {CustomerUUID}
+            AND b.cardNumber = {CardNumber}
+            DELETE r`, customerCreditCard);
+        }
+    }
 }
 
 
@@ -135,9 +148,8 @@ async function replicationLoop() {
             await Promise.all([
                 updateCustomers(customers),
                 updateCreditCards(creditcards),
-                updateCustomerCreditCards(customerCreditCard)]);
-
-            await deleteRows(customers, creditcards, customerCreditCard);
+                updateCustomerCreditCards(customerCreditCard),
+                deleteRows(customers, creditcards, customerCreditCard)]);
         } catch (e) {
             console.warn(e);
         }

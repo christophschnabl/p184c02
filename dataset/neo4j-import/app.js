@@ -41,50 +41,51 @@ async function importFromMysql() {
 
             const customer = customers[i];
 
-            await session.run(`MERGE (customer:Customer {
-                id: {CustomerUUID},
-                name: {Name},
-                accountStatus: {AccountStatus}
-            })`, customer);
-            await session.run(`MERGE (phone: Phone {
-                telephone: {Telephone}
-            })`, customer);
-            await session.run(`MERGE (address: Address {
-                country: {Country},
-                address: {Address}
-            })`, customer);
-            await session.run(`MERGE (ssn: SSN {
-                SSN: {SSN}
-            })`, customer);
+            await Promise.all([
+                session.run(`MERGE (customer:Customer {
+                    id: {CustomerUUID},
+                    name: {Name},
+                    accountStatus: {AccountStatus}
+                })`, customer),
+                session.run(`MERGE (phone: Phone {
+                    telephone: {Telephone}
+                })`, customer),
+                session.run(`MERGE (address: Address {
+                    country: {Country},
+                    address: {Address}
+                })`, customer),
+                session.run(`MERGE (ssn: SSN {
+                    SSN: {SSN}
+                })`, customer)
+            ]);
 
-
-            await session.run(`
-            MATCH (a:Customer),(b:Phone)
-            WHERE a.id = {CustomerUUID}
-              AND b.telephone = {Telephone}
-            MERGE (a)-[r:USES_PHONENUMBER]->(b)
-            RETURN type(r)`, customer);
-
-            await session.run(`
-            MATCH (a:Customer),(b:SSN)
-            WHERE a.id = {CustomerUUID}
-              AND b.SSN = {SSN}
-            MERGE (a)-[r:HAS_SSN]->(b)
-            RETURN type(r)`, customer);
-
-            await session.run(`
-            MATCH (a:Customer),(b:Address)
-            WHERE a.id = {CustomerUUID}
-              AND b.address = {Address}
-              AND b.country = {Country}
-            MERGE (a)-[r:HAS_ADDRESS]->(b)
-            RETURN type(r)`, customer);
+            await Promise.all([
+                session.run(`
+                MATCH (a:Customer),(b:Phone)
+                WHERE a.id = {CustomerUUID}
+                  AND b.telephone = {Telephone}
+                MERGE (a)-[r:USES_PHONENUMBER]->(b)
+                RETURN type(r)`, customer),
+                session.run(`
+                MATCH (a:Customer),(b:SSN)
+                WHERE a.id = {CustomerUUID}
+                  AND b.SSN = {SSN}
+                MERGE (a)-[r:HAS_SSN]->(b)
+                RETURN type(r)`, customer),
+                session.run(`
+                MATCH (a:Customer),(b:Address)
+                WHERE a.id = {CustomerUUID}
+                  AND b.address = {Address}
+                  AND b.country = {Country}
+                MERGE (a)-[r:HAS_ADDRESS]->(b)
+                RETURN type(r)`, customer)
+            ]);
         }
 
         console.log('Inserting Credit Card data...');
 
         for (const creditcard of creditcards) {
-            console.log(`Inserting Credit Card row ...`);
+            console.log(`.`);
 
             await session.run(`MERGE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
