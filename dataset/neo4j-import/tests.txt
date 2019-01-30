@@ -1,0 +1,13 @@
+
+
+  Dataset
+    ✓ should have 1000 customers
+    ✓ should have a ssn node per customer
+    ✓ should have a phonenumber node per customer
+    ✓ should have an address node per customer
+    ✓ should have a creditcard node per customer
+    ✓ should have relations between customer (built in fraud should work)
+
+
+  6 passing (15ms)
+
