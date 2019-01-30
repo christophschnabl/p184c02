@@ -25,7 +25,7 @@ async function insertIntoDB(name, add, ssn, phone) {
 
 app.get('/', (req, res) => {
     insertIntoDB(req.query.name, req.query.address, req.query.ssn, req.query.phone);
-    res.status(200).send('Inserted..');
+    res.status(200).send('Inserted...');
 });
 
 
