@@ -7,5 +7,5 @@ module.exports = {
     customerCreditCardInsert: `insert into CustomerCreditCard (CustomerUUID, CardNumber) values ?`,
     customerDelete: 'delete from Customer',
     creditCardDelete: 'delete from CreditCard',
-    customerCreditCardDelete: 'delete from CreditCard'
+    customerCreditCardDelete: 'delete from CustomerCreditCard'
 };
