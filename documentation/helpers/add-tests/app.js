@@ -4,6 +4,9 @@ const readFile = util.promisify(fs.readFile);
 const readline = require('readline');
 const { google } = require('googleapis');
 
+const spreadsheetId = '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA';
+const testFilename = '../../../dataset/neo4j-import/tests.txt';
+
 // If modifying these scopes, delete token.json.
 const SCOPES = ['https://www.googleapis.com/auth/spreadsheets'];
 // The file token.json stores the user's access and refresh tokens, and is
@@ -70,23 +73,23 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
-
-function listTests(auth) {
+/**
+ * lists tests
+ * @param {String} auth
+ */
+async function listTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
-    sheets.spreadsheets.values.get({
-        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+    const res = await sheets.spreadsheets.values.get({
+        spreadsheetId,
         range: 'Protokoll!A2:D',
-    }, (err, res) => {
-        if (err) return console.log('The API returned an error: ' + err);
-        const rows = res.data.values;
-        if (rows.length) {
-            console.log('Testfallnummer, Beschreibung, Status, Ticket:');
-            rows.map((row) => {
-                console.log(`${row[0]}, ${row[1]}, ${row[2]}, ${row[3]}`);
-            });
-        } else {
-            console.log('No data found.');
-        }
+    });
+
+    const rows = res.data.values;
+    if (rows.length === 0) return;
+
+    console.log('Testfallnummer, Beschreibung, Status, Ticket:');
+    rows.map((row) => {
+        console.log(`${row[0]}, ${row[1]}, ${row[2]}, ${row[3]}`);
     });
 }
 
@@ -106,7 +109,7 @@ function zfill(num, len) {
 async function addTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
     const res = await sheets.spreadsheets.values.get({
-        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+        spreadsheetId,
         range: 'Protokoll!A2:D'
     });
 
@@ -114,7 +117,7 @@ async function addTests(auth) {
     if (rows.length === 0) return;
     const lastTNR = parseInt(rows[rows.length - 1][0].substring(1)); // Testnummer parsen
 
-    const data = await fs.readFile('../../../dataset/neo4j-import/tests.txt', 'utf-8');
+    const data = await fs.readFile(testFilename, 'utf-8');
     const lines = data.split('\n');
 
     const topic = lines.reduce(
@@ -130,7 +133,7 @@ async function addTests(auth) {
         ]);
 
     await sheets.spreadsheets.values.append({
-        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+        spreadsheetId,
         range: 'Protokoll!A1:D1',
         valueInputOption: 'RAW',
         values
