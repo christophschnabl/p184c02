@@ -27,9 +27,17 @@
          const add = $("#add").val();
          const svn = $("#svn").val();
          const phone = $("#phone").val();
-         $.get("https://frauddetection-p18c02.appspot.com?name=" + name + "&address=" + add + "&ssn=" + svn + "&phone=" + phone, function(data, status) {
-           alert(data);
-         });
+
+         $.get("https://frauddetection-p18c02.appspot.com?name=" + name + "&address=" + add + "&ssn=" + svn + "&phone=" + phone, function(data) {
+
+		 }).done(function() {
+
+		 });
+
+		 alert("Successfully inserted 1 new Row!");
+		 document.getElementById("form").reset();
+
+		 return true;
      });
   });
 </script>
@@ -51,7 +59,7 @@
 
     </nav>
     <div class="container">
-      <form>
+      <form id="form">
         <div class="uk-margin">
             <div class="uk-inline">
                 <span class="uk-form-icon" uk-icon="icon: user"></span>
