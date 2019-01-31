@@ -3,11 +3,12 @@ const express = require('express');
 const app = express();
 const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
+let uuid = 1001;
 
 async function insertIntoDB(name, add, ssn, phone) {
     try {
         let customerInsertData = [];
-        customerInsertData.push([1001, name, "AT", add,
+        customerInsertData.push([uuid, name, "AT", add,
             ssn, phone, '<0', 10, 'critical account',
             'car (new)', 1, '<100', '<1', 10, 'single', 'male', 'none', 100,
             'real estate', 10, 'bank', 'own', 3, 'highly qualified employee',
@@ -15,6 +16,8 @@ async function insertIntoDB(name, add, ssn, phone) {
 
         await pool.query(queries.customerInsert, [customerInsertData]);
 
+        uuid++;
+        
         console.log(`Successfulyy inserted a new row.`);
     } catch (e) {
         console.warn(`An error occured...`, e);
