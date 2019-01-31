@@ -1,4 +1,6 @@
 const fs = require('fs');
+const util = require('util');
+const readFile = util.promisify(fs.readFile);
 const readline = require('readline');
 const {google} = require('googleapis');
 
@@ -88,53 +90,52 @@ function listTests(auth) {
   });
 }
 
-function addTests(auth) {
-    let values = Array();
+/**
+ * formats a number with preceding zeroes
+ * @param {Number} num 
+ * @param {Number} len 
+ */
+function zfill(num, len) {
+    return (Array(len).join('0')+num).slice(-len);
+}
+
+/**
+ * adds tests
+ * @param {String} auth 
+ */
+async function addTests(auth) {
     const sheets = google.sheets({version: 'v4', auth});
-    sheets.spreadsheets.values.get({
+    const res = await sheets.spreadsheets.values.get({
         spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
         range: 'Protokoll!A2:D'
-    }, (err, res) => {
-        if(err) return console.log('The API returned an error: ' + err);
-        const rows = res.data.values;
-        if(rows.length) {
-            let lastTNR = parseInt(rows[rows.length - 1][0].substring(1));
-            fs.readFile('../../../dataset/neo4j-import/tests.txt', 'utf-8',
-            (err, data) => {
-                if(err) {
-                    console.log(err);
-                }
-                let valuesTemp = [];
-                let lines = data.split('\n');
-                let topic = undefined;
-                for(let i = 0; i < lines.length; i++) {
-                    lines[i] = lines[i].trim();
-                    if(lines[i].startsWith('✓')) {
-                        if(topic === undefined) {
-                            topic = lines[i - 1];
-                        }
-                        valuesTemp.push(['T' + String(++lastTNR > 99 ? '' + lastTNR : lastTNR > 9 ? '0' + lastTNR : '00' + lastTNR),
-                                    topic + ' ' + lines[i].substring(2), 'OK', '-']);
-                    }
-                }
-                values = Array.from(valuesTemp);
-            });
-            console.log(values);
-        } else {
-            console.log('No data found.');
-        }
     });
-    let resource = { values };
-    sheets.spreadsheets.values.append({
+    
+    const rows = res.data.values;
+    if(rows.length === 0) return;
+    const lastTNR = parseInt(rows[rows.length - 1][0].substring(1)); // Testnummer parsen
+
+    const data = await fs.readFile('../../../dataset/neo4j-import/tests.txt', 'utf-8');
+    const lines = data.split('\n');
+
+    const topic = lines.reduce(
+        (accumulator, currentValue, currentIndex, array) => 
+        accumulator === '' ? accumulator : 
+            (array[currentIndex].startsWith('✓') ? array[currentIndex-1] : ''));
+
+    let values = [];
+    for(let i = 0; i < lines.length; i++) {
+        lines[i] = lines[i].trim();
+        if(!lines[i].startsWith('✓')) continue;
+        values.push([
+            'T' + zfill(lastTNR + i+1, 3),
+            topic + ' ' + lines[i].substring(2), 'OK', '-'
+        ]);
+    }
+
+    await sheets.spreadsheets.values.append({
         spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
         range: 'Protokoll!A1:D1',
         valueInputOption: 'RAW',
-        resource
-    }, (err, res) => {
-        if(err) {
-            console.log(err)
-        } else {
-            //console.log(res.updates);
-        }
+        values
     });
 }
