@@ -20,7 +20,7 @@ async function insertIntoDB(name, add, ssn, phone) {
         console.warn(`An error occured...`, e);
     }
 
-    await pool.end();
+    //await pool.end();
 }
 
 app.get('/', (req, res) => {
