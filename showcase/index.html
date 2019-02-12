@@ -13,8 +13,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.3/js/uikit-icons.min.js"></script>
 
+<!-- JQuery -->
 <script
-			  src="https://code.jquery.com/jquery-3.3.1.min.js"
+			src="https://code.jquery.com/jquery-3.3.1.min.js"
 			  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
 			  crossorigin="anonymous"></script>
 
@@ -31,10 +32,9 @@
          $.get("https://frauddetection-p18c02.appspot.com?name=" + name + "&address=" + add + "&ssn=" + svn + "&phone=" + phone, function(data) {
 
 		 }).done(function() {
-
+			 alert("Successfully inserted 1 new Row!");
 		 });
 
-		 alert("Successfully inserted 1 new Row!");
 		 document.getElementById("form").reset();
 
 		 return true;
