@@ -120,10 +120,14 @@ async function addTestsCB(err, res, sheets) {
         lines[i] = value.trimLeft();
     });
 
+    //console.log(lines);
+
     const topic = lines.reduce(
-        (accumulator, currentValue, currentIndex, array) =>
-            accumulator === '' ? accumulator :
-                (array[currentIndex].startsWith('✓') ? array[currentIndex - 1] : ''));
+        (accumulator, currentValue, currentIndex) =>
+            accumulator !== '' ? accumulator :
+                (currentValue.startsWith('✓') ? lines[currentIndex - 1] : ''));
+
+    console.log(topic);
 
     const values = lines
         .filter(el => el.startsWith('✓'))
@@ -132,12 +136,12 @@ async function addTestsCB(err, res, sheets) {
             topic + ' ' + el.substring(2), 'OK', '-'
         ]);
     
-    sheets.spreadsheets.values.append({
+    /*sheets.spreadsheets.values.append({
         spreadsheetId,
         range: 'Protokoll!A1:D1',
         valueInputOption: 'RAW',
         resource: {values}
-    });
+    });*/
 }
 
 function addTests(auth) {
