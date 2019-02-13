@@ -108,34 +108,42 @@ function zfill(num, len) {
  */
 async function addTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
-    const res = await sheets.spreadsheets.values.get({
-        spreadsheetId,
-        range: 'Protokoll!A2:D'
-    });
+    try {
+        const res = await sheets.spreadsheets.values.get({
+            spreadsheetId,
+            range: 'Protokoll!A2:D'
+        });
+    
+        const rows = res.data.values;
+        if (rows.length === 0) return;
+        const lastTNR = parseInt(rows[rows.length - 1][0].substring(1)); // Testnummer parsen
+    
+        const data = await fs.readFile(testFilename, 'utf-8');
+        const lines = data.split('\n');
+    
+        const topic = lines.reduce(
+            (accumulator, currentValue, currentIndex, array) =>
+                accumulator === '' ? accumulator :
+                    (array[currentIndex].startsWith('✓') ? array[currentIndex - 1] : ''));
+    
+        const values = lines
+            .filter(el => el.startsWith('✓'))
+            .map((el, idx, array) => [
+                'T' + zfill(lastTNR + idx + 1, 3),
+                topic + ' ' + el.substring(2), 'OK', '-'
+            ]);
+        
+        console.log(values);
+    
+        await sheets.spreadsheets.values.append({
+            spreadsheetId,
+            range: 'Protokoll!A1:D1',
+            valueInputOption: 'RAW',
+            values
+        });
+    } catch(err) {
+        console.log(err);
+        console.log('Spreadsheet not available?');
+    }
 
-    const rows = res.data.values;
-    if (rows.length === 0) return;
-    const lastTNR = parseInt(rows[rows.length - 1][0].substring(1)); // Testnummer parsen
-
-    const data = await fs.readFile(testFilename, 'utf-8');
-    const lines = data.split('\n');
-
-    const topic = lines.reduce(
-        (accumulator, currentValue, currentIndex, array) =>
-            accumulator === '' ? accumulator :
-                (array[currentIndex].startsWith('✓') ? array[currentIndex - 1] : ''));
-
-    const values = lines
-        .filter(el => el.startsWith('✓'))
-        .map((el, idx, array) => [
-            'T' + zfill(lastTNR + idx + 1, 3),
-            topic + ' ' + el.substring(2), 'OK', '-'
-        ]);
-
-    await sheets.spreadsheets.values.append({
-        spreadsheetId,
-        range: 'Protokoll!A1:D1',
-        valueInputOption: 'RAW',
-        values
-    });
 }
