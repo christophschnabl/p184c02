@@ -73,6 +73,7 @@ function getNewToken(oAuth2Client, callback) {
     });
 }
 
+
 /**
  * lists tests
  * @param {String} auth
@@ -80,7 +81,7 @@ function getNewToken(oAuth2Client, callback) {
 async function listTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
     const res = await sheets.spreadsheets.values.get({
-        spreadsheetId,
+        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
         range: 'Protokoll!A2:D',
     });
 
@@ -102,15 +103,63 @@ function zfill(num, len) {
     return (Array(len).join('0') + num).slice(-len);
 }
 
+async function addTestsCB(err, res, sheets) {
+    if(err) console.log(err);
+    const rows = res.data.values;
+
+    if (rows.length === 0) {
+        console.log('No data found');
+        return;
+    }
+
+    const lastTNR = parseInt(rows[rows.length - 1][0].substring(1)); // Testnummer parsen
+
+    const data = await readFile(testFilename, 'utf-8');
+    let lines = data.split('\n');
+    lines.forEach((value, i) => {
+        lines[i] = value.trimLeft();
+    });
+
+    const topic = lines.reduce(
+        (accumulator, currentValue, currentIndex, array) =>
+            accumulator === '' ? accumulator :
+                (array[currentIndex].startsWith('✓') ? array[currentIndex - 1] : ''));
+
+    const values = lines
+        .filter(el => el.startsWith('✓'))
+        .map((el, idx, array) => [
+            'T' + zfill(lastTNR + idx + 1, 3),
+            topic + ' ' + el.substring(2), 'OK', '-'
+        ]);
+    
+    sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range: 'Protokoll!A1:D1',
+        valueInputOption: 'RAW',
+        resource: {values}
+    });
+}
+
+function addTests(auth) {
+    const sheets = google.sheets({ version: 'v4', auth });
+    sheets.spreadsheets.values.get({
+        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+        range: 'Protokoll!A2:D'
+    }, (err, res) => {
+        addTestsCB(err, res, sheets);
+    });
+}
+
 /**
  * adds tests
  * @param {String} auth
  */
+/*
 async function addTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
     try {
         const res = await sheets.spreadsheets.values.get({
-            spreadsheetId,
+            spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
             range: 'Protokoll!A2:D'
         });
     
@@ -133,8 +182,6 @@ async function addTests(auth) {
                 topic + ' ' + el.substring(2), 'OK', '-'
             ]);
         
-        console.log(values);
-    
         await sheets.spreadsheets.values.append({
             spreadsheetId,
             range: 'Protokoll!A1:D1',
@@ -145,5 +192,40 @@ async function addTests(auth) {
         console.log(err);
         console.log('Spreadsheet not available?');
     }
-
 }
+*/
+
+async function listMajors(auth) {
+    const sheets = google.sheets({version: 'v4', auth});
+    /*sheets.spreadsheets.values.get({
+      spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
+      range: 'Class Data!A2:E',
+    }, (err, res) => {
+      if (err) return console.log('The API returned an error: ' + err);
+      const rows = res.data.values;
+      if (rows.length) {
+        console.log('Name, Major:');
+        // Print columns A and E, which correspond to indices 0 and 4.
+        rows.map((row) => {
+          console.log(`${row[0]}, ${row[4]}`);
+        });
+      } else {
+        console.log('No data found.');
+      }
+    });*/
+    const res = await sheets.spreadsheets.values.get({
+        spreadsheetId: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms',
+        range: 'Class Data!A2:E',
+    });
+
+    const rows = res.data.values;
+    if(rows.length) {
+        console.log('Name, Major:');
+        // Print columns A and E, which correspond to indices 0 and 4.
+        rows.map((row) => {
+          console.log(`${row[0]}, ${row[4]}`);
+        });
+    } else {
+        console.log('NOOOO');
+    }
+  }
