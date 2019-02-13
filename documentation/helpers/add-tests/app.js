@@ -120,14 +120,10 @@ async function addTestsCB(err, res, sheets) {
         lines[i] = value.trimLeft();
     });
 
-    //console.log(lines);
-
     const topic = lines.reduce(
         (accumulator, currentValue, currentIndex) =>
             accumulator !== '' ? accumulator :
                 (currentValue.startsWith('✓') ? lines[currentIndex - 1] : ''));
-
-    console.log(topic);
 
     const values = lines
         .filter(el => el.startsWith('✓'))
