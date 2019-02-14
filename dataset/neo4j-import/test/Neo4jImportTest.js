@@ -5,7 +5,7 @@ const driver = neo4j.driver('bolt://localhost:7687', neo4j.auth.basic('neo4j', '
 const session = driver.session();
 
 
-describe('Dataset', () => {
+describe('Neo4j-Dataset', () => {
     it('should have 1000 customers', () => {
         const result = session.run(
             'match (c:Customer) return c'
