@@ -139,13 +139,16 @@ async function addTestsCB(err, res, sheets) {
         resource: {values}
     });
 
+    let testpath = testFilename.split('/').filter(el => !el.startsWith('.')).toString().replace(/,/g, '/');
+    testpath = "mocha in " + testpath.slice(0, testpath.lastIndexOf('/'));
+    testpath += " ausführen";
+
     values = lines
         .filter(el => el.startsWith('✓'))
         .map((el, idx, array) => [
             'T' + zfill(lastTNR + idx + 1, 3),
             topic + ' ' + el.substring(2), 
-            testFilename.split('/').filter(el => !el.startsWith('.')).toString().replace(/,/g, '/'),
-            el.substring(2)
+            testpath, el.substring(2)
         ]);
 
     sheets.spreadsheets.values.append({
@@ -159,7 +162,7 @@ async function addTestsCB(err, res, sheets) {
 function addTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
     sheets.spreadsheets.values.get({
-        spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
+        spreadsheetId,
         range: 'Protocol!A2:D'
     }, (err, res) => {
         addTestsCB(err, res, sheets);
