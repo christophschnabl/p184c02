@@ -1,9 +1,9 @@
+const fs = require('fs');
+const util = require('util');
 const readGermanCreditData = require('./modules/customers.js');
 const readCreditCards = require('./modules/creditCards.js');
 const pool = require('./modules/database.js');
 const queries = require('./modules/queries.js');
-const fs = require('fs');
-const util = require('util');
 
 const readFile = util.promisify(fs.readFile);
 
