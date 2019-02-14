@@ -82,7 +82,7 @@ async function listTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
     const res = await sheets.spreadsheets.values.get({
         spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
-        range: 'Protokoll!A2:D',
+        range: 'Protocol!A2:D',
     });
 
     const rows = res.data.values;
@@ -125,26 +125,42 @@ async function addTestsCB(err, res, sheets) {
             accumulator !== '' ? accumulator :
                 (currentValue.startsWith('✓') ? lines[currentIndex - 1] : ''));
 
-    const values = lines
+    let values = lines
         .filter(el => el.startsWith('✓'))
         .map((el, idx, array) => [
             'T' + zfill(lastTNR + idx + 1, 3),
             topic + ' ' + el.substring(2), 'OK', '-'
         ]);
     
-    /*sheets.spreadsheets.values.append({
+    sheets.spreadsheets.values.append({
         spreadsheetId,
-        range: 'Protokoll!A1:D1',
+        range: 'Protocol!A1:D1',
         valueInputOption: 'RAW',
         resource: {values}
-    });*/
+    });
+
+    values = lines
+        .filter(el => el.startsWith('✓'))
+        .map((el, idx, array) => [
+            'T' + zfill(lastTNR + idx + 1, 3),
+            topic + ' ' + el.substring(2), 
+            testFilename.split('/').filter(el => !el.startsWith('.')).toString().replace(/,/g, '/'),
+            el.substring(2)
+        ]);
+
+    sheets.spreadsheets.values.append({
+        spreadsheetId,
+        range: 'Cases!A1:D1',
+        valueInputOption: 'RAW',
+        resource: {values}
+    });
 }
 
 function addTests(auth) {
     const sheets = google.sheets({ version: 'v4', auth });
     sheets.spreadsheets.values.get({
         spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
-        range: 'Protokoll!A2:D'
+        range: 'Protocol!A2:D'
     }, (err, res) => {
         addTestsCB(err, res, sheets);
     });
@@ -160,7 +176,7 @@ async function addTests(auth) {
     try {
         const res = await sheets.spreadsheets.values.get({
             spreadsheetId: '1J7ClKxJSv6QZJRkzzfH7q8Bqs4VvUu8KU0ZXpdPk4bA',
-            range: 'Protokoll!A2:D'
+            range: 'Protocol!A2:D'
         });
     
         const rows = res.data.values;
@@ -184,7 +200,7 @@ async function addTests(auth) {
         
         await sheets.spreadsheets.values.append({
             spreadsheetId,
-            range: 'Protokoll!A1:D1',
+            range: 'Protocol!A1:D1',
             valueInputOption: 'RAW',
             values
         });
