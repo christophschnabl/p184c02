@@ -39,7 +39,7 @@ async function addTransactions() {
         console.log('Adding transactions...');
 
         const [res, _] =
-            await pool.query(queries.creditCardSelect);
+            await pool.query(creditCardSelect);
         const creditcards = res.map(el => el.CreditCard);
 
         await Promise.all(
