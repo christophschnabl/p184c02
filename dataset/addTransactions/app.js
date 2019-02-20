@@ -30,6 +30,7 @@ function createQuery(cards) {
             values (${date}, ${amount}, ${cards[0]}, ${cards[1]})`;
 }
 
+
 /*
  * adds transactions to DB
  */
