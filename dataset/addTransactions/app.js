@@ -19,8 +19,8 @@ const creditCardSelect = `select CardNumber from CreditCard`;
  * @returns {Array.<String>}
  */
 function pickTwoCreditCards(creditcards) {
-    const shuffles = shuffle(creditcards.slice());
-    return shuffle.slice(0, 2);
+    const shuffled = shuffle(creditcards.slice());
+    return shuffled.slice(0, 2);
 }
 
 
@@ -66,7 +66,7 @@ async function addTransactions() {
             new Array(NUM_TRANSACTIONS)
                 .fill(0)
                 .map(i =>
-                    createQuery(creditcards)
+                    createQuery(pickTwoCreditCards(creditcards))
                 )
         );
 
