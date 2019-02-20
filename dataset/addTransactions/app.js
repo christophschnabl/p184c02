@@ -5,8 +5,8 @@ const shuffle = require('./modules/shuffle.js');
 const rBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 
-const MAX_TRANSACTIONS = 150000;
-const MIN_TRANSACTIONS = 100000;
+const MAX_TRANSACTIONS = 15000;
+const MIN_TRANSACTIONS = 10000;
 const NUM_TRANSACTIONS = rBetween(MIN_TRANSACTIONS, MAX_TRANSACTIONS);
 
 
