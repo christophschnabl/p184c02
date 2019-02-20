@@ -42,14 +42,17 @@ async function addTransactions() {
             await pool.query(creditCardSelect);
         const creditcards = res.map(el => el.CreditCard);
 
-        await Promise.all(
+        /*await Promise.all(
             new Array(NUM_TRANSACTIONS)
                 .map(i =>
                     pool.query(
                         createQuery(creditcards)
                     )
                 )
-        );
+        );*/
+
+        const queries = new Array(NUM_TRANSACTIONS).map(i => reateQuery(creditcards));
+        console.log(queries);
 
         console.log(`Did ${NUM_TRANSACTIONS} SQL updates.`);
     } catch (e) {
