@@ -1,4 +1,5 @@
 const pool = require('./modules/database.js');
+const shuffle = require('./modules/shuffle.js');
 
 const MAX_TRANSACTIONS = 15000;
 const MIN_TRANSACTIONS = 10000;
@@ -13,7 +14,8 @@ const creditCardSelect = `select CardNumber from CreditCard`;
  * @returns {Array.<String>}
  */
 function pickTwoCreditCards(creditcards) {
-
+    const shuffles = shuffle(creditcards.slice());
+    return shuffle.slice(0, 2);
 }
 
 
