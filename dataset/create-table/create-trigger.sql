@@ -6,19 +6,19 @@ drop trigger if exists AfterDelCustomer;
 
 
 create trigger AfterInsCustomer
-    after insert on Customer 
+    after insert on Customer
     for each row
 begin
     insert into Customer_Polling (CustomerUUID, Name, Country, Address, SSN,
                                          Telephone, AccountStatus, Duration, CreditHistory,
-                                         Purpose, CreditAmount, Savings, Employment, 
+                                         Purpose, CreditAmount, Savings, Employment,
                                          InstallmentRate, PersonalStatus, sex, Debtors,
                                          Residence, Property, Age, OtherInstallmentPlans,
                                          Housing, NumberOfCredits, Job, LiableMaintenance,
-                                         ForeignWorker, Cost, Action) 
+                                         ForeignWorker, Cost, Action)
                           values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
                                          new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
-                                         new.Purpose, new.CreditAmount, new.Savings, new.Employment, 
+                                         new.Purpose, new.CreditAmount, new.Savings, new.Employment,
                                          new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
                                          new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
                                          new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
@@ -26,43 +26,43 @@ begin
 end;
 
 create trigger AfterUpdCustomer
-    after update on Customer 
+    after update on Customer
     for each row
 begin
     insert into Customer_Polling (CustomerUUID, Name, Country, Address, SSN,
                                          Telephone, AccountStatus, Duration, CreditHistory,
-                                         Purpose, CreditAmount, Savings, Employment, 
+                                         Purpose, CreditAmount, Savings, Employment,
                                          InstallmentRate, PersonalStatus, sex, Debtors,
                                          Residence, Property, Age, OtherInstallmentPlans,
                                          Housing, NumberOfCredits, Job, LiableMaintenance,
-                                         ForeignWorker, Cost, Action) 
+                                         ForeignWorker, Cost, Action)
                                   values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
                                             new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
-                                            new.Purpose, new.CreditAmount, new.Savings, new.Employment, 
+                                            new.Purpose, new.CreditAmount, new.Savings, new.Employment,
                                             new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
                                             new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
                                             new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
-                                            new.ForeignWorker, new.Cost, 'upd'); 
+                                            new.ForeignWorker, new.Cost, 'upd');
 end;
 
 create trigger AfterDelCustomer
-    after delete on Customer 
+    after delete on Customer
     for each row
 begin
     insert into Customer_Polling (CustomerUUID, Name, Country, Address, SSN,
                                          Telephone, AccountStatus, Duration, CreditHistory,
-                                         Purpose, CreditAmount, Savings, Employment, 
+                                         Purpose, CreditAmount, Savings, Employment,
                                          InstallmentRate, PersonalStatus, sex, Debtors,
                                          Residence, Property, Age, OtherInstallmentPlans,
                                          Housing, NumberOfCredits, Job, LiableMaintenance,
-                                         ForeignWorker, Cost, Action) 
+                                         ForeignWorker, Cost, Action)
                                   values (old.CustomerUUID, old.Name, old.Country, old.Address, old.SSN,
                                         old.Telephone, old.AccountStatus, old.Duration, old.CreditHistory,
-                                        old.Purpose, old.CreditAmount, old.Savings, old.Employment, 
+                                        old.Purpose, old.CreditAmount, old.Savings, old.Employment,
                                         old.InstallmentRate, old.PersonalStatus, old.sex, old.Debtors,
                                         old.Residence, old.Property, old.Age, old.OtherInstallmentPlans,
                                         old.Housing, old.NumberOfCredits, old.Job, old.LiableMaintenance,
-                                        old.ForeignWorker, old.Cost, 'del');                            
+                                        old.ForeignWorker, old.Cost, 'del');
 end;
 
 
@@ -85,7 +85,7 @@ begin
 end;
 
 create trigger AfterUpdCreditCard
-after update on CreditCard 
+after update on CreditCard
     for each row
 begin
     insert into CreditCard_Polling (CardNumber, IssuingNetwork, CVV,
@@ -95,7 +95,7 @@ begin
 end;
 
 create trigger AfterDelCreditCard
-after delete on CreditCard 
+after delete on CreditCard
     for each row
 begin
     insert into CreditCard_Polling (CardNumber, IssuingNetwork, CVV,
@@ -142,22 +142,22 @@ create trigger AfterInsTransaction
 after insert on Transaction
 for each row
 begin
-    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumber, Action)
-                             values (new.TransactionID, new.Date, new.Amount, new.CardNumber, 'ins');
+    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
+                             values (new.TransactionID, new.Date, new.Amount, old.CardNumberSender, old.CardNumberReciever, 'ins');
 end;
 
 create trigger AfterUpdTransaction
 after update on Transaction
 for each row
 begin
-    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumber, Action)
-                             values (new.TransactionID, new.Date, new.Amount, new.CardNumber, 'upd');
+    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
+                             values (new.TransactionID, new.Date, new.Amount, old.CardNumberSender, old.CardNumberReciever, 'upd');
 end;
 
 create trigger AfterDelTransaction
 after delete on Transaction
 for each row
 begin
-    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumber, Action)
-                             values (old.TransactionID, old.Date, old.Amount, old.CardNumber, 'del');
+    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
+                             values (old.TransactionID, old.Date, old.Amount, old.CardNumberSender, old.CardNumberReciever, 'del');
 end;
