@@ -61,17 +61,17 @@ create table CreditCard (
 );
 
 create table CustomerCreditCard (
-    CustomerUUID    integer     not null references Customer
-,   CardNumber      varchar(64) not null references CreditCard
+    CustomerUUID    integer     not null    references Customer
+,   CardNumber      varchar(64) not null    references CreditCard
 ,   primary key (CustomerUUID, CardNumber)
 );
 
 create table Transaction (
-    TransactionID   integer             not null    AUTO_INCREMENT primary key
-,   Date            date                not null
-,   Amount          decimal(12,2)       not null
-,   CardNumberSender      varchar(64)             not null    references CreditCard
-,   CardNumberReciever varchar(64) not null references CreditCard
+    TransactionID       integer         not null    AUTO_INCREMENT primary key
+,   Date                date            not null
+,   Amount              decimal(12,2)   not null
+,   CardNumberSender    varchar(64)     not null    references CreditCard
+,   CardNumberReciever  varchar(64)     not null    references CreditCard
 );
 
 
@@ -127,11 +127,11 @@ create table CustomerCreditCard_Polling (
 );
 
 create table Transaction_Polling (
-    PollingID               integer             not null     AUTO_INCREMENT primary key
-,   TransactionID   integer                     not null
-,   Date            date                        not null
-,   Amount          decimal(12,2)               not null
-,   CardNumberSender      varchar(64)             not null
-,   CardNumberReciever varchar(64) not null
-,   Action          enum('ins', 'upd', 'del')   not null
+    PollingID           integer                     not null     AUTO_INCREMENT primary key
+,   TransactionID       integer                     not null
+,   Date                date                        not null
+,   Amount              decimal(12,2)               not null
+,   CardNumberSender    varchar(64)                 not null
+,   CardNumberReciever  varchar(64)                 not null
+,   Action              enum('ins', 'upd', 'del')   not null
 );
