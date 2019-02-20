@@ -1,9 +1,14 @@
 const pool = require('./modules/database.js');
 const shuffle = require('./modules/shuffle.js');
 
-const MAX_TRANSACTIONS = 5;
-const MIN_TRANSACTIONS = 1;
-const NUM_TRANSACTIONS = Math.floor(Math.random() * (MAX_TRANSACTIONS - MIN_TRANSACTIONS + 1) + MIN_TRANSACTIONS);
+
+const rBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+
+
+const MAX_TRANSACTIONS = 150000;
+const MIN_TRANSACTIONS = 100000;
+const NUM_TRANSACTIONS = rBetween(MIN_TRANSACTIONS, MAX_TRANSACTIONS);
+
 
 const creditCardSelect = `select CardNumber from CreditCard`;
 
@@ -24,8 +29,12 @@ function pickTwoCreditCards(creditcards) {
  * @param {Array.<String>} cards
  */
 function createQuery(cards) {
-    const date = `2015-02-02`;
-    const amount = Math.floor(Math.random() * (1000000 - 10 + 1) + 10);
+    const year = rBetween(2000, 2018);
+    const month = rBetween(1, 12);
+    const day = rBetween(1, 28);
+    const date = `${year}-${month}-${day}`;
+
+    const amount = rBetween(10, 100000);
 
     const data = [
         date,
