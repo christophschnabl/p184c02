@@ -10,19 +10,19 @@ create trigger AfterInsCustomer
     for each row
 begin
     insert into Customer_Polling (CustomerUUID, Name, Country, Address, SSN,
-                                         Telephone, AccountStatus, Duration, CreditHistory,
-                                         Purpose, CreditAmount, Savings, Employment,
-                                         InstallmentRate, PersonalStatus, sex, Debtors,
-                                         Residence, Property, Age, OtherInstallmentPlans,
-                                         Housing, NumberOfCredits, Job, LiableMaintenance,
-                                         ForeignWorker, Cost, Action)
+                                  Telephone, AccountStatus, Duration, CreditHistory,
+                                  Purpose, CreditAmount, Savings, Employment,
+                                  InstallmentRate, PersonalStatus, sex, Debtors,
+                                  Residence, Property, Age, OtherInstallmentPlans,
+                                  Housing, NumberOfCredits, Job, LiableMaintenance,
+                                  ForeignWorker, Cost, Action)
                           values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
-                                         new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
-                                         new.Purpose, new.CreditAmount, new.Savings, new.Employment,
-                                         new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
-                                         new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
-                                         new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
-                                         new.ForeignWorker, new.Cost, 'ins');
+                                  new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
+                                  new.Purpose, new.CreditAmount, new.Savings, new.Employment,
+                                  new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
+                                  new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
+                                  new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
+                                  new.ForeignWorker, new.Cost, 'ins');
 end;
 
 create trigger AfterUpdCustomer
@@ -30,19 +30,19 @@ create trigger AfterUpdCustomer
     for each row
 begin
     insert into Customer_Polling (CustomerUUID, Name, Country, Address, SSN,
-                                         Telephone, AccountStatus, Duration, CreditHistory,
-                                         Purpose, CreditAmount, Savings, Employment,
-                                         InstallmentRate, PersonalStatus, sex, Debtors,
-                                         Residence, Property, Age, OtherInstallmentPlans,
-                                         Housing, NumberOfCredits, Job, LiableMaintenance,
-                                         ForeignWorker, Cost, Action)
-                                  values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
-                                            new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
-                                            new.Purpose, new.CreditAmount, new.Savings, new.Employment,
-                                            new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
-                                            new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
-                                            new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
-                                            new.ForeignWorker, new.Cost, 'upd');
+                                  Telephone, AccountStatus, Duration, CreditHistory,
+                                  Purpose, CreditAmount, Savings, Employment,
+                                  InstallmentRate, PersonalStatus, sex, Debtors,
+                                  Residence, Property, Age, OtherInstallmentPlans,
+                                  Housing, NumberOfCredits, Job, LiableMaintenance,
+                                  ForeignWorker, Cost, Action)
+                          values (new.CustomerUUID, new.Name, new.Country, new.Address, new.SSN,
+                                  new.Telephone, new.AccountStatus, new.Duration, new.CreditHistory,
+                                  new.Purpose, new.CreditAmount, new.Savings, new.Employment,
+                                  new.InstallmentRate, new.PersonalStatus, new.sex, new.Debtors,
+                                  new.Residence, new.Property, new.Age, new.OtherInstallmentPlans,
+                                  new.Housing, new.NumberOfCredits, new.Job, new.LiableMaintenance,
+                                  new.ForeignWorker, new.Cost, 'upd');
 end;
 
 create trigger AfterDelCustomer
@@ -50,19 +50,19 @@ create trigger AfterDelCustomer
     for each row
 begin
     insert into Customer_Polling (CustomerUUID, Name, Country, Address, SSN,
-                                         Telephone, AccountStatus, Duration, CreditHistory,
-                                         Purpose, CreditAmount, Savings, Employment,
-                                         InstallmentRate, PersonalStatus, sex, Debtors,
-                                         Residence, Property, Age, OtherInstallmentPlans,
-                                         Housing, NumberOfCredits, Job, LiableMaintenance,
-                                         ForeignWorker, Cost, Action)
-                                  values (old.CustomerUUID, old.Name, old.Country, old.Address, old.SSN,
-                                        old.Telephone, old.AccountStatus, old.Duration, old.CreditHistory,
-                                        old.Purpose, old.CreditAmount, old.Savings, old.Employment,
-                                        old.InstallmentRate, old.PersonalStatus, old.sex, old.Debtors,
-                                        old.Residence, old.Property, old.Age, old.OtherInstallmentPlans,
-                                        old.Housing, old.NumberOfCredits, old.Job, old.LiableMaintenance,
-                                        old.ForeignWorker, old.Cost, 'del');
+                                  Telephone, AccountStatus, Duration, CreditHistory,
+                                  Purpose, CreditAmount, Savings, Employment,
+                                  InstallmentRate, PersonalStatus, sex, Debtors,
+                                  Residence, Property, Age, OtherInstallmentPlans,
+                                  Housing, NumberOfCredits, Job, LiableMaintenance,
+                                  ForeignWorker, Cost, Action)
+                          values (old.CustomerUUID, old.Name, old.Country, old.Address, old.SSN,
+                                  old.Telephone, old.AccountStatus, old.Duration, old.CreditHistory,
+                                  old.Purpose, old.CreditAmount, old.Savings, old.Employment,
+                                  old.InstallmentRate, old.PersonalStatus, old.sex, old.Debtors,
+                                  old.Residence, old.Property, old.Age, old.OtherInstallmentPlans,
+                                  old.Housing, old.NumberOfCredits, old.Job, old.LiableMaintenance,
+                                  old.ForeignWorker, old.Cost, 'del');
 end;
 
 
