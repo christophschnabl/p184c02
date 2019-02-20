@@ -1,6 +1,6 @@
 
 
-  Dataset
+  Neo4j-Dataset
     ✓ should have 1000 customers
     ✓ should have a ssn node per customer
     ✓ should have a phonenumber node per customer
@@ -9,5 +9,5 @@
     ✓ should have relations between customer (built in fraud should work)
 
 
-  6 passing (15ms)
+  6 passing (16ms)
 
