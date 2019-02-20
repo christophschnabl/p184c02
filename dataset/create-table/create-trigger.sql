@@ -143,7 +143,7 @@ after insert on Transaction
 for each row
 begin
     insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
-                             values (new.TransactionID, new.Date, new.Amount, old.CardNumberSender, old.CardNumberReciever, 'ins');
+                             values (new.TransactionID, new.Date, new.Amount, new.CardNumberSender, new.CardNumberReciever, 'ins');
 end;
 
 create trigger AfterUpdTransaction
@@ -151,7 +151,7 @@ after update on Transaction
 for each row
 begin
     insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
-                             values (new.TransactionID, new.Date, new.Amount, old.CardNumberSender, old.CardNumberReciever, 'upd');
+                             values (new.TransactionID, new.Date, new.Amount, new.CardNumberSender, new.CardNumberReciever, 'upd');
 end;
 
 create trigger AfterDelTransaction
