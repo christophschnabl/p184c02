@@ -7,6 +7,9 @@
     "test": "mocha",
     "start": "node app.js"
   },
+  "dependencies": {
+    "neo4j-driver": "^1.5.0"
+  },
   "author": "",
   "license": "UNLICENSED"
 }
