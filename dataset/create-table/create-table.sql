@@ -70,8 +70,10 @@ create table Transaction (
     TransactionID   integer             not null    AUTO_INCREMENT primary key
 ,   Date            date                not null
 ,   Amount          decimal(12,2)       not null
-,   CardNumberSender      varchar(64)             not null    references CreditCard
-,   CardNumberReciever varchar(64) not null references CreditCard
+,   CardNumberSender      varchar(64)             references CreditCard
+,   CardNumberReciever varchar(64) references CreditCard
+,   CustomerUUIDSender integer references Customer
+,   CustomerUUIDReciever integer references Customer
 );
 
 
@@ -131,7 +133,9 @@ create table Transaction_Polling (
 ,   TransactionID   integer                     not null
 ,   Date            date                        not null
 ,   Amount          decimal(12,2)               not null
-,   CardNumberSender      varchar(64)             not null
-,   CardNumberReciever varchar(64) not null
+,   CardNumberSender      varchar(64)
+,   CardNumberReciever varchar(64)
+,   CustomerUUIDSender integer references Customer
+,   CustomerUUIDReciever integer references Customer
 ,   Action          enum('ins', 'upd', 'del')   not null
 );
