@@ -99,7 +99,7 @@ async function addTransactions() {
             creditcards.push(res[i].CardNumber);
         }
 
-        const [res2, _] =
+        const [res2, _2] =
             await pool.query(customerSelect);
         let customers = [];
         for (let i = 0; i < res.length; i++) {
