@@ -3,7 +3,7 @@
 
 ### Wie man das Projekt ausführt
 
-:1. Mysql & Neo4j installieren und einrichten
+1. Mysql & Neo4j installieren und einrichten
 2. Mysql-User und frauddetection-DB erstellen und enstprechende Rechte zuweisen (siehe import/mysql-init.sql)
 3. create-table script ausführen (Danach ggf. Rechte zuweisen, siehe import/mysql-init.sql)
 4. import script ausführen (Achtung, alle Tabelleninhalte werden gelöscht!)
