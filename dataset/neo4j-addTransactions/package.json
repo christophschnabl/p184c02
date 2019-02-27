@@ -1,0 +1,15 @@
+{
+  "name": "neo4j_add_transactions",
+  "version": "1.0.0",
+  "description": "Adds transactions for the neo4j dataset",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "neo4j-driver": "^1.5.0"
+  },
+  "author": "",
+  "license": "UNLICENSED"
+}

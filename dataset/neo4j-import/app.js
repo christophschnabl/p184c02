@@ -19,6 +19,8 @@ async function importFromMysql() {
             await pool.query(queries.creditCardSelect);
         const [customerCreditCard, _ccrfields] =
             await pool.query(queries.customerCreditCardSelect);
+        const [transactions, _trfields] =
+            await pool.query(queries.transactionSelect);
 
         const customerToCreditCard = customerCreditCard.reduce((obj, v) => {
             obj[v.CustomerUUID] = v.CardNumber;
@@ -86,7 +88,7 @@ async function importFromMysql() {
         console.log('Inserting Credit Card data...');
 
         for (const creditcard of creditcards) {
-            console.log(`.`);
+            //console.log(`.`);
 
             await session.run(`MERGE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
@@ -108,6 +110,23 @@ async function importFromMysql() {
         }
 
         console.log('\nInserted ' + customers.length + ' rows.');
+        console.log('Inserting Transaction data...');
+
+        for (const transaction of transactions) {
+            //console.log(transaction);
+            await session.run(`
+                MATCH (a:CreditCard {cardNumber: $cnSender}),(b:CreditCard {cardNumber: $cnReciever})
+                CREATE (a)-[r:TRANSACTION {transactionID: $tid, amount: $amount, date: $datestr}]->(b)
+                RETURN type(r)`, {
+                    cnSender: transaction.CardNumberSender,
+                    cnReciever: transaction.CardNumberReciever,
+                    tid: transaction.TransactionID,
+                    amount: transaction.Amount,
+                    datestr: transaction.Date.toString()
+                });
+        }
+
+        console.log('\nInserted ' + transactions.length + ' rows.');
 
     } catch (e) {
         console.warn('An error occured', e);

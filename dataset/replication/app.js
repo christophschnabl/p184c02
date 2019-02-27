@@ -11,12 +11,13 @@ async function readRows() {
     return (await Promise.all([
         await pool.query(queries.customerPollingSelect),
         await pool.query(queries.creditCardPollingSelect),
-        await pool.query(queries.customerCreditCardPollingSelect)
+        await pool.query(queries.customerCreditCardPollingSelect),
+        await pool.query(queries.transactionPollingSelect)
     ])).map(el => el[0]);
 }
 
 
-async function deleteRows(customers, creditcards, customerCreditCard) {
+async function deleteRows(customers, creditcards, customerCreditCard, transactions) {
     const customerPromises = Promise.all(
         customers.map(
             el => pool.query(queries.customerPollingDelete, el.CustomerUUID)
@@ -32,8 +33,13 @@ async function deleteRows(customers, creditcards, customerCreditCard) {
             el => pool.query(queries.customerCreditCardPollingDelete, [el.CustomerUUID, el.CardNumber])
         )
     );
+    const transactionPromises = Promise.all(
+        transactions.map(
+            el => pool.query(queries.transactionPollingDelete, [el.TransactionID])
+        )
+    );
 
-    await Promise.all([customerPromises, creditCardPromises, customerCreditCardPromises]);
+    await Promise.all([customerPromises, creditCardPromises, customerCreditCardPromises, transactionPromises]);
 }
 
 
@@ -135,23 +141,49 @@ async function updateCustomerCreditCards(customerCreditCards) {
 }
 
 
+async function updateTransactions(transactions) {
+    for (transaction of transactions) {
+        if(transaction.Action === 'ins') {
+            await session.run(`
+            MATCH (c1:CreditCard {cardNumber: $cnSender}),(c2:CreditCard {cardNumber: $cnReciever})
+            MERGE (c1)-[r:TRANSACTION]->(c2)
+            RETURN type(r)`, {
+                cnSender: transaction.CardNumberSender,
+                cnReciever: transaction.CardNumberReciever
+            });
+        } else if(transaction.Action === 'del') {
+            await session.run(`
+            MATCH (c1:CreditCard {cardNumber: $cnSender})
+            -[r:TRANSACTION]->
+            (c2:CreditCard {cardNumber: $cnReciever})
+            DELETE r`, {
+                cnSender: transaction.CardNumberSender,
+                cnReciever: transaction.CardNumberReciever
+            });
+        }
+    }
+}
+
+
 async function replicationLoop() {
     while (true) {
         console.log('\nPolling tables...');
 
         try {
-            const [customers, creditcards, customerCreditCard] = await readRows();
+            const [customers, creditcards, customerCreditCard, transactions] = await readRows();
 
             console.log('Changes:');
             console.log('Customer rows: ' + customers.length);
             console.log('Creditcard rows: ' + creditcards.length);
             console.log('relation table rows: ' + customerCreditCard.length);
+            console.log('Transaction rows: ' + transactions.length);
 
             await Promise.all([
                 updateCustomers(customers),
                 updateCreditCards(creditcards),
                 updateCustomerCreditCards(customerCreditCard),
-                deleteRows(customers, creditcards, customerCreditCard)]);
+                updateTransactions(transactions),
+                deleteRows(customers, creditcards, customerCreditCard, transactions)]);
         } catch (e) {
             console.warn(e);
         }
