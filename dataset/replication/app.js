@@ -143,23 +143,44 @@ async function updateCustomerCreditCards(customerCreditCards) {
 
 async function updateTransactions(transactions) {
     for (transaction of transactions) {
-        if(transaction.Action === 'ins') {
-            await session.run(`
+        if (transaction.Action === 'ins') {
+            if (!transaction.CustomerUUIDSender) {
+                await session.run(`
             MATCH (c1:CreditCard {cardNumber: $cnSender}),(c2:CreditCard {cardNumber: $cnReciever})
             MERGE (c1)-[r:TRANSACTION]->(c2)
             RETURN type(r)`, {
-                cnSender: transaction.CardNumberSender,
-                cnReciever: transaction.CardNumberReciever
-            });
-        } else if(transaction.Action === 'del') {
-            await session.run(`
+                        cnSender: transaction.CardNumberSender,
+                        cnReciever: transaction.CardNumberReciever
+                    });
+            } else {
+                await session.run(`
+                MATCH (c1:Customer {id: $cuuidSender}),(c2:Customer {id: $cuuidReciever})
+                MERGE (c1)-[r:TRANSACTION]->(c2)
+                RETURN type(r)`, {
+                        cuuidSender: transaction.CustomerUUIDSender,
+                        cuuidReciever: transaction.CustomerUUIDReciever
+                    });
+            }
+        } else if (transaction.Action === 'del') {
+            if (!transaction.CustomerUUIDSender) {
+                await session.run(`
             MATCH (c1:CreditCard {cardNumber: $cnSender})
             -[r:TRANSACTION]->
             (c2:CreditCard {cardNumber: $cnReciever})
             DELETE r`, {
-                cnSender: transaction.CardNumberSender,
-                cnReciever: transaction.CardNumberReciever
-            });
+                        cnSender: transaction.CardNumberSender,
+                        cnReciever: transaction.CardNumberReciever
+                    });
+            } else {
+                await session.run(`
+                MATCH (c1:Customer {id: $cuuidSender})
+                -[r:TRANSACTION]->
+                (c2:Customer {id: $cuuidReciever})
+                DELETE r`, {
+                        cuuidSender: transaction.CustomerUUIDSender,
+                        cuuidReciever: transaction.CustomerUUIDReciever
+                    });
+            }
         }
     }
 }
