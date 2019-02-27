@@ -129,7 +129,6 @@ create table CustomerCreditCard_Polling (
 );
 
 create table Transaction_Polling (
-<<<<<<< HEAD
     PollingID               integer             not null     AUTO_INCREMENT primary key
 ,   TransactionID   integer                     not null
 ,   Date            date                        not null
@@ -139,13 +138,4 @@ create table Transaction_Polling (
 ,   CustomerUUIDSender integer references Customer
 ,   CustomerUUIDReciever integer references Customer
 ,   Action          enum('ins', 'upd', 'del')   not null
-=======
-    PollingID           integer                     not null     AUTO_INCREMENT primary key
-,   TransactionID       integer                     not null
-,   Date                date                        not null
-,   Amount              decimal(12,2)               not null
-,   CardNumberSender    varchar(64)                 not null
-,   CardNumberReciever  varchar(64)                 not null
-,   Action              enum('ins', 'upd', 'del')   not null
->>>>>>> e30f6224a0f63c318c31a8db904c30b1832012ce
 );
