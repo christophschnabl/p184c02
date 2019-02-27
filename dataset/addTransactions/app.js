@@ -11,6 +11,7 @@ const NUM_TRANSACTIONS = rBetween(MIN_TRANSACTIONS, MAX_TRANSACTIONS);
 
 
 const creditCardSelect = `select CardNumber from CreditCard`;
+const customerSelect = `select CustomerUUID from Customer`;
 
 
 /**
@@ -24,11 +25,23 @@ function pickTwoCreditCards(creditcards) {
 }
 
 
+
 /**
- * creates an insert query
+ * picks random customers
+ * @param {Array} customers
+ * @returns {Array.<String>}
+ */
+function pickTwoCustomers(customers) {
+    const shuffled = shuffle(customers.slice());
+    return shuffled.slice(0, 2);
+}
+
+
+/**
+ * creates an insert query for a creditcard transaction
  * @param {Array.<String>} cards
  */
-function createQuery(cards) {
+function createCreditCardTransactionQuery(cards) {
     const year = rBetween(2000, 2018);
     const month = rBetween(1, 12);
     const day = rBetween(1, 28);
@@ -48,6 +61,30 @@ function createQuery(cards) {
 }
 
 
+/**
+ * creates an insert query for a customer transaction
+ * @param {Array.<Number>} cards
+ */
+function createCustomerTransactionQuery(customerUUIDs) {
+    const year = rBetween(2000, 2018);
+    const month = rBetween(1, 12);
+    const day = rBetween(1, 28);
+    const date = `${year}-${month}-${day}`;
+
+    const amount = rBetween(10, 100000);
+
+    const data = [
+        date,
+        amount,
+        customerUUIDs[0],
+        customerUUIDs[1]
+    ];
+
+    return pool.query(`insert into Transaction (Date, Amount, CustomerUUIDSender, CustomerUUIDReciever)
+            values (?, ?, ?, ?)`, data);
+}
+
+
 /*
  * adds transactions to DB
  */
@@ -62,11 +99,20 @@ async function addTransactions() {
             creditcards.push(res[i].CardNumber);
         }
 
+        const [res2, _] =
+            await pool.query(customerSelect);
+        let customers = [];
+        for (let i = 0; i < res.length; i++) {
+            customers.push(res2[i].CustomerUUID);
+        }
+
         await Promise.all(
             new Array(NUM_TRANSACTIONS)
                 .fill(0)
                 .map(i =>
-                    createQuery(pickTwoCreditCards(creditcards))
+                    rBetween(0, 1) === 0 ?
+                        createCreditCardTransactionQuery(pickTwoCreditCards(creditcards)) :
+                        createCustomerTransactionQuery(pickTwoCustomers(customers))
                 )
         );
 
