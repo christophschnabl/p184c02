@@ -40,7 +40,7 @@ async function importFromMysql() {
         console.log('\nInserting ' + customers.length + ' customer rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
-            console.log(`Inserting row number ${i}..`);
+            //console.log(`Inserting row number ${i}..`);
 
             const customer = customers[i];
 
@@ -59,7 +59,10 @@ async function importFromMysql() {
                 })`, customer),
                 session.run(`MERGE (ssn: SSN {
                     SSN: {SSN}
-                })`, customer)
+                })`, customer),
+                session.run(`MATCH (c:Customer)
+                    set c.id = toInteger(c.id)
+                `)
             ]);
 
             await Promise.all([
