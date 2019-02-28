@@ -3,7 +3,9 @@
 
 <head>
     <title>Sachbearbeiter</title>
-    
+
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:7474">
+    <meta http-equiv="X-Content-Security-Policy" content="http://localhost:7474">
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
 
@@ -16,7 +18,7 @@
 </head>
 
 <body>
-    <header>
+    <!--<header>
         <h1>Sachbearbeiter</h1>
     </header>
     <nav>
@@ -65,7 +67,8 @@
     </main>
     <footer>
         <h4>Version 0.5</h4>
-    </footer>
+    </footer>-->
+    <iframe src="http://localhost:7474/browser"></iframe>
 </body>
 
 </html>

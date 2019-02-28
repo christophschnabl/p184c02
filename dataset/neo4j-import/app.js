@@ -1,9 +1,10 @@
-/* eslint-disable no-await-in-loop */
 const pool = require('./modules/database.js');
 const driver = require('./modules/neo4j.js');
 const queries = require('./modules/queries.js');
 
-/** Migrates data from MySQL to Neo4j */
+/**
+ * Migrates data from MySQL to Neo4j
+ */
 async function importFromMysql() {
     const session = driver.session();
 
@@ -39,7 +40,7 @@ async function importFromMysql() {
         console.log('\nInserting ' + customers.length + ' customer rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
-            console.log(`Inserting row number ${i}..`);
+            //console.log(`Inserting row number ${i}..`);
 
             const customer = customers[i];
 
@@ -58,7 +59,10 @@ async function importFromMysql() {
                 })`, customer),
                 session.run(`MERGE (ssn: SSN {
                     SSN: {SSN}
-                })`, customer)
+                })`, customer),
+                session.run(`MATCH (c:Customer)
+                    set c.id = toInteger(c.id)
+                `)
             ]);
 
             await Promise.all([
@@ -87,8 +91,6 @@ async function importFromMysql() {
         console.log('Inserting Credit Card data...');
 
         for (const creditcard of creditcards) {
-            //console.log(`.`);
-
             await session.run(`MERGE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
                 issuingNetwork: {IssuingNetwork},
@@ -112,17 +114,29 @@ async function importFromMysql() {
         console.log('Inserting Transaction data...');
 
         for (const transaction of transactions) {
-            //console.log(transaction);
-            await session.run(`
+            if (!transaction.CustomerUUIDSender) {
+                await session.run(`
                 MATCH (a:CreditCard {cardNumber: $cnSender}),(b:CreditCard {cardNumber: $cnReciever})
                 CREATE (a)-[r:TRANSACTION {transactionID: $tid, amount: $amount, date: $datestr}]->(b)
                 RETURN type(r)`, {
-                    cnSender: transaction.CardNumberSender,
-                    cnReciever: transaction.CardNumberReciever,
-                    tid: transaction.TransactionID,
-                    amount: transaction.Amount,
-                    datestr: transaction.Date.toString()
-                });
+                        cnSender: transaction.CardNumberSender,
+                        cnReciever: transaction.CardNumberReciever,
+                        tid: transaction.TransactionID,
+                        amount: transaction.Amount,
+                        datestr: transaction.Date.toString()
+                    });
+            } else {
+                await session.run(`
+                MATCH (a:Customer {id: $cuuidSender}),(b:Customer {id: $cuuidReciever})
+                CREATE (a)-[r:TRANSACTION {transactionID: $tid, amount: $amount, date: $datestr}]->(b)
+                RETURN type(r)`, {
+                        cuuidSender: transaction.CustomerUUIDSender,
+                        cuuidReciever: transaction.CustomerUUIDReciever,
+                        tid: transaction.TransactionID,
+                        amount: transaction.Amount,
+                        datestr: transaction.Date.toString()
+                    });
+            }
         }
 
         console.log('\nInserted ' + transactions.length + ' rows.');

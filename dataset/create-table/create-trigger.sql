@@ -142,22 +142,22 @@ create trigger AfterInsTransaction
 after insert on Transaction
 for each row
 begin
-    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
-                             values (new.TransactionID, new.Date, new.Amount, new.CardNumberSender, new.CardNumberReciever, 'ins');
+    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, CustomerUUIDSender, CustomerUUIDReciever, Action)
+                             values (new.TransactionID, new.Date, new.Amount, new.CardNumberSender, new.CardNumberReciever, new.CustomerUUIDSender, new.CustomerUUIDReciever, 'ins');
 end;
 
 create trigger AfterUpdTransaction
 after update on Transaction
 for each row
 begin
-    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
-                             values (new.TransactionID, new.Date, new.Amount, new.CardNumberSender, new.CardNumberReciever, 'upd');
+    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, CustomerUUIDSender, CustomerUUIDReciever, Action)
+                             values (new.TransactionID, new.Date, new.Amount, new.CardNumberSender, new.CardNumberReciever, new.CustomerUUIDSender, new.CustomerUUIDReciever, 'upd');
 end;
 
 create trigger AfterDelTransaction
 after delete on Transaction
 for each row
 begin
-    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, Action)
-                             values (old.TransactionID, old.Date, old.Amount, old.CardNumberSender, old.CardNumberReciever, 'del');
+    insert into Transaction_Polling (TransactionID, Date, Amount, CardNumberSender, CardNumberReciever, CustomerUUIDSender, CustomerUUIDReciever, Action)
+                             values (old.TransactionID, old.Date, old.Amount, old.CardNumberSender, old.CardNumberReciever, old.CustomerUUIDSender, old.CustomerUUIDReciever, 'del');
 end;
