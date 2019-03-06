@@ -19,8 +19,8 @@
 	"webpack": "^2.3.3"  
 },
   "dependencies": {
-    "neovis.js": "^1.0.0"
-    
+    "neovis.js": "^1.0.0",
+"neo4j-driver": "^1.5.0"    
 },
   "scripts": {
     "build:js": "node node_modules/browserify/bin/cmd.js  assets/javascript/index.js -t babelify --outfile public/javascript/bundle.js && npm run minifyJS",
