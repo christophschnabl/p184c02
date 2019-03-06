@@ -26,37 +26,6 @@
             font: 22pt arial;
         }
     </style>
-
-    <script type="text/javascript">
-
-        var viz;
-
-        function draw() {
-            var config = {
-                container_id: "viz",
-                server_url: "bolt://35.205.193.55:7687",
-                server_user: "neo4j",
-                server_password: "hcvC2ov9ExBt",
-                labels: {
-                    "Character": {
-                        "caption": "name",
-                        "size": "pagerank",
-                        "community": "community"
-                    }
-                },
-                relationships: {
-                    "INTERACTS": {
-                        "thickness": "weight",
-                        "caption": false
-                    }
-                },
-                initial_cypher: "MATCH (n) RETURN (n)"
-            };
-
-            viz = new NeoVis.default(config);
-            viz.render();
-        }
-    </script>
 </head>
 
 <body onload="draw()">
@@ -112,7 +81,39 @@
     </footer>-->
     <!--<iframe src="http://localhost:7474/browser"></iframe>-->
      <div id="viz"></div>
+
+     <script type="text/javascript">
+
+         var viz;
+
+         function draw() {
+             var config = {
+                 container_id: "viz",
+                 //server_url: "bolt://35.205.193.55:7687",
+                 server_url: "bolt://127.0.0.1:7687",
+                 server_user: "neo4j",
+                 //server_password: "hcvC2ov9ExBt",
+                 server_password: "hansi",
+                 labels: {
+                     "Character": {
+                         "caption": "name",
+                         "size": "pagerank",
+                         "community": "community"
+                     }
+                 },
+                 relationships: {
+                     "INTERACTS": {
+                         "thickness": "weight",
+                         "caption": false
+                     }
+                 },
+                 initial_cypher: "MATCH (n) RETURN (n)"
+             };
+
+             viz = new NeoVis.default(config);
+             viz.render();
+         }
+     </script>
  </body>
-</body>
 
 </html>
