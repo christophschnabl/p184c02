@@ -4,8 +4,6 @@
 <head>
     <title>Sachbearbeiter</title>
 
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:7474">
-    <meta http-equiv="X-Content-Security-Policy" content="http://localhost:7474">
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
 
@@ -13,62 +11,82 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/js/uikit.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/js/uikit-icons.min.js"></script>
 
+    <!-- Neovis.js -->
+    <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
+    <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+
     <script type="text/javascript" src="javascript/bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/index.css" />
+
+    <style>
+    html {
+        height: 100%;
+    }
+    body {
+        height: 100%;
+        display: flex;
+    }
+
+    #viz {
+        flex-grow: 1;
+    }
+    </style>
 </head>
 
-<body>
-    <!--<header>
-        <h1>Sachbearbeiter</h1>
-    </header>
-    <nav>
-        <a href='abteilungsleiter.html'>Abteilungsleiter</a>
+<body onload="draw()">
+    <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <ul class="uk-navbar-nav">
+                <li class="uk-active"><a href="#">Active</a></li>
+                <li>
+                    <a href="#">Parent</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><a href="#">Active</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li><a href="#">Item</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">Item</a></li>
+            </ul>
+
+        </div>
     </nav>
-    <main>
-        <section class='listsection'>
-            <div class='selectcontainer'>
-                <select>
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-            </div>
-            <div id="list">
-                <ul>
-                    <li>Kunde 1</li>
-                    <li>Kunde 2</li>
-                    <li>Kunde 3</li>
-                </ul>
-            </div>
-        </section>
-        <section class='listsection'>
-            <div class='selectcontainer'>
-                <select>
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-            </div>
-            <div id="list">
-                <ul>
-                    <li>Transaktion 1</li>
-                    <li>Transaktion 2</li>
-                    <li>Transaktion 3</li>
-                </ul>
-            </div>
-        </section>
-        <section class='graphsection'>
-            <div class='selectcontainer'>
-                <select>
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-            </div>
-            <div id="graph"></div>
-        </section>
-    </main>
-    <footer>
-        <h4>Version 0.5</h4>
-    </footer>-->
-    <iframe src="http://localhost:7474/browser"></iframe>
-</body>
+     <div id="viz"></div>
+
+     <script type="text/javascript">
+
+         var viz;
+
+         function draw() {
+             var config = {
+                 container_id: "viz",
+                 //server_url: "bolt://35.205.193.55:7687",
+                 server_url: "bolt://127.0.0.1:7687",
+                 server_user: "neo4j",
+                 //server_password: "hcvC2ov9ExBt",
+                 server_password: "hansi",
+                 labels: {
+                     "Character": {
+                         "caption": "name",
+                         "size": "pagerank",
+                         "community": "community"
+                     }
+                 },
+                 relationships: {
+                     "INTERACTS": {
+                         "thickness": "weight",
+                         "caption": false
+                     }
+                 },
+                 initial_cypher: "MATCH (n) RETURN (n)"
+             };
+
+             viz = new NeoVis.default(config);
+             viz.render();
+         }
+     </script>
+ </body>
 
 </html>
