@@ -13,19 +13,35 @@ const customerSelect = `select CustomerUUID from Customer`;
 
 
 /**
- * picks random customers
+ * picks n customers
  * @param {Array} customers
+ * @param {Number} n
  * @returns {Array.<String>}
  */
-function pickTwoCustomers(customers) {
+function pickNCustomers(customers, n) {
     const shuffled = shuffle(customers.slice());
-    return shuffled.slice(0, 2);
+    return shuffled.slice(0, n);
+}
+
+/**
+ * picks n customers, excluding one
+ * @param {Array} customers
+ * @param {Number} n
+ * @param {Number} customerUUIDNot
+ * @returns {Array.<String>}
+ */
+function pickNCustomersNot(customers, n, customerUUIDNot) {
+    const idxOf = customers.indexOf(customerUUIDNot);
+    const customerCopy = customers.slice();
+    customerCopy.splice(idxOf, 1);
+    const shuffled = shuffle(customerCopy.slice());
+    return shuffled.slice(0, n);
 }
 
 
 /**
  * creates an insert query for a customer transaction
- * @param {Array.<Number>} cards
+ * @param {Array.<Number>} customerUUIDs
  */
 function createCustomerTransactionQuery(customerUUIDs) {
     const year = rBetween(2000, 2018);
@@ -54,22 +70,43 @@ async function addTransactions() {
     try {
         console.log('Adding transactions...');
 
-        const [res2, _2] =
+        const [res, _] =
             await pool.query(customerSelect);
         let customers = [];
         for (let i = 0; i < res.length; i++) {
-            customers.push(res2[i].CustomerUUID);
+            customers.push(res[i].CustomerUUID);
         }
 
         await Promise.all(
             new Array(NUM_TRANSACTIONS)
                 .fill(0)
                 .map(i =>
-                    createCustomerTransactionQuery(pickTwoCustomers(customers))
+                    createCustomerTransactionQuery(pickNCustomers(customers, 2))
                 )
         );
 
         console.log(`Did ${NUM_TRANSACTIONS} SQL updates.`);
+
+        console.log('Now add fraudulent transactions...');
+
+        const fraudulentCustomers = pickNCustomers(customers, 17);
+        await Promise.all(
+            fraudulentCustomers
+                .map(customerUUID =>
+                    Promise.all(
+                        new Array(rBetween(100, 5000))
+                            .fill(0)
+                            .map(i =>
+                                createCustomerTransactionQuery(
+                                    customerUUID, pickNCustomersNot(customers, 1, customerUUID)
+                                )
+                            )
+                    )
+                )
+        );
+
+        console.log('Done.');
+
     } catch (e) {
         console.warn('An error occured', e);
     }
