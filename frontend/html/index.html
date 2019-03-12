@@ -65,7 +65,8 @@
         var viz;
         var suspiciousCustomers = [];
 
-        function findSuspiciousCustomers() {
+        /* EXPORT: 
+        async function findSuspiciousCustomers() {
             const neo4j = require('neo4j-driver').v1;
             const driver = neo4j.driver(neo4jURI, neo4j.auth.basic(neo4jUSER, neo4jPASS));
             const session = driver.session();
@@ -79,16 +80,19 @@
                 return node, score
                 order by score desc
             `);
+
+            console.log("hi2");
         }
+        */ 
 
         function draw() {
             var config = {
                 container_id: "viz",
-                //server_url: "bolt://35.205.193.55:7687",
-                server_url: neo4jURI,
+                server_url: "bolt://35.205.193.55:7687",
+                //server_url: neo4jURI,
                 server_user: neo4jUSER,
-                //server_password: "hcvC2ov9ExBt",
-                server_password: neo4jPASS,
+                server_password: "hcvC2ov9ExBt",
+                //server_password: neo4jPASS,
                 labels: {
                     "Character": {
                         "caption": "name",
@@ -104,6 +108,8 @@
                 },
                 initial_cypher: "MATCH (n) RETURN (n) limit 25;"
             };
+
+            findSuspiciousCustomers();
 
             viz = new NeoVis.default(config);
             viz.render();
