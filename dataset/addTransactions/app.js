@@ -5,11 +5,11 @@ const shuffle = require('./modules/shuffle.js');
 const rBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 
-const MAX_TRANSACTIONS = 15000;
-const MIN_TRANSACTIONS = 10000;
+const MAX_TRANSACTIONS = 1500;
+const MIN_TRANSACTIONS = 1000;
 const NUM_TRANSACTIONS = rBetween(MIN_TRANSACTIONS, MAX_TRANSACTIONS);
 
-const customerSelect = `select CustomerUUID from Customer`;
+const customerSelect = `select * from Customer`;
 
 
 /**
@@ -58,6 +58,9 @@ function createCustomerTransactionQuery(customerUUIDs) {
         customerUUIDs[1]
     ];
 
+    console.log("TransactionQuery: ")
+    console.log(data);
+
     return pool.query(`insert into Transaction (Date, Amount, CustomerUUIDSender, CustomerUUIDReciever)
             values (?, ?, ?, ?)`, data);
 }
@@ -70,11 +73,15 @@ async function addTransactions() {
     try {
         console.log('Adding transactions...');
 
-        const [res, _] =
+        const [customerResult, _] =
             await pool.query(customerSelect);
         let customers = [];
-        for (let i = 0; i < res.length; i++) {
-            customers.push(res[i].CustomerUUID);
+        for (let i = 0; i < customerResult.length; i++) {
+            customers.push(customerResult[i].CustomerUUID);
+        }
+        let customersWithInfo = {};
+        for (let i = 0; i < customerResult.length; i++) {
+            customersWithInfo[customerResult[i].CustomerUUID] = customerResult[i];
         }
 
         await Promise.all(
@@ -89,21 +96,23 @@ async function addTransactions() {
 
         console.log('Now add fraudulent transactions...');
 
-        const fraudulentCustomers = pickNCustomers(customers, 17);
+        const fraudulentCustomers = pickNCustomers(customers, rBetween(5, 25));
         await Promise.all(
             fraudulentCustomers
                 .map(customerUUID =>
                     Promise.all(
-                        new Array(rBetween(100, 5000))
+                        new Array(rBetween(400, 500))
                             .fill(0)
                             .map(i =>
                                 createCustomerTransactionQuery(
-                                    customerUUID, pickNCustomersNot(customers, 1, customerUUID)
+                                    [customerUUID, pickNCustomersNot(customers, 1, customerUUID)[0]]
                                 )
                             )
                     )
                 )
         );
+
+        console.log(fraudulentCustomers.map(i => customersWithInfo[i].Name));
 
         console.log('Done.');
 
