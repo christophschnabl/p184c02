@@ -58,9 +58,6 @@ function createCustomerTransactionQuery(customerUUIDs) {
         customerUUIDs[1]
     ];
 
-    console.log("TransactionQuery: ")
-    console.log(data);
-
     return pool.query(`insert into Transaction (Date, Amount, CustomerUUIDSender, CustomerUUIDReciever)
             values (?, ?, ?, ?)`, data);
 }
@@ -112,9 +109,11 @@ async function addTransactions() {
                 )
         );
 
-        console.log(fraudulentCustomers.map(i => customersWithInfo[i].Name));
-
         console.log('Done.');
+        console.log();
+
+        console.log('Fraudulent Customers:');
+        console.log(fraudulentCustomers.map(i => customersWithInfo[i].Name));
 
     } catch (e) {
         console.warn('An error occured', e);
