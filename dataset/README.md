@@ -38,3 +38,10 @@ Wenn diese Variablen nicht definiert werden, verwenden die scripts default-Param
 * Die npm-Packages addFraud, addTransactions, create-table, import, neo4j-import, replication sind in den jeweiligen Ordnern gespeichert.
 * In fraudQueries befinden sich diverse Abfragen für die neo4j-Datenbank
 * german-credit.doc ist die Dokumentation für german-credit.data
+
+
+
+###Betrugsfälle
+
+Im addTransactions script werden normale und fraudulent transactions eingefügt.
+Fraudulent Transactions können mit neo4j-algorithms erkannt werden, am besten mit Betweenness Centrality (Direction:BOTH)
