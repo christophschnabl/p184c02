@@ -4,6 +4,8 @@
 <head>
     <title>Sachbearbeiter</title>
 
+    <meta charset="UTF-8"/>
+
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
 
@@ -15,7 +17,7 @@
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
     <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
 
-    <script type="text/javascript" src="javascript/bundle.min.js"></script>
+    <script type="text/javascript" src="../public/javascript/bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/index.css" />
 
     <style>
@@ -56,36 +58,56 @@
      <div id="viz"></div>
 
      <script type="text/javascript">
+        const neo4jURI = "bolt://127.0.0.1:7687";
+        const neo4jUSER = "neo4j";
+        const neo4jPASS = "root";
 
-         var viz;
+        var viz;
+        var suspiciousCustomers = [];
 
-         function draw() {
-             var config = {
-                 container_id: "viz",
-                 //server_url: "bolt://35.205.193.55:7687",
-                 server_url: "bolt://127.0.0.1:7687",
-                 server_user: "neo4j",
-                 //server_password: "hcvC2ov9ExBt",
-                 server_password: "hansi",
-                 labels: {
-                     "Character": {
-                         "caption": "name",
-                         "size": "pagerank",
-                         "community": "community"
-                     }
-                 },
-                 relationships: {
-                     "INTERACTS": {
-                         "thickness": "weight",
-                         "caption": false
-                     }
-                 },
-                 initial_cypher: "MATCH (n) RETURN (n)"
-             };
+        function findSuspiciousCustomers() {
+            const neo4j = require('neo4j-driver').v1;
+            const driver = neo4j.driver(neo4jURI, neo4j.auth.basic(neo4jUSER, neo4jPASS));
+            const session = driver.session();
 
-             viz = new NeoVis.default(config);
-             viz.render();
-         }
+            // Test noch ausstehend
+            suspiciousCustomers = await session.run(`
+                match(c:Customer)
+                with collect(c) as customers
+                call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+                yield node, score
+                return node, score
+                order by score desc
+            `);
+        }
+
+        function draw() {
+            var config = {
+                container_id: "viz",
+                //server_url: "bolt://35.205.193.55:7687",
+                server_url: neo4jURI,
+                server_user: neo4jUSER,
+                //server_password: "hcvC2ov9ExBt",
+                server_password: neo4jPASS,
+                labels: {
+                    "Character": {
+                        "caption": "name",
+                        "size": "pagerank",
+                        "community": "community"
+                    }
+                },
+                relationships: {
+                    "INTERACTS": {
+                        "thickness": "weight",
+                        "caption": false
+                    }
+                },
+                initial_cypher: "MATCH (n) RETURN (n) limit 25;"
+            };
+
+            viz = new NeoVis.default(config);
+            viz.render();
+        }
      </script>
  </body>
 
