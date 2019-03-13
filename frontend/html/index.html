@@ -36,7 +36,7 @@
 </head>
 
 <body onload="draw()">
-    <nav class="uk-navbar-container" uk-navbar>
+    <!--<nav class="uk-navbar-container" uk-navbar>
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav">
                 <li class="uk-active"><a href="#">Active</a></li>
@@ -54,7 +54,7 @@
             </ul>
 
         </div>
-    </nav>
+    </nav>-->
      <div id="viz"></div>
 
      <script type="text/javascript">
@@ -88,11 +88,11 @@
         function draw() {
             var config = {
                 container_id: "viz",
-                server_url: "bolt://35.205.193.55:7687",
-                //server_url: neo4jURI,
-                server_user: neo4jUSER,
-                server_password: "hcvC2ov9ExBt",
-                //server_password: neo4jPASS,
+                //server_url: "bolt://35.205.193.55:7687",
+                server_url: "bolt://127.0.0.1:7687",
+                server_user: "neo4j",
+                //server_password: "hcvC2ov9ExBt",
+                server_password: "hansi",
                 labels: {
                     "Character": {
                         "caption": "name",
