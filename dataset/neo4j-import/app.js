@@ -114,29 +114,16 @@ async function importFromMysql() {
         console.log('Inserting Transaction data...');
 
         for (const transaction of transactions) {
-            if (!transaction.CustomerUUIDSender) {
-                await session.run(`
-                MATCH (a:CreditCard {cardNumber: $cnSender}),(b:CreditCard {cardNumber: $cnReciever})
-                CREATE (a)-[r:TRANSACTION {transactionID: $tid, amount: $amount, date: $datestr}]->(b)
-                RETURN type(r)`, {
-                        cnSender: transaction.CardNumberSender,
-                        cnReciever: transaction.CardNumberReciever,
-                        tid: transaction.TransactionID,
-                        amount: transaction.Amount,
-                        datestr: transaction.Date.toString()
-                    });
-            } else {
-                await session.run(`
+            await session.run(`
                 MATCH (a:Customer {id: $cuuidSender}),(b:Customer {id: $cuuidReciever})
                 CREATE (a)-[r:TRANSACTION {transactionID: $tid, amount: $amount, date: $datestr}]->(b)
                 RETURN type(r)`, {
-                        cuuidSender: transaction.CustomerUUIDSender,
-                        cuuidReciever: transaction.CustomerUUIDReciever,
-                        tid: transaction.TransactionID,
-                        amount: transaction.Amount,
-                        datestr: transaction.Date.toString()
-                    });
-            }
+                    cuuidSender: transaction.CustomerUUIDSender,
+                    cuuidReciever: transaction.CustomerUUIDReciever,
+                    tid: transaction.TransactionID,
+                    amount: transaction.Amount,
+                    datestr: transaction.Date.toString()
+                });
         }
 
         console.log('\nInserted ' + transactions.length + ' rows.');

@@ -5,65 +5,43 @@ const shuffle = require('./modules/shuffle.js');
 const rBetween = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
 
 
-const MAX_TRANSACTIONS = 15000;
-const MIN_TRANSACTIONS = 10000;
+const MAX_TRANSACTIONS = 1500;
+const MIN_TRANSACTIONS = 1000;
 const NUM_TRANSACTIONS = rBetween(MIN_TRANSACTIONS, MAX_TRANSACTIONS);
 
-
-const creditCardSelect = `select CardNumber from CreditCard`;
-const customerSelect = `select CustomerUUID from Customer`;
+const customerSelect = `select * from Customer`;
 
 
 /**
- * picks random creditcards
- * @param {Array} creditcards
- * @returns {Array.<String>}
- */
-function pickTwoCreditCards(creditcards) {
-    const shuffled = shuffle(creditcards.slice());
-    return shuffled.slice(0, 2);
-}
-
-
-
-/**
- * picks random customers
+ * picks n customers
  * @param {Array} customers
+ * @param {Number} n
  * @returns {Array.<String>}
  */
-function pickTwoCustomers(customers) {
+function pickNCustomers(customers, n) {
     const shuffled = shuffle(customers.slice());
-    return shuffled.slice(0, 2);
+    return shuffled.slice(0, n);
 }
 
-
 /**
- * creates an insert query for a creditcard transaction
- * @param {Array.<String>} cards
+ * picks n customers, excluding one
+ * @param {Array} customers
+ * @param {Number} n
+ * @param {Number} customerUUIDNot
+ * @returns {Array.<String>}
  */
-function createCreditCardTransactionQuery(cards) {
-    const year = rBetween(2000, 2018);
-    const month = rBetween(1, 12);
-    const day = rBetween(1, 28);
-    const date = `${year}-${month}-${day}`;
-
-    const amount = rBetween(10, 100000);
-
-    const data = [
-        date,
-        amount,
-        cards[0],
-        cards[1]
-    ];
-
-    return pool.query(`insert into Transaction (Date, Amount, CardNumberSender, CardNumberReciever)
-            values (?, ?, ?, ?)`, data);
+function pickNCustomersNot(customers, n, customerUUIDNot) {
+    const idxOf = customers.indexOf(customerUUIDNot);
+    const customerCopy = customers.slice();
+    customerCopy.splice(idxOf, 1);
+    const shuffled = shuffle(customerCopy.slice());
+    return shuffled.slice(0, n);
 }
 
 
 /**
  * creates an insert query for a customer transaction
- * @param {Array.<Number>} cards
+ * @param {Array.<Number>} customerUUIDs
  */
 function createCustomerTransactionQuery(customerUUIDs) {
     const year = rBetween(2000, 2018);
@@ -92,31 +70,51 @@ async function addTransactions() {
     try {
         console.log('Adding transactions...');
 
-        const [res, _] =
-            await pool.query(creditCardSelect);
-        let creditcards = [];
-        for (let i = 0; i < res.length; i++) {
-            creditcards.push(res[i].CardNumber);
-        }
-
-        const [res2, _2] =
+        const [customerResult, _] =
             await pool.query(customerSelect);
         let customers = [];
-        for (let i = 0; i < res.length; i++) {
-            customers.push(res2[i].CustomerUUID);
+        for (let i = 0; i < customerResult.length; i++) {
+            customers.push(customerResult[i].CustomerUUID);
+        }
+        let customersWithInfo = {};
+        for (let i = 0; i < customerResult.length; i++) {
+            customersWithInfo[customerResult[i].CustomerUUID] = customerResult[i];
         }
 
         await Promise.all(
             new Array(NUM_TRANSACTIONS)
                 .fill(0)
                 .map(i =>
-                    rBetween(0, 1) === 0 ?
-                        createCreditCardTransactionQuery(pickTwoCreditCards(creditcards)) :
-                        createCustomerTransactionQuery(pickTwoCustomers(customers))
+                    createCustomerTransactionQuery(pickNCustomers(customers, 2))
                 )
         );
 
         console.log(`Did ${NUM_TRANSACTIONS} SQL updates.`);
+
+        console.log('Now add fraudulent transactions...');
+
+        const fraudulentCustomers = pickNCustomers(customers, rBetween(5, 25));
+        await Promise.all(
+            fraudulentCustomers
+                .map(customerUUID =>
+                    Promise.all(
+                        new Array(rBetween(400, 500))
+                            .fill(0)
+                            .map(i =>
+                                createCustomerTransactionQuery(
+                                    [customerUUID, pickNCustomersNot(customers, 1, customerUUID)[0]]
+                                )
+                            )
+                    )
+                )
+        );
+
+        console.log('Done.');
+        console.log();
+
+        console.log('Fraudulent Customers:');
+        console.log(fraudulentCustomers.map(i => customersWithInfo[i].Name));
+
     } catch (e) {
         console.warn('An error occured', e);
     }

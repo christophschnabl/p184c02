@@ -4,6 +4,8 @@
 <head>
     <title>Sachbearbeiter</title>
 
+    <meta charset="UTF-8"/>
+
     <!-- UIkit CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
 
@@ -15,104 +17,103 @@
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
     <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
 
-    <script type="text/javascript" src="javascript/bundle.min.js"></script>
+    <script type="text/javascript" src="../public/javascript/bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/index.css" />
 
     <style>
+    html {
+        height: 100%;
+    }
+    body {
+        height: 100%;
+        display: flex;
+    }
+
     #viz {
-            width: 900px;
-            height: 700px;
-            border: 1px solid lightgray;
-            font: 22pt arial;
-        }
+        flex-grow: 1;
+    }
     </style>
 </head>
 
 <body onload="draw()">
-    <!--<header>
-        <h1>Sachbearbeiter</h1>
-    </header>
-    <nav>
-        <a href='abteilungsleiter.html'>Abteilungsleiter</a>
-    </nav>
-    <main>
-        <section class='listsection'>
-            <div class='selectcontainer'>
-                <select>
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-            </div>
-            <div id="list">
-                <ul>
-                    <li>Kunde 1</li>
-                    <li>Kunde 2</li>
-                    <li>Kunde 3</li>
-                </ul>
-            </div>
-        </section>
-        <section class='listsection'>
-            <div class='selectcontainer'>
-                <select>
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-            </div>
-            <div id="list">
-                <ul>
-                    <li>Transaktion 1</li>
-                    <li>Transaktion 2</li>
-                    <li>Transaktion 3</li>
-                </ul>
-            </div>
-        </section>
-        <section class='graphsection'>
-            <div class='selectcontainer'>
-                <select>
-                    <option>A</option>
-                    <option>B</option>
-                </select>
-            </div>
-            <div id="graph"></div>
-        </section>
-    </main>
-    <footer>
-        <h4>Version 0.5</h4>
-    </footer>-->
-    <!--<iframe src="http://localhost:7474/browser"></iframe>-->
+    <!--<nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <ul class="uk-navbar-nav">
+                <li class="uk-active"><a href="#">Active</a></li>
+                <li>
+                    <a href="#">Parent</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class="uk-active"><a href="#">Active</a></li>
+                            <li><a href="#">Item</a></li>
+                            <li><a href="#">Item</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li><a href="#">Item</a></li>
+            </ul>
+
+        </div>
+    </nav>-->
      <div id="viz"></div>
 
      <script type="text/javascript">
+        const neo4jURI = "bolt://127.0.0.1:7687";
+        const neo4jUSER = "neo4j";
+        const neo4jPASS = "root";
 
-         var viz;
+        var viz;
+        var suspiciousCustomers = [];
 
-         function draw() {
-             var config = {
-                 container_id: "viz",
-                 //server_url: "bolt://35.205.193.55:7687",
-                 server_url: "bolt://127.0.0.1:7687",
-                 server_user: "neo4j",
-                 //server_password: "hcvC2ov9ExBt",
-                 server_password: "hansi",
-                 labels: {
-                     "Character": {
-                         "caption": "name",
-                         "size": "pagerank",
-                         "community": "community"
-                     }
-                 },
-                 relationships: {
-                     "INTERACTS": {
-                         "thickness": "weight",
-                         "caption": false
-                     }
-                 },
-                 initial_cypher: "MATCH (n) RETURN (n)"
-             };
+        /* EXPORT:
+        async function findSuspiciousCustomers() {
+            const neo4j = require('neo4j-driver').v1;
+            const driver = neo4j.driver(neo4jURI, neo4j.auth.basic(neo4jUSER, neo4jPASS));
+            const session = driver.session();
 
-             viz = new NeoVis.default(config);
-             viz.render();
-         }
+            // Test noch ausstehend
+            suspiciousCustomers = await session.run(`
+                match(c:Customer)
+                with collect(c) as customers
+                call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+                yield node, score
+                return node, score
+                order by score desc
+            `);
+
+            console.log("hi2");
+        }
+        */
+
+        function draw() {
+            var config = {
+                container_id: "viz",
+                //server_url: "bolt://35.205.193.55:7687",
+                server_url: "bolt://127.0.0.1:7687",
+                server_user: "neo4j",
+                //server_password: "hcvC2ov9ExBt",
+                server_password: "hansi",
+                labels: {
+                    "Character": {
+                        "caption": "name",
+                        "size": "pagerank",
+                        "community": "community"
+                    }
+                },
+                relationships: {
+                    "INTERACTS": {
+                        "thickness": "weight",
+                        "caption": false
+                    }
+                },
+                initial_cypher: "MATCH (n) RETURN (n) limit 25;"
+            };
+
+            //findSuspiciousCustomers();
+
+            viz = new NeoVis.default(config);
+            viz.render();
+        }
      </script>
  </body>
 
