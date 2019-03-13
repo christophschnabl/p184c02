@@ -30,38 +30,44 @@
     body {
         height: 100%;
         display: flex;
+        flex-direction: column;
     }
-
+    section {
+        /*flex-grow: 1;*/
+        background-color: lightgrey;
+    }
     #viz {
         flex-grow: 1;
     }
-
-    nav {
-        width: 100px;
+    .topbar {
+        display: inline-block;
+        width: 250px;
+    }
+    .topbar2 {
+        display: inline-block;
+        width: 125px;
     }
     </style>
 </head>
 
 <body onload="draw()">
-    <!--<nav class="uk-navbar-container" uk-navbar>
-        <div class="uk-navbar-left">
-            <ul class="uk-navbar-nav" id="customerList">
-                <li class="uk-active"><a href="#">Active</a></li>
-                <li>
-                    <a href="#">Parent</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Active</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li><a href="#">Item</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="#">Item</a></li>
-            </ul>
-
-        </div>
-    </nav>-->
+    <section>
+        <div class="topbar">Suspicious Customers:</div>
+        <div class="topbar">Limit:<input id="limit1" value="10" type="number"/></div>
+        <div class="topbar"><button id="querySuspicious">Search</button></div>
+    </section>
+    <section>
+        <div class="topbar">Name:<input id="name" type="text"/></div>
+        <div class="topbar">Limit:<input id="limit2" value="50" type="number"/></div>
+        <div class="topbar"><button id="queryCustomer">Search</button></div>
+    </section>
+    <section>
+        <div class="topbar2">From:<input type="checkbox" id="from"/></div>
+        <div class="topbar2">To:<input type="checkbox" id="to"/></div>
+    </section>
+    <section>
+        <p id="result"></p>
+    </section>
     <div id="viz"></div>
 
     <script type="text/javascript">
@@ -92,12 +98,45 @@
                         "caption": false
                     }
                 },
-                initial_cypher: `match(n:Customer {name: "Camilla Baker"})-[r:TRANSACTION]->(n2:Customer) return n, r, n2 limit 50;`
+                initial_cypher: `match(n:Customer) return n limit 100;`
             };
 
             viz = new NeoVis.default(config);
             viz.render();
         }
+
+        function printSuccess() {
+            
+        }
+
+        $("#querySuspicious").click(() => {
+            let limit = $("#limit1").val();
+            var append = ";";
+            if(limit !== undefined) {
+                append = `limit ${limit};`;
+            }
+            let cypher = `match(c:Customer)
+                          with collect(c) as customers
+                          call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+                          yield node, score
+                          return node, score
+                          order by score desc `
+
+            viz.renderWithCypher(cypher + append);
+        });
+
+        $("#queryCustomer").click(() => {
+            let limit = parseInt($("#limit2").val());
+            var append = ";";
+            if(limit !== undefined && limit !== NaN) {
+                append = `limit ${limit};`;
+            }
+            let cypher = `match (c:Customer {name:"${$("#name").val()}"})
+                                -[r:TRANSACTION]-
+                                (c2:Customer) 
+                          return c, r, c2 `;
+            viz.renderWithCypher(cypher + append);
+        });
      </script>
  </body>
 
