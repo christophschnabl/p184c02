@@ -66,7 +66,7 @@
         <div class="topbar2">To:<input type="checkbox" id="to"/></div>
     </section>
     <section>
-        <p id="result"></p>
+        Status:&nbsp;<div class="topbar"><div id="result"></div></div>
     </section>
     <div id="viz"></div>
 
@@ -76,6 +76,8 @@
         const neo4jURI = "bolt://127.0.0.1:7687";
         const neo4jUSER = "neo4j";
         const neo4jPASS = "root";
+
+        const resultText = $("#result");
 
         var viz;
 
@@ -102,17 +104,26 @@
             };
 
             viz = new NeoVis.default(config);
+            viz.registerOnEvent("completed", printQueryFinished);
             viz.render();
         }
 
-        function printSuccess() {
-            
+        function printQueryFinished(values) {
+            if(values.record_count > 0) {
+                resultText.css("color", "green");
+                resultText.text("Query completed!");
+            } else {
+                resultText.css("color", "yellow");
+                resultText.text("Query completed, no results!");
+            }
+
         }
 
         $("#querySuspicious").click(() => {
-            let limit = $("#limit1").val();
+            resultText.text("");
+            let limit = parseInt($("#limit1").val());
             var append = ";";
-            if(limit !== undefined) {
+            if(limit !== undefined && limit !== NaN) {
                 append = `limit ${limit};`;
             }
             let cypher = `match(c:Customer)
@@ -120,12 +131,13 @@
                           call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
                           yield node, score
                           return node, score
-                          order by score desc `
+                          order by score desc `;
 
             viz.renderWithCypher(cypher + append);
         });
 
         $("#queryCustomer").click(() => {
+            resultText.text("");
             let limit = parseInt($("#limit2").val());
             var append = ";";
             if(limit !== undefined && limit !== NaN) {
@@ -135,6 +147,7 @@
                                 -[r:TRANSACTION]-
                                 (c2:Customer) 
                           return c, r, c2 `;
+
             viz.renderWithCypher(cypher + append);
         });
      </script>
