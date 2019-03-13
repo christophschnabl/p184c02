@@ -63,27 +63,6 @@
         const neo4jPASS = "root";
 
         var viz;
-        var suspiciousCustomers = [];
-
-        /* EXPORT:
-        async function findSuspiciousCustomers() {
-            const neo4j = require('neo4j-driver').v1;
-            const driver = neo4j.driver(neo4jURI, neo4j.auth.basic(neo4jUSER, neo4jPASS));
-            const session = driver.session();
-
-            // Test noch ausstehend
-            suspiciousCustomers = await session.run(`
-                match(c:Customer)
-                with collect(c) as customers
-                call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
-                yield node, score
-                return node, score
-                order by score desc
-            `);
-
-            console.log("hi2");
-        }
-        */
 
         function draw() {
             var config = {
@@ -92,7 +71,7 @@
                 server_url: "bolt://127.0.0.1:7687",
                 server_user: "neo4j",
                 //server_password: "hcvC2ov9ExBt",
-                server_password: "hansi",
+                server_password: "root",
                 labels: {
                     "Character": {
                         "caption": "name",
@@ -106,10 +85,14 @@
                         "caption": false
                     }
                 },
-                initial_cypher: "MATCH (n) RETURN (n) limit 25;"
+                initial_cypher: `match(c:Customer)
+with collect(c) as customers
+call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+yield node, score
+return node, score
+order by score desc
+limit 15;`
             };
-
-            //findSuspiciousCustomers();
 
             viz = new NeoVis.default(config);
             viz.render();
