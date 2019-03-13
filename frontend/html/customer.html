@@ -45,6 +45,9 @@
     }
     .topbar2 {
         display: inline-block;
+        width: 123px;
+    }
+    button {
         width: 125px;
     }
     </style>
@@ -64,9 +67,13 @@
     <section>
         <div class="topbar2">From:<input type="checkbox" id="from"/></div>
         <div class="topbar2">To:<input type="checkbox" id="to"/></div>
+        <div class="topbar"></div>
     </section>
     <section>
         Status:&nbsp;<div class="topbar"><div id="result"></div></div>
+    </section>
+    <section>
+        <div class="topbar"><button id="stabilize">Stabilize</button></div>
     </section>
     <div id="viz"></div>
 
@@ -113,17 +120,21 @@
                 resultText.css("color", "green");
                 resultText.text("Query completed!");
             } else {
-                resultText.css("color", "yellow");
+                resultText.css("color", "orange");
                 resultText.text("Query completed, no results!");
             }
 
         }
 
+        $("#stabilize").click(() => {
+            viz.stabilize();
+        });
+
         $("#querySuspicious").click(() => {
             resultText.text("");
             let limit = parseInt($("#limit1").val());
             var append = ";";
-            if(limit !== undefined && limit !== NaN) {
+            if(limit !== undefined && !isNaN(limit)) {
                 append = `limit ${limit};`;
             }
             let cypher = `match(c:Customer)
@@ -140,7 +151,7 @@
             resultText.text("");
             let limit = parseInt($("#limit2").val());
             var append = ";";
-            if(limit !== undefined && limit !== NaN) {
+            if(limit !== undefined && !isNaN(limit)) {
                 append = `limit ${limit};`;
             }
             let cypher = `match (c:Customer {name:"${$("#name").val()}"})
