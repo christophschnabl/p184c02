@@ -17,6 +17,9 @@
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
     <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
 
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
     <script type="text/javascript" src="../public/javascript/bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/index.css" />
 
@@ -27,72 +30,70 @@
     body {
         height: 100%;
         display: flex;
+        flex-direction: column;
     }
-
+    section {
+        /*flex-grow: 1;*/
+        background-color: lightgrey;
+    }
     #viz {
         flex-grow: 1;
+    }
+    .topbar {
+        display: inline-block;
+        width: 250px;
+    }
+    .topbar2 {
+        display: inline-block;
+        width: 123px;
+    }
+    button {
+        width: 125px;
     }
     </style>
 </head>
 
 <body onload="draw()">
-    <!--<nav class="uk-navbar-container" uk-navbar>
-        <div class="uk-navbar-left">
-            <ul class="uk-navbar-nav">
-                <li class="uk-active"><a href="#">Active</a></li>
-                <li>
-                    <a href="#">Parent</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="uk-active"><a href="#">Active</a></li>
-                            <li><a href="#">Item</a></li>
-                            <li><a href="#">Item</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li><a href="#">Item</a></li>
-            </ul>
+    <section>
+        <div class="topbar">Suspicious Customers:</div>
+        <div class="topbar">Limit:<input id="limit1" value="10" type="number"/></div>
+        <div class="topbar"><button id="querySuspicious">Search</button></div>
+    </section>
+    <section>
+        <div class="topbar">Name:<input id="name" type="text"/></div>
+        <div class="topbar">Limit:<input id="limit2" value="50" type="number"/></div>
+        <div class="topbar"><button id="queryCustomer">Search</button></div>
+    </section>
+    <section>
+        <div class="topbar2">From:<input type="checkbox" id="from"/></div>
+        <div class="topbar2">To:<input type="checkbox" id="to"/></div>
+        <div class="topbar"></div>
+    </section>
+    <section>
+        Status:&nbsp;<div class="topbar"><div id="result"></div></div>
+    </section>
+    <section>
+        <div class="topbar"><button id="stabilize">Stabilize</button></div>
+    </section>
+    <div id="viz"></div>
 
-        </div>
-    </nav>-->
-     <div id="viz"></div>
-
-     <script type="text/javascript">
+    <script type="text/javascript">
+        //server_url: "bolt://35.205.193.55:7687"
+        //server_password: "hcvC2ov9ExBt"
         const neo4jURI = "bolt://127.0.0.1:7687";
         const neo4jUSER = "neo4j";
         const neo4jPASS = "root";
 
+        const resultText = $("#result");
+
         var viz;
-        var suspiciousCustomers = [];
-
-        /* EXPORT:
-        async function findSuspiciousCustomers() {
-            const neo4j = require('neo4j-driver').v1;
-            const driver = neo4j.driver(neo4jURI, neo4j.auth.basic(neo4jUSER, neo4jPASS));
-            const session = driver.session();
-
-            // Test noch ausstehend
-            suspiciousCustomers = await session.run(`
-                match(c:Customer)
-                with collect(c) as customers
-                call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
-                yield node, score
-                return node, score
-                order by score desc
-            `);
-
-            console.log("hi2");
-        }
-        */
 
         function draw() {
             var config = {
                 container_id: "viz",
-                //server_url: "bolt://35.205.193.55:7687",
-                server_url: "bolt://127.0.0.1:7687",
-                server_user: "neo4j",
-                //server_password: "hcvC2ov9ExBt",
-                server_password: "hansi",
+                server_url: neo4jURI,
+                server_user: neo4jUSER,
+                server_password: neo4jPASS,
                 labels: {
                     "Character": {
                         "caption": "name",
@@ -101,20 +102,69 @@
                     }
                 },
                 relationships: {
-                    "INTERACTS": {
+                    "TRANSACTION": {
                         "thickness": "weight",
                         "caption": false
                     }
                 },
-                initial_cypher: "MATCH (n) RETURN (n) limit 25;"
+                initial_cypher: `match(n:Customer) return n limit 100;`
             };
 
-            //findSuspiciousCustomers();
-
             viz = new NeoVis.default(config);
+            viz.registerOnEvent("completed", printQueryFinished);
             viz.render();
         }
+
+        function printQueryFinished(values) {
+            if(values.record_count > 0) {
+                resultText.css("color", "green");
+                resultText.text(`Query completed, ${values.record_count} results!`);
+            } else {
+                resultText.css("color", "orange");
+                resultText.text("Query completed, no results!");
+            }
+
+        }
+
+        $("#stabilize").click(() => {
+            viz.stabilize();
+        });
+
+        $("#querySuspicious").click(() => {
+            resultText.text("Executing Query...");
+            let limit = parseInt($("#limit1").val());
+            var append = ";";
+            if(limit !== undefined && !isNaN(limit)) {
+                append = `limit ${limit};`;
+            }
+            let cypher = `match(c:Customer)
+                          with collect(c) as customers
+                          call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+                          yield node, score
+                          return node, score
+                          order by score desc `;
+
+            viz.renderWithCypher(cypher + append);
+        });
+
+        $("#queryCustomer").click(() => {
+            resultText.text("Executing Query...");
+            let limit = parseInt($("#limit2").val());
+            let from = $("#from").is(":checked") ? '>' : '';
+            let to = $("#to").is(":checked") ? '<' : '';
+            var append = ";";
+            if(limit !== undefined && !isNaN(limit)) {
+                append = `limit ${limit};`;
+            }
+            let cypher = `match (c:Customer {name:"${$("#name").val()}"})
+                                ${to}-[r:TRANSACTION]-${from}
+                                (c2:Customer) 
+                          return c, r, c2 `;
+
+            viz.renderWithCypher(cypher + append);
+        });
      </script>
  </body>
 
 </html>
+
