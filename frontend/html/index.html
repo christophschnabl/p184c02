@@ -93,31 +93,29 @@
 
         function draw() {
             var config = {
-                neo4j: {
-                    container_id: "viz",
-                    server_url: neo4jURI,
-                    server_user: neo4jUSER,
-                    server_password: neo4jPASS,
-                    labels: {
-                        "Customer": {
-                            "caption": "name",
-                            "size": "pagerank",
-                            "community": "community"
-                        }
-                    },
-                    relationships: {
-                        "TRANSACTION": {
-                            "thickness": "weight",
-                            "caption": false,
-                            "community": "community",
-                            "color": "green"
-                        }
-                    },
-                    initial_cypher: `match(n:Customer) return n limit 100;`,
-                    arrows: true,
-                    hierarchical_layout: true,
-                    hierarchical_sort_method: "directed"
-                }
+                container_id: "viz",
+                server_url: neo4jURI,
+                server_user: neo4jUSER,
+                server_password: neo4jPASS,
+                labels: {
+                    "Customer": {
+                        "caption": "name",
+                        "size": "pagerank",
+                        "community": "community"
+                    }
+                },
+                relationships: {
+                    "TRANSACTION": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    }
+                },
+                initial_cypher: `match(n:Customer) return n limit 100;`,
+                arrows: true,
+                hierarchical_layout: true,
+                hierarchical_sort_method: "directed"
             };
 
             viz = new NeoVis.default(config);
