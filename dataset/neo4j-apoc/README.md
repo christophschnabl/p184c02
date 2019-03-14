@@ -4,4 +4,5 @@
 
 # Run the image
  1. obtain image-id `docker images`
- 2. run the image `docker run -p 7474:7474 -p 7687:7687  -e NEO4J_dbms_security_procedures_unrestricted=apoc.\\\* <image-id>` 
+ 2. create data volume `docker volume create --name neo4j-volume` 
+ 3. run the image `docker run -p 7474:7474 -p 7687:7687 -v neo4j-volume:/data -e NEO4J_dbms_security_procedures_unrestricted=apoc.\\\* <image-id>` 
