@@ -76,7 +76,7 @@
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li uk-toggle="target: #suspicious" class=""><a href="#">Suspicious Customer</a></li>
                             <li uk-toggle="target: #customer"><a href="#">Query Customer</a></li>
-                            <li><a href="#">Stabilize</a></li>
+                            <li><a id="#stabilize" href="#">Stabilize</a></li>
                         </ul>
                     </div>
                 </li>
@@ -84,6 +84,16 @@
 
         </div>
     </nav>
+
+
+    <!--customer dialog-->
+    <div id="customer" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title"></h2>
+            <button class="uk-button uk-button-primary" type="button">Save</button>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
 
     <!--suspicious customer dialog-->
     <div id="suspicious" uk-modal>
