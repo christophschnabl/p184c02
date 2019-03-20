@@ -54,7 +54,30 @@
 </head>
 
 <body onload="draw()">
-    <section>
+    <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <ul class="uk-navbar-nav" id="customerList">
+                <li class="">
+                    <a href="#">About</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class=""><a href="#">Algorithmen</a></li>
+                            <li><a href="#">...</a></li>
+                            <li><a href="#">...</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Stammdaten</a>
+                </li>
+                <li>
+                    <a href="#">Transaktionen</a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+    <!--<section>
         <div class="topbar">Suspicious Customers:</div>
         <div class="topbar">Limit:<input id="limit1" value="10" type="number"/></div>
         <div class="topbar"><button id="querySuspicious">Search</button></div>
@@ -77,7 +100,7 @@
     </section>
     <section>
         <div class="topbar">Version 0.6</div>
-    </section>
+    </section>-->
     <div id="viz"></div>
 
     <script type="text/javascript">
@@ -166,7 +189,7 @@
             }
             let cypher = `match (c:Customer {name:"${$("#name").val()}"})
                                 ${to}-[r:TRANSACTION]-${from}
-                                (c2:Customer) 
+                                (c2:Customer)
                           return c, r, c2 `;
 
             viz.renderWithCypher(cypher + append);
@@ -175,4 +198,3 @@
  </body>
 
 </html>
-
