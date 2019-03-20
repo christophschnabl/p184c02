@@ -71,20 +71,29 @@
                     <a href="#">Stammdaten</a>
                 </li>
                 <li>
-                    <a uk-toggle="target: #transaktionen" href="#transaktionen">Transaktionen</a>
+                    <a href="">Transaktionen</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li uk-toggle="target: #suspicious" class=""><a href="#">Suspicious Customer</a></li>
+                            <li uk-toggle="target: #customer"><a href="#">Query Customer</a></li>
+                            <li><a href="#">Stabilize</a></li>
+                        </ul>
+                    </div>
                 </li>
             </ul>
 
         </div>
     </nav>
 
-    <div id="transaktionen" uk-modal>
+    <!--suspicious customer dialog-->
+    <div id="suspicious" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title"></h2>
              <button class="uk-button uk-button-primary" type="button">Save</button>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
     </div>
+
     <!--<section>
         <div class="topbar">Suspicious Customers:</div>
         <div class="topbar">Limit:<input id="limit1" value="10" type="number"/></div>
