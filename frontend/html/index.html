@@ -39,11 +39,11 @@
     #viz {
         flex-grow: 1;
     }
-    .topbar {
+    .dialogtext {
         display: inline-block;
         width: 250px;
     }
-    .topbar2 {
+    .dialoginput {
         display: inline-block;
         width: 123px;
     }
@@ -83,15 +83,26 @@
             </ul>
 
         </div>
+        <div class="uk-navbar-right">
+            <p id="result"></p>
+        </div>
     </nav>
 
 
     <!--customer dialog-->
     <div id="customer" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
-            <h2 class="uk-modal-title"></h2>
-            <button class="uk-button uk-button-primary" type="button">Save</button>
-            <button class="uk-button uk-modal-close" type="button">Close</button>
+            <h2 class="uk-modal-title">Abfrage für einen bestimmten Kunden</h2>
+            <div class="dialogtext">Name:</div>
+            <div class="dialoginput"><input id="name" type="text"/><br></div>
+            <div class="dialogtext">Transaction&nbsp;Limit:</div>
+            <div class="dialoginput"><input id="limit2" type="number" value="50"/><br></div>
+            <br><br>
+            <div class="dialogtext"></div>
+            <div class="dialoginput">Von:<input type="checkbox" id="from"/></div>
+            <div class="dialoginput">Zu:<input type="checkbox" id="to"/></div>
+            <br><br>
+            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryCustomer">Go!</button>
         </div>
     </div>
 
