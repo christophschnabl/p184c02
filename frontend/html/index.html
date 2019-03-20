@@ -39,11 +39,11 @@
     #viz {
         flex-grow: 1;
     }
-    .topbar {
+    .dialogtext {
         display: inline-block;
         width: 250px;
     }
-    .topbar2 {
+    .dialoginput {
         display: inline-block;
         width: 123px;
     }
@@ -54,27 +54,81 @@
 </head>
 
 <body onload="draw()">
-    <section>
-        <div class="topbar">Suspicious Customers:</div>
-        <div class="topbar">Limit:<input id="limit1" value="10" type="number"/></div>
-        <div class="topbar"><button id="querySuspicious">Search</button></div>
-    </section>
-    <section>
-        <div class="topbar">Name:<input id="name" type="text"/></div>
-        <div class="topbar">Limit:<input id="limit2" value="50" type="number"/></div>
-        <div class="topbar"><button id="queryCustomer">Search</button></div>
-    </section>
-    <section>
-        <div class="topbar2">From:<input type="checkbox" id="from"/></div>
-        <div class="topbar2">To:<input type="checkbox" id="to"/></div>
-        <div class="topbar"></div>
-    </section>
-    <section>
-        Status:&nbsp;<div class="topbar"><div id="result"></div></div>
-    </section>
-    <section>
-        <div class="topbar"><button id="stabilize">Stabilize</button></div>
-    </section>
+    <nav class="uk-navbar-container" uk-navbar>
+        <div class="uk-navbar-left">
+            <ul class="uk-navbar-nav" id="customerList">
+                <li class="">
+                    <a href="#">About</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li class=""><a href="#">Algorithmen</a></li>
+                            <li uk-toggle="target: #product"><a href="#">Produkt</a></li>
+                            <li><a href="#">...</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li>
+                    <a href="#">Stammdaten</a>
+                </li>
+                <li>
+                    <a href="">Transaktionen</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li uk-toggle="target: #suspicious" class=""><a href="#">Suspicious Customer</a></li>
+                            <li uk-toggle="target: #customer"><a href="#">Query Customer</a></li>
+                            <li><a id="#stabilize" href="#">Stabilize</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+        </div>
+        <div class="uk-navbar-right">
+            <p id="result"></p>
+        </div>
+    </nav>
+
+
+    <!--customer dialog-->
+    <div id="customer" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Abfrage für einen bestimmten Kunden</h2>
+            <div class="dialogtext">Name:</div>
+            <div class="dialoginput"><input id="name" type="text"/><br></div>
+            <div class="dialogtext">Transaction&nbsp;Limit:</div>
+            <div class="dialoginput"><input id="limit2" type="number" value="50"/><br></div>
+            <br><br>
+            <div class="dialogtext"></div>
+            <div class="dialoginput">Von:<input type="checkbox" id="from"/></div>
+            <div class="dialoginput">Zu:<input type="checkbox" id="to"/></div>
+            <br><br>
+            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryCustomer">Go!</button>
+        </div>
+    </div>
+
+    <!--suspicious customer dialog-->
+    <div id="suspicious" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Abfrage für die verdächtigsten Kunden</h2>
+            <div class="dialogtext">Wieviele:</div>
+            <div class="dialoginput"><input id="limit1" type="number" value="10"/><br></div>
+            <br><br>
+            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="querySuspicious">Go!</button>
+        </div>
+    </div>
+
+    <!--product info dialog-->
+    <div id="product" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Über das Produkt</h2>
+            <ul>
+                <li>Fraud Detection GUI Prototyp</li>
+                <li>Version 0.6</li>
+            </ul>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
     <div id="viz"></div>
 
     <script type="text/javascript">
@@ -95,7 +149,7 @@
                 server_user: neo4jUSER,
                 server_password: neo4jPASS,
                 labels: {
-                    "Character": {
+                    "Customer": {
                         "caption": "name",
                         "size": "pagerank",
                         "community": "community"
@@ -104,10 +158,15 @@
                 relationships: {
                     "TRANSACTION": {
                         "thickness": "weight",
-                        "caption": false
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
                     }
                 },
-                initial_cypher: `match(n:Customer) return n limit 100;`
+                initial_cypher: `match(n:Customer) return n limit 100;`,
+                arrows: true,
+                hierarchical_layout: true,
+                hierarchical_sort_method: "directed"
             };
 
             viz = new NeoVis.default(config);
@@ -158,7 +217,7 @@
             }
             let cypher = `match (c:Customer {name:"${$("#name").val()}"})
                                 ${to}-[r:TRANSACTION]-${from}
-                                (c2:Customer) 
+                                (c2:Customer)
                           return c, r, c2 `;
 
             viz.renderWithCypher(cypher + append);
@@ -167,4 +226,3 @@
  </body>
 
 </html>
-
