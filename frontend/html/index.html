@@ -62,7 +62,7 @@
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li class=""><a href="#">Algorithmen</a></li>
-                            <li><a href="#">...</a></li>
+                            <li uk-toggle="target: #product"><a href="#">Produkt</a></li>
                             <li><a href="#">...</a></li>
                         </ul>
                     </div>
@@ -99,7 +99,17 @@
     <div id="suspicious" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title"></h2>
-             <button class="uk-button uk-button-primary" type="button">Save</button>
+            <button class="uk-button uk-button-primary" type="button">Save</button>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <!--product info dialog-->
+    <div id="product" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Über das Produkt</h2>
+            <span>Fraud Detection GUI Prototyp</span><br>
+            <span>Version 0.6</span><br>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
     </div>
