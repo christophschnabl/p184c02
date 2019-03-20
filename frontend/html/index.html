@@ -121,6 +121,9 @@
             viz = new NeoVis.default(config);
             viz.registerOnEvent("completed", printQueryFinished);
             viz.render();
+            viz._network.on("click", () => {
+                alert("HI");
+            });
         }
 
         function printQueryFinished(values) {
