@@ -16,12 +16,14 @@
     "less": "^3.8.1",
     "uglify-js": "^3.4.9",
     "watch": "^1.0.2",
-	"webpack": "^2.3.3"  
-},
+    "webpack": "^2.3.3"
+  },
   "dependencies": {
+    "navigo": "^7.1.2",
+    "neo4j-driver": "^1.5.0",
     "neovis.js": "^1.0.0",
-"neo4j-driver": "^1.5.0"    
-},
+    "vanilla-router": "^1.2.7"
+  },
   "scripts": {
     "build:js": "node node_modules/browserify/bin/cmd.js  assets/javascript/index.js -t babelify --outfile public/javascript/bundle.js && npm run minifyJS",
     "minifyJS": " node node_modules/uglify-js/bin/uglifyjs public/javascript/bundle.js -o public/javascript/bundle.min.js",
