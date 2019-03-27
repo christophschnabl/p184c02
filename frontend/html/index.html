@@ -16,7 +16,11 @@
     <!-- Neovis.js -->
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
     <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+<<<<<<< HEAD
     <!--<script src="https://gist.githubusercontent.com/christophschnabl/ca7ff798053ce47cc1333d5007a08dde/raw/fecb7a4dc98d280f079b28ae20554a932cd193fa/neovis.js"></script>-->
+=======
+    <!--<script src="https://raw.githubusercontent.com/christophschnabl/neovis.js/master/dist/neovis.js"></script>-->
+>>>>>>> accf77c9c0df5180c00b670258b90f5137f6ef76
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -156,6 +160,16 @@
     <button id="stabilize" class="uk-button uk-button-primary" style="position: absolute; bottom: 10px; right: 10px;">Stabilize</button>
 
     <script type="text/javascript">
+
+    var root = null;
+    var useHash = true; // Defaults to: false
+    var hash = '#!'; // Defaults to: '#'
+    var router = new Navigo(root, useHash, hash);
+
+    router.on('/hansi', function () {
+      console.log("hansi");
+  })
+  .resolve();
         //server_url: "bolt://35.205.193.55:7687"
         //server_password: "hcvC2ov9ExBt"
         const neo4jURI = "bolt://127.0.0.1:7687";
@@ -249,6 +263,7 @@
 
         $("#queryIdentity").click(() => {
             resultText.text("Executing Query... ");
+<<<<<<< HEAD
             let checked = [$("#idAddress")[0].checked,
                            $("#idPhone")[0].checked, $("#idSSN")[0].checked, $("#idCreditCard")[0].checked];
 
@@ -282,6 +297,16 @@
                           return n, n2, n3`;
 
             viz.renderWithCypher(cypher);
+=======
+            let checked = [$("#idName").checked, $("#idAddress").checked,
+                           $("#idPhone").checked, $("#idSSN").checked, $("#idCreditCard").checked];
+
+            let nameQuery = "name = c.name";
+            let addressQuery = ":HAS_ADDRESS";
+            let phoneQuery = ":USES_PHONENUMBER";
+            let ssnQuery = ":HAS_SSN";
+            let ccQuery = ":USES_CREDITCARD";
+>>>>>>> accf77c9c0df5180c00b670258b90f5137f6ef76
         });
      </script>
  </body>
