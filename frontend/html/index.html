@@ -164,24 +164,22 @@
             <div class="dialogtext">Welche Daten?</div>
             <br>
             <div class="dialogtext">Name:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio" id="idName"
-            />
+            <input name="data" class="uk-radio" type="radio" id="idName"/>
             <br>
             <div class="dialogtext">Adresse:&nbsp;</div>
             <input name="data" class="uk-radio" type="radio"
-                id="idAddress" />
+                id="idAddress"/>
             <br>
             <div class="dialogtext">Telefonnummer:&nbsp;</div>
             <input name="data" class="uk-radio" type="radio"
-                id="idPhone" />
+                id="idPhone"/>
             <br>
             <div class="dialogtext">SSN:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio" id="idSSN"
-            />
+            <input name="data" class="uk-radio" type="radio" id="idSSN"/>
             <br>
             <div class="dialogtext">Kreditkarte:&nbsp;</div>
             <input name="data" class="uk-radio" type="radio"
-                id="idCreditCard" />
+                id="idCreditCard"/>
             <br>
             <br>
             <br>
@@ -208,15 +206,14 @@
 
     <script type="text/javascript">
 
-        var root = null;
+        /*var root = null;
         var useHash = true; // Defaults to: false
         var hash = '#!'; // Defaults to: '#'
         var router = new Navigo(root, useHash, hash);
 
         router.on('/hansi', function () {
             console.log("hansi");
-        })
-            .resolve();
+        }).resolve();*/
         //server_url: "bolt://35.205.193.55:7687"
         //server_password: "hcvC2ov9ExBt"
         const neo4jURI = "bolt://127.0.0.1:7687";
@@ -242,6 +239,30 @@
                 },
                 relationships: {
                     "TRANSACTION": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "HAS_ADDRESS": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "HAS_SSN": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "USES_CREDITCARD": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "USES_PHONENUMBER": {
                         "thickness": "weight",
                         "caption": false,
                         "community": "community",
@@ -313,34 +334,26 @@
             let checked = [$("#idAddress")[0].checked,
             $("#idPhone")[0].checked, $("#idSSN")[0].checked, $("#idCreditCard")[0].checked];
 
-            let addressQuery = checked[0] ? ":HAS_ADDRESS" : "";
-            let phoneQuery = checked[1] ? ":USES_PHONENUMBER" : "";
-            let ssnQuery = checked[2] ? ":HAS_SSN" : "";
-            let ccQuery = checked[3] ? ":USES_CREDITCARD" : "";
+            let cypher = "";
+            if($("#idName")[0].checked) {
+                cypher = `match(n:Customer)-[r]-(n2:Customer {name: n.name})
+                          return n, r, n2;`;
+            } else {
+                let relation = "";
+                if($("#idAddress")[0].checked) {
+                    relation = ":HAS_ADDRESS";
+                } else if($("#idPhone")[0].checked) {
+                    relation = ":USES_PHONENUMBER";
+                } else if($("#idSSN")[0].checked) {
+                    relation = ":HAS_SSN";
+                } else if($("#idCreditCard")[0].checked) {
+                    relation = ":USES_CREDITCARD";
+                }
 
-            let relation = addressQuery;
-            let prefix = ""
-            if (addressQuery !== "") {
-                relation += prefix + addressQuery;
-                prefix = " | ";
+                cypher = `match(n:Customer)-[r${relation}]-(n2)-[r2]-(n3:Customer)
+                            where labels(n2) <> labels(n)
+                            return n, r, n2, r2, n3`;
             }
-            if (phoneQuery !== "") {
-                relation += prefix + phoneQuery;
-                prefix = " | ";
-            }
-            if (ssnQuery !== "") {
-                relation += prefix + ssnQuery;
-                prefix = " | ";
-            }
-            if (ccQuery !== "") {
-                relation += prefix + ccQuery;
-                prefix = " | ";
-            }
-
-
-            let cypher = `match(n:Customer)-[${relation}]-(n2)--(n3:Customer)
-                          where labels(n2) <> labels(n)
-                          return n, n2, n3`;
 
             viz.renderWithCypher(cypher);
         });
