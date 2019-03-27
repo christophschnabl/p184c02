@@ -15,8 +15,13 @@
 
     <!-- Neovis.js -->
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
+<<<<<<< HEAD
+    <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
+    <!--<script src="https://raw.githubusercontent.com/christophschnabl/neovis.js/master/dist/neovis.js"></script>-->
+=======
     <!--<script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>-->
     <script src="https://gist.githubusercontent.com/christophschnabl/ca7ff798053ce47cc1333d5007a08dde/raw/fecb7a4dc98d280f079b28ae20554a932cd193fa/neovis.js"></script>
+>>>>>>> bc9d999fb5985ec36388b83406e8a615380c9fc1
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -70,6 +75,11 @@
                 </li>
                 <li>
                     <a href="/stammdaten">Stammdaten</a>
+                    <div class="uk-navbar-dropdown">
+                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                            <li uk-toggle="target: #identity" class=""><a href="#">Identity Fraud</a></li>
+                        </ul>
+                    </div>
                 </li>
                 <li>
                     <a href="">Transaktionen</a>
@@ -77,7 +87,6 @@
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li uk-toggle="target: #suspicious" class=""><a href="#">Suspicious Customer</a></li>
                             <li uk-toggle="target: #customer"><a href="#">Query Customer</a></li>
-                            <li><a id="#stabilize" href="#">Stabilize</a></li>
                         </ul>
                     </div>
                 </li>
@@ -100,8 +109,8 @@
             <div class="dialoginput"><input id="limit2" type="number" value="50"/><br></div>
             <br><br>
             <div class="dialogtext"></div>
-            <div class="dialoginput">Von:<input type="checkbox" id="from"/></div>
-            <div class="dialoginput">Zu:<input type="checkbox" id="to"/></div>
+            <div class="dialoginput">Von:&nbsp;<input class="uk-checkbox" type="checkbox" id="from"/></div>
+            <div class="dialoginput">Zu:&nbsp;<input class="uk-checkbox" type="checkbox" id="to"/></div>
             <br><br>
             <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryCustomer">Go!</button>
         </div>
@@ -118,6 +127,22 @@
         </div>
     </div>
 
+    <!--identity fraud dialog-->
+    <div id="identity" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Abfrage für Kunden mit gleichen Daten</h2>
+            <div class="dialogtext">Welche Daten?</div>
+            <br>
+            <div class="dialogtext">Name:&nbsp;</div><input class="uk-checkbox" type="checkbox" id="idName"/><br>
+            <div class="dialogtext">Adresse:&nbsp;</div><input class="uk-checkbox" type="checkbox" id="idAddress"/><br>
+            <div class="dialogtext">Telefonnummer:&nbsp;</div><input class="uk-checkbox" type="checkbox" id="idPhone"/><br>
+            <div class="dialogtext">SSN:&nbsp;</div><input class="uk-checkbox" type="checkbox" id="idSSN"/><br>
+            <div class="dialogtext">Kreditkarte:&nbsp;</div><input class="uk-checkbox" type="checkbox" id="idCreditCard"/><br>
+            <br><br>
+            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryIdentity">Go!</button>
+        </div>
+    </div>
+
     <!--product info dialog-->
     <div id="product" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
@@ -131,6 +156,9 @@
     </div>
 
     <div id="viz"></div>
+    <div style="height: 10px"></div>
+
+    <button id="stabilize" class="uk-button uk-button-primary" style="position: absolute; bottom: 10px; right: 10px;">Stabilize</button>
 
     <script type="text/javascript">
 
@@ -201,7 +229,7 @@
         });
 
         $("#querySuspicious").click(() => {
-            resultText.text("Executing Query...");
+            resultText.text("Executing Query... ");
             let limit = parseInt($("#limit1").val());
             var append = ";";
             if(limit !== undefined && !isNaN(limit)) {
@@ -218,7 +246,7 @@
         });
 
         $("#queryCustomer").click(() => {
-            resultText.text("Executing Query...");
+            resultText.text("Executing Query... ");
             let limit = parseInt($("#limit2").val());
             let from = $("#from").is(":checked") ? '>' : '';
             let to = $("#to").is(":checked") ? '<' : '';
@@ -232,6 +260,18 @@
                           return c, r, c2 `;
 
             viz.renderWithCypher(cypher + append);
+        });
+
+        $("#queryIdentity").click(() => {
+            resultText.text("Executing Query... ");
+            let checked = [$("#idName").checked, $("#idAddress").checked,
+                           $("#idPhone").checked, $("#idSSN").checked, $("#idCreditCard").checked];
+            
+            let nameQuery = "name = c.name";
+            let addressQuery = ":HAS_ADDRESS";
+            let phoneQuery = ":USES_PHONENUMBER";
+            let ssnQuery = ":HAS_SSN";
+            let ccQuery = ":USES_CREDITCARD";
         });
      </script>
  </body>
