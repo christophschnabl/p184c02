@@ -69,14 +69,11 @@
                     <a href="#">About</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class="">
+                            <li uk-toggle="target: #algorithm">
                                 <a href="#">Algorithmen</a>
                             </li>
                             <li uk-toggle="target: #product">
                                 <a href="#">Produkt</a>
-                            </li>
-                            <li>
-                                <a href="#">...</a>
                             </li>
                         </ul>
                     </div>
@@ -191,10 +188,42 @@
     <div id="product" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Über das Produkt</h2>
-            <ul>
-                <li>Fraud Detection GUI Prototyp</li>
-                <li>Version 0.6</li>
+            <ul style="list-style-type: none">
+                <li><b>Fraud Detection GUI Prototyp</b></li>
+                <li><b>Version 0.6</b></li>
+                <li>&nbsp;</li>
+                <li><i>Entwickler: Andreas Horvath, Fabian Fromwald, Christoph Schnabl, Peter Kain</i></li>
             </ul>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <!--algorithm info dialog-->
+    <div id="algorithm" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Über die Algorithmen</h2>
+            <ul style="list-style-type: none">
+                <li uk-toggle="target: #betweennessInfo"><a>Betweenness Algorithmus</a></li>
+            </ul>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <div id="betweennessInfo" stack="true" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Betweenness Algorithmus</h2>
+            <p>
+                Der Betweenness Algorithmus ist gut darin, Kunden zu erkennen,
+                wo wiele Transaktionen von oder zu dem Kunden führen. Das kann
+                dazu verwendet werden, um Kunden zu erkennen, die nur dazu da
+                sind, Geld an die Betrüger weiterzuleiten. Je "aktiver" der Kunde
+                bei Transaktionen ist, desto verdächtiger ist er.
+            </p>
+            <p>
+                Der verwendete Algorithmus existiert in Neo4j-Apoc und die
+                Dokumentation dazu findet man 
+                <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier:</a>
+            </p>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
     </div>
@@ -206,14 +235,14 @@
 
     <script type="text/javascript">
 
-        var root = null;
+        /*var root = null;
         var useHash = true; // Defaults to: false
         var hash = '#!'; // Defaults to: '#'
         var router = new Navigo(root, useHash, hash);
 
         router.on('/hansi', function () {
             console.log("hansi");
-        }).resolve();
+        }).resolve();*/
         //server_url: "bolt://35.205.193.55:7687"
         //server_password: "hcvC2ov9ExBt"
         const neo4jURI = "bolt://127.0.0.1:7687";
