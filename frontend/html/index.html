@@ -4,10 +4,11 @@
 <head>
     <title>Sachbearbeiter</title>
 
-    <meta charset="UTF-8"/>
+    <meta charset="UTF-8" />
 
     <!-- UIkit CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/css/uikit.min.css"
+    />
 
     <!-- UIkit JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/uikit/3.0.0-rc.21/js/uikit.min.js"></script>
@@ -16,11 +17,7 @@
     <!-- Neovis.js -->
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
     <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
-<<<<<<< HEAD
-    <!--<script src="https://gist.githubusercontent.com/christophschnabl/ca7ff798053ce47cc1333d5007a08dde/raw/fecb7a4dc98d280f079b28ae20554a932cd193fa/neovis.js"></script>-->
-=======
     <!--<script src="https://raw.githubusercontent.com/christophschnabl/neovis.js/master/dist/neovis.js"></script>-->
->>>>>>> accf77c9c0df5180c00b670258b90f5137f6ef76
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -29,32 +26,38 @@
     <link rel="stylesheet" type="text/css" href="styles/index.css" />
 
     <style>
-    html {
-        height: 100%;
-    }
-    body {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
-    section {
-        /*flex-grow: 1;*/
-        background-color: lightgrey;
-    }
-    #viz {
-        flex-grow: 1;
-    }
-    .dialogtext {
-        display: inline-block;
-        width: 250px;
-    }
-    .dialoginput {
-        display: inline-block;
-        width: 123px;
-    }
-    button {
-        width: 125px;
-    }
+        html {
+            height: 100%;
+        }
+
+        body {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        section {
+            /*flex-grow: 1;*/
+            background-color: lightgrey;
+        }
+
+        #viz {
+            flex-grow: 1;
+        }
+
+        .dialogtext {
+            display: inline-block;
+            width: 250px;
+        }
+
+        .dialoginput {
+            display: inline-block;
+            width: 123px;
+        }
+
+        button {
+            width: 125px;
+        }
     </style>
 </head>
 
@@ -66,9 +69,12 @@
                     <a href="#">About</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li class=""><a href="#">Algorithmen</a></li>
-                            <li uk-toggle="target: #product"><a href="#">Produkt</a></li>
-                            <li><a href="#">...</a></li>
+                            <li uk-toggle="target: #algorithm">
+                                <a href="#">Algorithmen</a>
+                            </li>
+                            <li uk-toggle="target: #product">
+                                <a href="#">Produkt</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -76,7 +82,9 @@
                     <a href="/stammdaten">Stammdaten</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li uk-toggle="target: #identity" class=""><a href="#">Identity Fraud</a></li>
+                            <li uk-toggle="target: #identity" class="">
+                                <a href="#">Identity Fraud</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -84,8 +92,12 @@
                     <a href="">Transaktionen</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li uk-toggle="target: #suspicious" class=""><a href="#">Suspicious Customer</a></li>
-                            <li uk-toggle="target: #customer"><a href="#">Query Customer</a></li>
+                            <li uk-toggle="target: #suspicious" class="">
+                                <a href="#">Suspicious Customer</a>
+                            </li>
+                            <li uk-toggle="target: #customer">
+                                <a href="#">Query Customer</a>
+                            </li>
                         </ul>
                     </div>
                 </li>
@@ -103,14 +115,26 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Abfrage für einen bestimmten Kunden</h2>
             <div class="dialogtext">Name:</div>
-            <div class="dialoginput"><input id="name" type="text"/><br></div>
+            <div class="dialoginput">
+                <input id="name" type="text" />
+                <br>
+            </div>
             <div class="dialogtext">Transaction&nbsp;Limit:</div>
-            <div class="dialoginput"><input id="limit2" type="number" value="50"/><br></div>
-            <br><br>
+            <div class="dialoginput">
+                <input id="limit2" type="number" value="50" />
+                <br>
+            </div>
+            <br>
+            <br>
             <div class="dialogtext"></div>
-            <div class="dialoginput">Von:&nbsp;<input class="uk-checkbox" type="checkbox" id="from"/></div>
-            <div class="dialoginput">Zu:&nbsp;<input class="uk-checkbox" type="checkbox" id="to"/></div>
-            <br><br>
+            <div class="dialoginput">Von:&nbsp;
+                <input class="uk-checkbox" type="checkbox" id="from" />
+            </div>
+            <div class="dialoginput">Zu:&nbsp;
+                <input class="uk-checkbox" type="checkbox" id="to" />
+            </div>
+            <br>
+            <br>
             <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryCustomer">Go!</button>
         </div>
     </div>
@@ -120,8 +144,12 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Abfrage für die verdächtigsten Kunden</h2>
             <div class="dialogtext">Wieviele:</div>
-            <div class="dialoginput"><input id="limit1" type="number" value="10"/><br></div>
-            <br><br>
+            <div class="dialoginput">
+                <input id="limit1" type="number" value="10" />
+                <br>
+            </div>
+            <br>
+            <br>
             <button class="uk-button uk-button-primary uk-modal-close" type="button" id="querySuspicious">Go!</button>
         </div>
     </div>
@@ -132,12 +160,26 @@
             <h2 class="uk-modal-title">Abfrage für Kunden mit gleichen Daten</h2>
             <div class="dialogtext">Welche Daten?</div>
             <br>
-            <div class="dialogtext">Name:&nbsp;</div><input name="data" class="uk-radio" type="radio" id="idName"/><br>
-            <div class="dialogtext">Adresse:&nbsp;</div><input name="data" class="uk-radio" type="radio" id="idAddress"/><br>
-            <div class="dialogtext">Telefonnummer:&nbsp;</div><input name="data" class="uk-radio" type="radio" id="idPhone"/><br>
-            <div class="dialogtext">SSN:&nbsp;</div><input name="data" class="uk-radio" type="radio" id="idSSN"/><br>
-            <div class="dialogtext">Kreditkarte:&nbsp;</div><input name="data" class="uk-radio" type="radio" id="idCreditCard"/><br>
-            <br><br>
+            <div class="dialogtext">Name:&nbsp;</div>
+            <input name="data" class="uk-radio" type="radio" id="idName"/>
+            <br>
+            <div class="dialogtext">Adresse:&nbsp;</div>
+            <input name="data" class="uk-radio" type="radio"
+                id="idAddress"/>
+            <br>
+            <div class="dialogtext">Telefonnummer:&nbsp;</div>
+            <input name="data" class="uk-radio" type="radio"
+                id="idPhone"/>
+            <br>
+            <div class="dialogtext">SSN:&nbsp;</div>
+            <input name="data" class="uk-radio" type="radio" id="idSSN"/>
+            <br>
+            <div class="dialogtext">Kreditkarte:&nbsp;</div>
+            <input name="data" class="uk-radio" type="radio"
+                id="idCreditCard"/>
+            <br>
+            <br>
+            <br>
             <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryIdentity">Go!</button>
         </div>
     </div>
@@ -146,10 +188,42 @@
     <div id="product" uk-modal>
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Über das Produkt</h2>
-            <ul>
-                <li>Fraud Detection GUI Prototyp</li>
-                <li>Version 0.6</li>
+            <ul style="list-style-type: none">
+                <li><b>Fraud Detection GUI Prototyp</b></li>
+                <li><b>Version 0.6</b></li>
+                <li>&nbsp;</li>
+                <li><i>Entwickler: Andreas Horvath, Fabian Fromwald, Christoph Schnabl, Peter Kain</i></li>
             </ul>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <!--algorithm info dialog-->
+    <div id="algorithm" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Über die Algorithmen</h2>
+            <ul style="list-style-type: none">
+                <li uk-toggle="target: #betweennessInfo"><a>Betweenness Algorithmus</a></li>
+            </ul>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <div id="betweennessInfo" stack="true" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Betweenness Algorithmus</h2>
+            <p>
+                Der Betweenness Algorithmus ist gut darin, Kunden zu erkennen,
+                wo wiele Transaktionen von oder zu dem Kunden führen. Das kann
+                dazu verwendet werden, um Kunden zu erkennen, die nur dazu da
+                sind, Geld an die Betrüger weiterzuleiten. Je "aktiver" der Kunde
+                bei Transaktionen ist, desto verdächtiger ist er.
+            </p>
+            <p>
+                Der verwendete Algorithmus existiert in Neo4j-Apoc und die
+                Dokumentation dazu findet man 
+                <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier:</a>
+            </p>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
     </div>
@@ -161,6 +235,7 @@
 
     <script type="text/javascript">
 
+<<<<<<< HEAD
         var Router = {
         routes: [],
         mode: null,
@@ -280,11 +355,16 @@
     var useHash = true; // Defaults to: false
     var hash = '#!'; // Defaults to: '#'
     var router = new Navigo(root, useHash, hash);
+=======
+        /*var root = null;
+        var useHash = true; // Defaults to: false
+        var hash = '#!'; // Defaults to: '#'
+        var router = new Navigo(root, useHash, hash);
+>>>>>>> c186d8f8f5a8ba31b51d7e4e1a7feed08b0d89c7
 
-    router.on('/hansi', function () {
-      console.log("hansi");
-  })
-  .resolve();
+        router.on('/hansi', function () {
+            console.log("hansi");
+        }).resolve();*/
         //server_url: "bolt://35.205.193.55:7687"
         //server_password: "hcvC2ov9ExBt"
         const neo4jURI = "bolt://127.0.0.1:7687";
@@ -314,6 +394,30 @@
                         "caption": false,
                         "community": "community",
                         "color": "green"
+                    },
+                    "HAS_ADDRESS": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "HAS_SSN": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "USES_CREDITCARD": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
+                    },
+                    "USES_PHONENUMBER": {
+                        "thickness": "weight",
+                        "caption": false,
+                        "community": "community",
+                        "color": "green"
                     }
                 },
                 initial_cypher: `match(n:Customer) return n limit 100;`,
@@ -328,7 +432,7 @@
         }
 
         function printQueryFinished(values) {
-            if(values.record_count > 0) {
+            if (values.record_count > 0) {
                 resultText.css("color", "green");
                 resultText.text(`Query completed, ${values.record_count} results!`);
             } else {
@@ -346,7 +450,7 @@
             resultText.text("Executing Query... ");
             let limit = parseInt($("#limit1").val());
             var append = ";";
-            if(limit !== undefined && !isNaN(limit)) {
+            if (limit !== undefined && !isNaN(limit)) {
                 append = `limit ${limit};`;
             }
             let cypher = `match(c:Customer)
@@ -365,7 +469,7 @@
             let from = $("#from").is(":checked") ? '>' : '';
             let to = $("#to").is(":checked") ? '<' : '';
             var append = ";";
-            if(limit !== undefined && !isNaN(limit)) {
+            if (limit !== undefined && !isNaN(limit)) {
                 append = `limit ${limit};`;
             }
             let cypher = `match (c:Customer {name:"${$("#name").val()}"})
@@ -378,52 +482,33 @@
 
         $("#queryIdentity").click(() => {
             resultText.text("Executing Query... ");
-<<<<<<< HEAD
             let checked = [$("#idAddress")[0].checked,
-                           $("#idPhone")[0].checked, $("#idSSN")[0].checked, $("#idCreditCard")[0].checked];
+            $("#idPhone")[0].checked, $("#idSSN")[0].checked, $("#idCreditCard")[0].checked];
 
-            let addressQuery = checked[0] ? ":HAS_ADDRESS" : "";
-            let phoneQuery = checked[1] ? ":USES_PHONENUMBER" : "";
-            let ssnQuery = checked[2] ? ":HAS_SSN" : "";
-            let ccQuery = checked[3] ? ":USES_CREDITCARD" : "";
+            let cypher = "";
+            if($("#idName")[0].checked) {
+                cypher = `match(n:Customer)-[r]-(n2:Customer {name: n.name})
+                          return n, r, n2;`;
+            } else {
+                let relation = "";
+                if($("#idAddress")[0].checked) {
+                    relation = ":HAS_ADDRESS";
+                } else if($("#idPhone")[0].checked) {
+                    relation = ":USES_PHONENUMBER";
+                } else if($("#idSSN")[0].checked) {
+                    relation = ":HAS_SSN";
+                } else if($("#idCreditCard")[0].checked) {
+                    relation = ":USES_CREDITCARD";
+                }
 
-            let relation = addressQuery;
-            let prefix = ""
-            if(addressQuery !== "") {
-                relation += prefix + addressQuery;
-                prefix = " | ";
+                cypher = `match(n:Customer)-[r${relation}]-(n2)-[r2]-(n3:Customer)
+                            where labels(n2) <> labels(n)
+                            return n, r, n2, r2, n3`;
             }
-            if(phoneQuery !== "") {
-                relation += prefix + phoneQuery;
-                prefix = " | ";
-            }
-            if(ssnQuery !== "") {
-                relation += prefix + ssnQuery;
-                prefix = " | ";
-            }
-            if(ccQuery !== "") {
-                relation += prefix + ccQuery;
-                prefix = " | ";
-            }
-            
-
-            let cypher = `match(n:Customer)-[${relation}]-(n2)--(n3:Customer)
-                          where labels(n2) <> labels(n)
-                          return n, n2, n3`;
 
             viz.renderWithCypher(cypher);
-=======
-            let checked = [$("#idName").checked, $("#idAddress").checked,
-                           $("#idPhone").checked, $("#idSSN").checked, $("#idCreditCard").checked];
-
-            let nameQuery = "name = c.name";
-            let addressQuery = ":HAS_ADDRESS";
-            let phoneQuery = ":USES_PHONENUMBER";
-            let ssnQuery = ":HAS_SSN";
-            let ccQuery = ":USES_CREDITCARD";
->>>>>>> accf77c9c0df5180c00b670258b90f5137f6ef76
         });
-     </script>
- </body>
+    </script>
+</body>
 
 </html>
