@@ -21,6 +21,9 @@
                 "properties": "always"
             }
         ],
+        "new-cap": [
+            1
+        ],
         "comma-style": [
             2,
             "last"

@@ -16,13 +16,11 @@
 
     <!-- Neovis.js -->
     <script src="https://cdn.neo4jlabs.com/neovis.js/v1.0.0/neovis.js"></script>
-    <script src="https://rawgit.com/neo4j-contrib/neovis.js/master/dist/neovis.js"></script>
-    <!--<script src="https://raw.githubusercontent.com/christophschnabl/neovis.js/master/dist/neovis.js"></script>-->
 
     <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
-    <script type="text/javascript" src="../public/javascript/bundle.min.js"></script>
+    <script type="text/javascript" src="javascript/bundle.min.js"></script>
     <link rel="stylesheet" type="text/css" href="styles/index.css" />
 
     <style>
@@ -37,7 +35,6 @@
         }
 
         section {
-            /*flex-grow: 1;*/
             background-color: lightgrey;
         }
 
@@ -62,7 +59,7 @@
     </style>
 </head>
 
-<body onload="draw()">
+<body>
     <nav class="uk-navbar-container" uk-navbar>
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav" id="customerList">
@@ -163,22 +160,19 @@
             <div class="dialogtext">Welche Daten?</div>
             <br>
             <div class="dialogtext">Name:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio" id="idName"/>
+            <input name="data" class="uk-radio" type="radio" id="idName" />
             <br>
             <div class="dialogtext">Adresse:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio"
-                id="idAddress"/>
+            <input name="data" class="uk-radio" type="radio" id="idAddress" />
             <br>
             <div class="dialogtext">Telefonnummer:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio"
-                id="idPhone"/>
+            <input name="data" class="uk-radio" type="radio" id="idPhone" />
             <br>
             <div class="dialogtext">SSN:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio" id="idSSN"/>
+            <input name="data" class="uk-radio" type="radio" id="idSSN" />
             <br>
             <div class="dialogtext">Kreditkarte:&nbsp;</div>
-            <input name="data" class="uk-radio" type="radio"
-                id="idCreditCard"/>
+            <input name="data" class="uk-radio" type="radio" id="idCreditCard" />
             <br>
             <br>
             <br>
@@ -191,10 +185,17 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Über das Produkt</h2>
             <ul style="list-style-type: none">
-                <li><b>Fraud Detection GUI Prototyp</b></li>
-                <li><b>Version 0.6</b></li>
+                <li>
+                    <b>Fraud Detection GUI Prototyp</b>
+                </li>
+                <li>
+                    <b>Version 0.6</b>
+                </li>
                 <li>&nbsp;</li>
-                <li><i>Entwickler: Andreas Horvath, Fabian Fromwald, Christoph Schnabl, Peter Kain</i></li>
+                <li>
+                    <i>Entwickler: Andreas Horvath, Fabian Fromwald, Christoph Schnabl,
+                        Peter Kain</i>
+                </li>
             </ul>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
@@ -205,7 +206,9 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Über die Algorithmen</h2>
             <ul style="list-style-type: none">
-                <li uk-toggle="target: #betweennessInfo"><a>Betweenness Algorithmus</a></li>
+                <li uk-toggle="target: #betweennessInfo">
+                    <a>Betweenness Algorithmus</a>
+                </li>
             </ul>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
@@ -215,26 +218,25 @@
         <div class="uk-modal-dialog uk-modal-body">
             <h2 class="uk-modal-title">Betweenness Algorithmus</h2>
             <p>
-                Der Betweenness Algorithmus ist gut darin, Kunden zu erkennen,
-                wo wiele Transaktionen von oder zu dem Kunden führen. Das kann
-                dazu verwendet werden, um Kunden zu erkennen, die nur dazu da
-                sind, Geld an die Betrüger weiterzuleiten. Je "aktiver" der Kunde
-                bei Transaktionen ist, desto verdächtiger ist er.
+                Der Betweenness Algorithmus ist gut darin, Kunden zu erkennen, wo wiele Transaktionen
+                von oder zu dem Kunden führen. Das kann dazu verwendet werden, um
+                Kunden zu erkennen, die nur dazu da sind, Geld an die Betrüger weiterzuleiten.
+                Je "aktiver" der Kunde bei Transaktionen ist, desto verdächtiger
+                ist er.
             </p>
             <p>
-                Der verwendete Algorithmus existiert in Neo4j-Apoc und die
-                Dokumentation dazu findet man
+                Der verwendete Algorithmus existiert in Neo4j-Apoc und die Dokumentation dazu findet
+                man
                 <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier:</a>
             </p>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
     </div>
 
-    <div id="viz"></div>
+    <div id="vis"></div>
     <div style="height: 10px"></div>
 
     <button id="stabilize" class="uk-button uk-button-primary" style="position: absolute; bottom: 10px; right: 10px;">Stabilize</button>
-
     <script type="text/javascript">
 
     /*
@@ -361,7 +363,6 @@
         var useHash = true; // Defaults to: false
         var hash = '#!'; // Defaults to: '#'
         var router = new Navigo(root, useHash, hash);
->>>>>>> c186d8f8f5a8ba31b51d7e4e1a7feed08b0d89c7
 
         router.on('/hansi', function () {
             console.log("hansi");
