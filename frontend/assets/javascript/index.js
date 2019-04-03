@@ -1,27 +1,11 @@
 const neo4jURI = 'bolt://127.0.0.1:7687';
 const neo4jUSER = 'neo4j';
-const neo4jPASS = 'root';
-
-let viz;
-
-/**
- * printQueryFinished function
- * @param {*} values
- */
-function printQueryFinished(values) {
-    if (values.record_count > 0) {
-        $('#result').css('color', 'green');
-        $('#result').text(`Query completed, ${values.record_count} results!`);
-    } else {
-        $('#result').css('color', 'orange');
-        $('#result').text('Query completed, no results!');
-    }
-}
+const neo4jPASS = 'andreas';
 
 /**
  * draw function
  */
-function draw() {
+function initNeoVis() {
     const config = {
         container_id: 'viz',
         server_url: neo4jURI,
@@ -72,16 +56,15 @@ function draw() {
         hierarchical_sort_method: 'directed',
     };
 
-    viz = new NeoVis.default(config);
-    viz.registerOnEvent('completed', printQueryFinished);
-    viz.render();
+    window.vis = new NeoVis.default(config);
+    window.vis.render();
 }
 
 $(document).ready(() => {
-    draw();
+    initNeoVis();
 
     $('#stabilize').click(() => {
-        viz.stabilize();
+        window.vis.stabilize();
     });
 
     $('#querySuspicious').click(() => {
@@ -93,7 +76,7 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
-        viz.renderWithCypher(cypher);
+        window.vis.renderWithCypher(cypher);
     });
 
     $('#queryCustomer').click(() => {
@@ -106,7 +89,7 @@ $(document).ready(() => {
                                 (c2:Customer)
                           return c, r, c2 ${limit ? `limit ${limit}` : ';'}`;
 
-        viz.renderWithCypher(cypher);
+        window.vis.renderWithCypher(cypher);
     });
 
     $('#queryIdentity').click(() => {
@@ -135,6 +118,6 @@ $(document).ready(() => {
                             return n, r, n2, r2, n3`;
         }
 
-        viz.renderWithCypher(cypher);
+        window.vis.renderWithCypher(cypher);
     });
 });
