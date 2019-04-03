@@ -4,6 +4,9 @@ const neo4jPASS = 'root';
 
 let viz;
 
+/**
+ * draw function
+ */
 function draw() {
     const config = {
         container_id: 'viz',
@@ -71,6 +74,8 @@ function printQueryFinished(values) {
 }
 
 $(document).ready(() => {
+    draw();
+
     $('#stabilize').click(() => {
         viz.stabilize();
     });
