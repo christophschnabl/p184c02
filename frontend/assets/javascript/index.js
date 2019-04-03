@@ -60,16 +60,6 @@ function initNeoVis() {
     };
 
     window.vis = new NeoVis.default(config);
-    /* 
-    window.vis.registerOnEvent('completed', (values) => {
-        if (values.record_count > 0) {
-            resultText.css('color', 'green');
-            resultText.text(`Query completed, ${values.record_count} results!`);
-        } else {
-            resultText.css('color', 'orange');
-            resultText.text('Query completed, no results!');
-        }
-    }); */
     window.vis.render();
 }
 
@@ -110,6 +100,18 @@ $(document).ready(() => {
     initNeoVis();
     initRouter();
 
+    const resultText = $('#result');
+
+    window.vis.registerOnEvent('completed', (values) => {
+        if (values.record_count > 0) {
+            resultText.css('color', 'green');
+            resultText.text(`Query completed, ${values.record_count} results!`);
+        } else {
+            resultText.css('color', 'orange');
+            resultText.text('Query completed, no results!');
+        }
+    });
+
     $('#stabilize').click(() => {
         window.vis.stabilize();
     });
@@ -135,7 +137,7 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
-        viz.renderWithCypher(cypher);
+        window.vis.renderWithCypher(cypher);
     });
 
     $('#queryCustomer').click(() => {
