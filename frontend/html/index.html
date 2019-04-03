@@ -150,7 +150,8 @@
             </div>
             <br>
             <br>
-            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="querySuspicious">Go!</button>
+            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryBetweenness">Betweenness</button>
+            <button class="uk-button uk-button-primary uk-modal-close" type="button" id="queryCloseness">Closeness</button>
         </div>
     </div>
 
@@ -445,7 +446,7 @@
             viz.stabilize();
         });
 
-        $("#querySuspicious").click(() => {
+        $("#queryBetweenness").click(() => {
             resultText.text("Executing Query... ");
             let limit = parseInt($("#limit1").val());
             var append = ";";
@@ -459,6 +460,22 @@
                           return node, score
                           order by score desc `;
 
+            viz.renderWithCypher(cypher + append);
+        });
+
+        $("#queryCloseness").click(() => {
+            resultText.text("Executing Query... ");
+            let limit = parseInt($("#limit1").val());
+            var append = ";";
+            if (limit !== undefined && !isNaN(limit)) {
+                append = `limit ${limit};`;
+            }
+            let cypher = `match(c:Customer)
+                          with collect(c) as customers
+                          call apoc.algo.closeness(['TRANSACTION'], customers, 'BOTH')
+                          yield node, score
+                          return node, score
+                          order by score desc `;
             viz.renderWithCypher(cypher + append);
         });
 
