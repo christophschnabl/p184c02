@@ -3,7 +3,7 @@ import Navigo from './navigo';
 
 const neo4jURI = 'bolt://127.0.0.1:7687';
 const neo4jUSER = 'neo4j';
-const neo4jPASS = 'andreas';
+const neo4jPASS = 'root';
 
 /**
  * draw function
@@ -63,6 +63,9 @@ function initNeoVis() {
     window.vis.render();
 }
 
+/**
+ * Initializes router
+ */
 function initRouter() {
     const root = null;
     const useHash = true; // Defaults to: false
@@ -83,12 +86,12 @@ function initRouter() {
 
     router
         .on({
-            'abteilungsleiter': () => {
+            abteilungsleiter: () => {
                 setContent('About');
             },
             '*': () => {
-                setContent('Home')
-            }
+                setContent('Home');
+            },
         })
         .resolve();
 }
