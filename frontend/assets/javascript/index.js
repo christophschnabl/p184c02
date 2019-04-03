@@ -71,61 +71,65 @@ function printQueryFinished(values) {
 
 }
 
-$('#stabilize').click(() => {
-    viz.stabilize();
-});
+$(document).ready(() => {
 
-$('#querySuspicious').click(() => {
-    $('#result').text('Executing Query... ');
-    const limit = parseInt($('#limit1').val());
-    const cypher = `match(c:Customer)
+    $('#stabilize').click(() => {
+        viz.stabilize();
+    });
+
+    $('#querySuspicious').click(() => {
+        $('#result').text('Executing Query... ');
+        const limit = parseInt($('#limit1').val());
+        const cypher = `match(c:Customer)
                           with collect(c) as customers
                           call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
                           yield node, score
                           return node, score
                           order by score desc ` + (limit !== undefined && !isNaN(limit)) ? `limit ${limit};` : ';';
 
-    viz.renderWithCypher(cypher);
-});
+        viz.renderWithCypher(cypher);
+    });
 
-$('#queryCustomer').click(() => {
-    $('#result').text('Executing Query... ');
-    const limit = parseInt($('#limit2').val());
-    const from = $('#from').is(':checked') ? '>' : '';
-    const to = $('#to').is(':checked') ? '<' : '';
-    const cypher = `match (c:Customer {name:'${$('#name').val()}'})
+    $('#queryCustomer').click(() => {
+        $('#result').text('Executing Query... ');
+        const limit = parseInt($('#limit2').val());
+        const from = $('#from').is(':checked') ? '>' : '';
+        const to = $('#to').is(':checked') ? '<' : '';
+        const cypher = `match (c:Customer {name:'${$('#name').val()}'})
                                 ${to}-[r:TRANSACTION]-${from}
                                 (c2:Customer)
                           return c, r, c2 ` + (limit !== undefined && !isNaN(limit)) ? `limit ${limit};` : ';';
 
-    viz.renderWithCypher(cypher);
-});
+        viz.renderWithCypher(cypher);
+    });
 
-$('#queryIdentity').click(() => {
-    $('#result').text('Executing Query... ');
-    let checked = [$('#idAddress')[0].checked,
-    $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
+    $('#queryIdentity').click(() => {
+        $('#result').text('Executing Query... ');
+        let checked = [$('#idAddress')[0].checked,
+        $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
-    let cypher = ';
-    if ($('#idName')[0].checked) {
-        cypher = `match(n:Customer)-[r]-(n2:Customer {name: n.name})
+        let cypher = '';
+        if ($('#idName')[0].checked) {
+            cypher = `match(n:Customer)-[r]-(n2:Customer {name: n.name})
                           return n, r, n2;`;
-    } else {
-        let relation = ';
-        if ($('#idAddress')[0].checked) {
-            relation = ':HAS_ADDRESS';
-        } else if ($('#idPhone')[0].checked) {
-            relation = ':USES_PHONENUMBER';
-        } else if ($('#idSSN')[0].checked) {
-            relation = ':HAS_SSN';
-        } else if ($('#idCreditCard')[0].checked) {
-            relation = ':USES_CREDITCARD';
-        }
+        } else {
+            let relation = '';
+            if ($('#idAddress')[0].checked) {
+                relation = ':HAS_ADDRESS';
+            } else if ($('#idPhone')[0].checked) {
+                relation = ':USES_PHONENUMBER';
+            } else if ($('#idSSN')[0].checked) {
+                relation = ':HAS_SSN';
+            } else if ($('#idCreditCard')[0].checked) {
+                relation = ':USES_CREDITCARD';
+            }
 
-        cypher = `match(n:Customer)-[r${relation}]-(n2)-[r2]-(n3:Customer)
+            cypher = `match(n:Customer)-[r${relation}]-(n2)-[r2]-(n3:Customer)
                             where labels(n2) <> labels(n)
                             return n, r, n2, r2, n3`;
-    }
+        }
 
-    viz.renderWithCypher(cypher);
+        viz.renderWithCypher(cypher);
+    });
+
 });
