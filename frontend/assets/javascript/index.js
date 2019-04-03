@@ -11,48 +11,48 @@ function draw() {
         server_user: neo4jUSER,
         server_password: neo4jPASS,
         labels: {
-            'Customer': {
-                'caption': 'name',
-                'size': 'pagerank',
-                'community': 'community'
-            }
+            Customer: {
+                caption: 'name',
+                size: 'pagerank',
+                community: 'community',
+            },
         },
         relationships: {
-            'TRANSACTION': {
-                'thickness': 'weight',
-                'caption': false,
-                'community': 'community',
-                'color': 'green'
+            TRANSACTION: {
+                thickness: 'weight',
+                caption: false,
+                community: 'community',
+                color: 'green',
             },
-            'HAS_ADDRESS': {
-                'thickness': 'weight',
-                'caption': false,
-                'community': 'community',
-                'color': 'green'
+            HAS_ADDRESS: {
+                thickness: 'weight',
+                caption: false,
+                community: 'community',
+                color: 'green',
             },
-            'HAS_SSN': {
-                'thickness': 'weight',
-                'caption': false,
-                'community': 'community',
-                'color': 'green'
+            HAS_SSN: {
+                thickness: 'weight',
+                caption: false,
+                community: 'community',
+                color: 'green',
             },
-            'USES_CREDITCARD': {
-                'thickness': 'weight',
-                'caption': false,
-                'community': 'community',
-                'color': 'green'
+            USES_CREDITCARD: {
+                thickness: 'weight',
+                caption: false,
+                community: 'community',
+                color: 'green',
             },
-            'USES_PHONENUMBER': {
-                'thickness': 'weight',
-                'caption': false,
-                'community': 'community',
-                'color': 'green'
-            }
+            USES_PHONENUMBER: {
+                thickness: 'weight',
+                caption: false,
+                community: 'community',
+                color: 'green',
+            },
         },
         initial_cypher: `match(n:Customer) return n limit 100;`,
         arrows: true,
         hierarchical_layout: true,
-        hierarchical_sort_method: 'directed'
+        hierarchical_sort_method: 'directed',
     };
 
     viz = new NeoVis.default(config);
@@ -68,11 +68,9 @@ function printQueryFinished(values) {
         $('#result').css('color', 'orange');
         $('#result').text('Query completed, no results!');
     }
-
 }
 
 $(document).ready(() => {
-
     $('#stabilize').click(() => {
         viz.stabilize();
     });
@@ -85,7 +83,7 @@ $(document).ready(() => {
                           call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
                           yield node, score
                           return node, score
-                          order by score desc ` + (limit !== undefined && !isNaN(limit)) ? `limit ${limit};` : ';';
+                          order by score desc ${limit !== undefined && !isNaN(limit)}` ? `limit ${limit};` : ';';
 
         viz.renderWithCypher(cypher);
     });
@@ -98,15 +96,15 @@ $(document).ready(() => {
         const cypher = `match (c:Customer {name:'${$('#name').val()}'})
                                 ${to}-[r:TRANSACTION]-${from}
                                 (c2:Customer)
-                          return c, r, c2 ` + (limit !== undefined && !isNaN(limit)) ? `limit ${limit};` : ';';
+                          return c, r, c2 ${limit !== undefined && !isNaN(limit)}` ? `limit ${limit};` : ';';
 
         viz.renderWithCypher(cypher);
     });
 
     $('#queryIdentity').click(() => {
         $('#result').text('Executing Query... ');
-        let checked = [$('#idAddress')[0].checked,
-        $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
+        const checked = [$('#idAddress')[0].checked,
+            $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
         let cypher = '';
         if ($('#idName')[0].checked) {
@@ -131,5 +129,4 @@ $(document).ready(() => {
 
         viz.renderWithCypher(cypher);
     });
-
 });
