@@ -113,7 +113,7 @@ $(document).ready(() => {
         window.vis.stabilize();
     });
 
-    $('#querySuspicious').click(() => {
+    $('#queryBetweenness').click(() => {
         $('#result').text('Executing Query... ');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
@@ -123,6 +123,18 @@ $(document).ready(() => {
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
         window.vis.renderWithCypher(cypher);
+    });
+
+    $('#queryCloseness').click(() => {
+        resultText.text('Executing Query... ');
+        const limit = parseInt($('#limit1').val(), 10);
+        const cypher = `match(c:Customer)
+                          with collect(c) as customers
+                          call apoc.algo.closeness(['TRANSACTION'], customers, 'BOTH')
+                          yield node, score
+                          return node, score
+                          order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        viz.renderWithCypher(cypher + append);
     });
 
     $('#queryCustomer').click(() => {
