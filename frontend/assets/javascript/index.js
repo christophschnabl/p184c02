@@ -141,7 +141,7 @@ $(document).ready(() => {
     $('#queryIdentity').click(() => {
         $('#result').text('Executing Query... ');
         const checked = [$('#idAddress')[0].checked,
-        $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
+            $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
         let cypher = '';
         if ($('#idName')[0].checked) {
