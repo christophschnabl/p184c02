@@ -208,6 +208,7 @@
             <ul style="list-style-type: none">
                 <li uk-toggle="target: #betweennessInfo"><a>Betweenness Algorithmus</a></li>
                 <li uk-toggle="target: #closenessInfo"><a>Closeness Algorithmus</a></li>
+                <li uk-toggle="target: #pageRankInfo"><a>PageRank Algorithmus</a></li>
             </ul>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
@@ -241,6 +242,25 @@
                 Betrugsriko. Diese könnten nur dazu da sein, das Geld der Betrüger 
                 weiterzuleiten. Je "zentraller" der Kunde bei Transaktionen ist,
                  desto verdächtiger ist er.
+            </p>
+            <p>
+                Der verwendete Algorithmus existiert in Neo4j-Apoc und die
+                Dokumentation dazu findet man 
+                <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier.</a>
+            </p>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <div id="pageRankInfo" stack="true" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">PageRank Algorithmus</h2>
+            <p>
+                Der PageRank Algorithmus misst die "Wichtigkeit" der Kunden.
+                Der Algorithmus zählt die Anzahl und den Wert alle Transaktionen
+                eines Kunden. Je bedeutender ein Kunde ist, umso höher ist auch
+                seine Betrugsgefahr. Diese Kunden könnten nur dazu da sein, das Geld
+                der Betrüger weiterzuleiten. 
             </p>
             <p>
                 Der verwendete Algorithmus existiert in Neo4j-Apoc und die
