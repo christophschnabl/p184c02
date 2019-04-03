@@ -117,7 +117,8 @@ $(document).ready(() => {
     });
 
     $('#queryBetweenness').click(() => {
-        $('#result').text('Executing Query... ');
+        resultText.css('color', 'black');
+        resultText.text('Executing Query... ');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                           with collect(c) as customers
@@ -129,6 +130,7 @@ $(document).ready(() => {
     });
 
     $('#queryCloseness').click(() => {
+        resultText.css('color', 'black');
         resultText.text('Executing Query... ');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
@@ -141,7 +143,8 @@ $(document).ready(() => {
     });
 
     $('#queryCustomer').click(() => {
-        $('#result').text('Executing Query... ');
+        resultText.css('color', 'black');
+        resultText.text('Executing Query... ');
         const limit = parseInt($('#limit2').val(), 10);
         const from = $('#from').is(':checked') ? '>' : '';
         const to = $('#to').is(':checked') ? '<' : '';
@@ -154,7 +157,8 @@ $(document).ready(() => {
     });
 
     $('#queryIdentity').click(() => {
-        $('#result').text('Executing Query... ');
+        resultText.css('color', 'black');
+        resultText.text('Executing Query... ');
         const checked = [$('#idAddress')[0].checked,
             $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
