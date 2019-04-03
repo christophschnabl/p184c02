@@ -1,3 +1,6 @@
+import Navigo from './navigo';
+
+
 const neo4jURI = 'bolt://127.0.0.1:7687';
 const neo4jUSER = 'neo4j';
 const neo4jPASS = 'andreas';
@@ -60,8 +63,39 @@ function initNeoVis() {
     window.vis.render();
 }
 
+function initRouter() {
+    const root = null;
+    const useHash = true; // Defaults to: false
+    const hash = '#!'; // Defaults to: '#'
+    const router = new Navigo(root, useHash, hash);
+
+    router
+        .on('/abteilungsleiter', () => {
+            // display all the products
+        })
+        .resolve();
+
+    router
+        .on(() => {
+            // show home page here
+        })
+        .resolve();
+
+    router
+        .on({
+            'abteilungsleiter': () => {
+                setContent('About');
+            },
+            '*': () => {
+                setContent('Home')
+            }
+        })
+        .resolve();
+}
+
 $(document).ready(() => {
     initNeoVis();
+    initRouter();
 
     $('#stabilize').click(() => {
         window.vis.stabilize();
