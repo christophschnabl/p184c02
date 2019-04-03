@@ -60,6 +60,7 @@ function initNeoVis() {
     };
 
     window.vis = new NeoVis.default(config);
+    /* 
     window.vis.registerOnEvent('completed', (values) => {
         if (values.record_count > 0) {
             resultText.css('color', 'green');
@@ -68,7 +69,7 @@ function initNeoVis() {
             resultText.css('color', 'orange');
             resultText.text('Query completed, no results!');
         }
-    });
+    }); */
     window.vis.render();
 }
 
@@ -134,7 +135,7 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
-        viz.renderWithCypher(cypher + append);
+        viz.renderWithCypher(cypher);
     });
 
     $('#queryCustomer').click(() => {
