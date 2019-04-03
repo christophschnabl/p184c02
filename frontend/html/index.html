@@ -204,6 +204,7 @@
             <h2 class="uk-modal-title">Über die Algorithmen</h2>
             <ul style="list-style-type: none">
                 <li uk-toggle="target: #betweennessInfo"><a>Betweenness Algorithmus</a></li>
+                <li uk-toggle="target: #closenessInfo"><a>Closeness Algorithmus</a></li>
             </ul>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
@@ -223,6 +224,25 @@
                 Der verwendete Algorithmus existiert in Neo4j-Apoc und die
                 Dokumentation dazu findet man 
                 <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier:</a>
+            </p>
+            <button class="uk-button uk-modal-close" type="button">Close</button>
+        </div>
+    </div>
+
+    <div id="closenessInfo" stack="true" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Closeness Algorithmus</h2>
+            <p>
+                Der Closeness Algorithmus ist misst die durchschnittliche Nähe 
+                aller Kunden. Die Kunden mit dem hösten Wert, haben ein erhötes
+                Betrugsriko. Diese könnten nur dazu da sein, das Geld der Betrüger 
+                weiterzuleiten. Je "zentraller" der Kunde bei Transaktionen ist,
+                 desto verdächtiger ist er.
+            </p>
+            <p>
+                Der verwendete Algorithmus existiert in Neo4j-Apoc und die
+                Dokumentation dazu findet man 
+                <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier.</a>
             </p>
             <button class="uk-button uk-modal-close" type="button">Close</button>
         </div>
