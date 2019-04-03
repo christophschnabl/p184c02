@@ -7,7 +7,7 @@ const neo4jPASS = 'andreas';
  */
 function initNeoVis() {
     const config = {
-        container_id: 'viz',
+        container_id: 'vis',
         server_url: neo4jURI,
         server_user: neo4jUSER,
         server_password: neo4jPASS,
