@@ -3,7 +3,7 @@ import Navigo from './navigo';
 
 const neo4jURI = 'bolt://127.0.0.1:7687';
 const neo4jUSER = 'neo4j';
-const neo4jPASS = 'andreas';
+const neo4jPASS = 'root';
 
 /**
  * draw function
@@ -139,6 +139,19 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        window.vis.renderWithCypher(cypher);
+    });
+
+    $('#queryPagerank').click(() => {
+        resultText.css('color', 'black');
+        resultText.text('Executing Query... ');
+        const limit = parseInt($('#limit1').val(), 10);
+        const cypher = `match(c:Customer)
+                         with collect(c) as customers
+                         call apoc.algo.pageRank(customers)
+                         yield node, score
+                         return node, score
+                         order by score desc ${limit ? `limit ${limit}` : ';'}`;
         window.vis.renderWithCypher(cypher);
     });
 
