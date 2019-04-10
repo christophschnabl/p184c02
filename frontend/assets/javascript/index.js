@@ -3,7 +3,7 @@ import Navigo from './navigo';
 
 const neo4jURI = 'bolt://127.0.0.1:7687';
 const neo4jUSER = 'neo4j';
-const neo4jPASS = 'root';
+const neo4jPASS = 'andreas';
 
 /**
  * draw function
@@ -160,7 +160,7 @@ $(document).ready(() => {
         resultText.css('color', 'black');
         resultText.text('Executing Query... ');
         const checked = [$('#idAddress')[0].checked,
-            $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
+        $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
         let cypher = '';
         if ($('#idName')[0].checked) {

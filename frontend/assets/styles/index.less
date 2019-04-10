@@ -1,69 +1,37 @@
 html {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    height: 100%;
 }
 
-header {
-    h1 {
-        display:block;
-        font-size:25px;
-        text-align:right;
-        margin-top:20px;
-        margin-right:80px;
-    }
-    display:block;
-    height:30px;
-    width:100%;
-}
-
-main {
-    display:flex;
-    justify-content: center;
-    margin-top:20px;
+body {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 section {
-    height:80%;
-    min-height:500px;
-    margin:10px;
+    background-color: lightgrey;
 }
 
-footer {
-    display: flex;
-    justify-content: flex-start;
-    margin: 10px;
+#vis {
+    flex-grow: 1;
 }
 
-.listsection {
-    width:25%;
+.dialogtext {
+    display: inline-block;
+    width: 250px;
 }
 
-.graphsection {
-    width:65%;
+.dialoginput {
+    display: inline-block;
+    width: 123px;
 }
 
-.selectcontainer {
-    width:100%;
-    height: 50px;
-    display: flex;
-    justify-content: flex-end;
+button {
+    text-align: center;
+    width: 175px;
 }
 
-select {
-    height:30px;
-    width:200px;
-    margin-top:10px;
-    margin-right:10px;
-}
-
-nav {
-    height:70px;
-    width:100%;
-    display:flex;
-    justify-content: flex-end;
-}
-
-nav>a {
-    margin-top:50px;
-    margin-right:100px;
-    color:black;
+#result {
+    color: green;
+    margin-right: 15px;
 }
