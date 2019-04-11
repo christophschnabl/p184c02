@@ -142,6 +142,19 @@ $(document).ready(() => {
         window.vis.renderWithCypher(cypher);
     });
 
+    $('#queryPagerank').click(() => {
+        resultText.css('color', 'black');
+        resultText.text('Executing Query... ');
+        const limit = parseInt($('#limit1').val(), 10);
+        const cypher = `match(c:Customer)
+                         with collect(c) as customers
+                         call apoc.algo.pageRank(customers)
+                         yield node, score
+                         return node, score
+                         order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        window.vis.renderWithCypher(cypher);
+    });
+
     $('#queryCustomer').click(() => {
         resultText.css('color', 'black');
         resultText.text('Executing Query... ');
