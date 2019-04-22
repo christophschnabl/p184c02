@@ -1,9 +1,9 @@
 import Navigo from './navigo';
 
 
-const neo4jURI = 'bolt://127.0.0.1:7687';
-const neo4jUSER = 'neo4j';
-const neo4jPASS = 'andreas';
+const neo4jURI = 'bolt://34.65.38.108:7687';
+const neo4jUSER = 'neo4j2';
+const neo4jPASS = 'neo4j';
 
 /**
  * draw function
