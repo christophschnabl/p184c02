@@ -43,6 +43,7 @@ Wenn diese Variablen nicht definiert werden, verwenden die scripts default-Param
 ###Nicht-Dokumentierte Ordner
 
  * Der /fakerGeneration Ordner enthält einen python Data-Generator, der aber nicht benötigt wird
+ * Der neo4j-apoc enthält anscheinend ein Docker-File ????
 
 
 
