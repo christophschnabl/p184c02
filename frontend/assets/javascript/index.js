@@ -105,10 +105,10 @@ $(document).ready(() => {
     window.vis.registerOnEvent('completed', (values) => {
         if (values.record_count > 0) {
             resultText.css('color', 'green');
-            resultText.text(`Query completed, ${values.record_count} results!`);
+            resultText.text(`Abfrage abgeschlossen, ${values.record_count} Ergebnisse!`);
         } else {
             resultText.css('color', 'orange');
-            resultText.text('Query completed, no results!');
+            resultText.text('Abfrage abgeschlossen, keine Ergebnisse!');
         }
     });
 
@@ -118,7 +118,7 @@ $(document).ready(() => {
 
     $('#queryBetweenness').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                           with collect(c) as customers
@@ -131,7 +131,7 @@ $(document).ready(() => {
 
     $('#queryCloseness').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                           with collect(c) as customers
@@ -144,7 +144,7 @@ $(document).ready(() => {
 
     $('#queryPagerank').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                          with collect(c) as customers
@@ -157,7 +157,7 @@ $(document).ready(() => {
 
     $('#queryCustomer').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit2').val(), 10);
         const from = $('#from').is(':checked') ? '>' : '';
         const to = $('#to').is(':checked') ? '<' : '';
@@ -171,7 +171,7 @@ $(document).ready(() => {
 
     $('#queryIdentity').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const checked = [$('#idAddress')[0].checked,
         $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
