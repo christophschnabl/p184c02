@@ -69,25 +69,13 @@ function initNeoVis() {
 function initRouter() {
     const root = null;
     const useHash = true; // Defaults to: false
-    const hash = '#!'; // Defaults to: '#'
+    const hash = '#'; // Defaults to: '#'
     const router = new Navigo(root, useHash, hash);
 
     router
-        .on('/abteilungsleiter', () => {
-            // display all the products
-        })
-        .resolve();
-
-    router
-        .on(() => {
-            // show home page here
-        })
-        .resolve();
-
-    router
         .on({
-            abteilungsleiter: () => {
-                setContent('About');
+            'testseite1': () => {
+                setContent('testseite1');
             },
             '*': () => {
                 setContent('Home');
