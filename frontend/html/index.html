@@ -180,6 +180,9 @@
                 <li uk-toggle="target: #pageRankInfo">
                     <a>PageRank Algorithmus</a>
                 </li>
+                <li uk-toggle="target: #identityFraudInfo">
+                    <a>Identitätsbetrug</a>
+                </li>
             </ul>
             <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
@@ -235,6 +238,18 @@
                 Der verwendete Algorithmus existiert in Neo4j-Apoc und die Dokumentation dazu findet
                 man
                 <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier.</a>
+            </p>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
+        </div>
+    </div>
+
+    <div id="identityFraudInfo" stack="true" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Identitätsbetrug</h2>
+            <p>
+                Betrugserkennung kann höchst komplex sein - außer Identitätsbetrug. Diese Art von Betrug ist simpel:
+                Kundendaten haben Zusammenhänge oder höchst ungewöhnlichen Vernetzungen. Durch den Reiter 'Identitätsbetrug' 
+                liefert Ihnen das System diese zurück, sodass Sie jene genauer untersuchen können.
             </p>
             <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
