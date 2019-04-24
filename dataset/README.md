@@ -40,6 +40,11 @@ Wenn diese Variablen nicht definiert werden, verwenden die scripts default-Param
 * german-credit.doc ist die Dokumentation für german-credit.data
 
 
+###Nicht-Dokumentierte Ordner
+
+ * Der /fakerGeneration Ordner enthält einen python Data-Generator, der aber nicht benötigt wird
+
+
 
 ###Betrugsfälle
 
