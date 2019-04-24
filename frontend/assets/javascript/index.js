@@ -5,6 +5,8 @@ const neo4jURI = 'bolt://34.65.38.108:7687';
 const neo4jUSER = 'neo4j2';
 const neo4jPASS = 'neo4j';
 
+let global_Algorithmtype = '';
+
 /**
  * draw function
  */
@@ -53,11 +55,20 @@ function initNeoVis() {
                 color: 'green',
             },
         },
-        initial_cypher: `match(n:Customer) return n limit 100;`,
+        initial_cypher: `match(c:Customer)
+        with collect(c) as customers
+        call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+        yield node, score
+        return node, score
+        order by score desc
+        limit 10`,
         arrows: true,
         hierarchical_layout: true,
         hierarchical_sort_method: 'directed',
     };
+    $('#result').css('color', 'black');
+    $('#result').text('Abfrage wird ausgeführt...');
+    global_Algorithmtype = 'Verdächtige Kunden [Betweenness Algorithmus]';
 
     window.vis = new NeoVis.default(config);
     window.vis.render();
@@ -110,6 +121,7 @@ $(document).ready(() => {
             resultText.css('color', 'orange');
             resultText.text('Abfrage abgeschlossen, keine Ergebnisse!');
         }
+        $('#algorithmtype').text(global_Algorithmtype);
     });
 
     $('#stabilize').click(() => {
@@ -126,6 +138,7 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        global_Algorithmtype = 'Verdächtige Kunden [Betweenness Algorithmus]';
         window.vis.renderWithCypher(cypher);
     });
 
@@ -139,6 +152,7 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        global_Algorithmtype = 'Verdächtige Kunden [Closeness Algorithmus]';
         window.vis.renderWithCypher(cypher);
     });
 
@@ -152,6 +166,7 @@ $(document).ready(() => {
                          yield node, score
                          return node, score
                          order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        global_Algorithmtype = 'Verdächtige Kunden [Pagerank Algorithmus]';
         window.vis.renderWithCypher(cypher);
     });
 
@@ -165,7 +180,7 @@ $(document).ready(() => {
                                 ${to}-[r:TRANSACTION]-${from}
                                 (c2:Customer)
                           return c, r, c2 ${limit ? `limit ${limit}` : ';'}`;
-
+        global_Algorithmtype = `Transaktionen von ${$('#name').val()}`;
         window.vis.renderWithCypher(cypher);
     });
 
@@ -195,6 +210,7 @@ $(document).ready(() => {
                             where labels(n2) <> labels(n)
                             return n, r, n2, r2, n3`;
         }
+        global_Algorithmtype = 'Kunden mit gleichen Daten';
 
         window.vis.renderWithCypher(cypher);
     });
