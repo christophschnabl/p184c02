@@ -1,9 +1,11 @@
 import Navigo from './navigo';
 
 
-const neo4jURI = 'bolt://127.0.0.1:7687';
-const neo4jUSER = 'neo4j';
-const neo4jPASS = 'andreas';
+const neo4jURI = 'bolt://34.65.38.108:7687';
+const neo4jUSER = 'neo4j2';
+const neo4jPASS = 'neo4j';
+
+let global_Algorithmtype = '';
 
 let router;
 
@@ -55,11 +57,20 @@ function initNeoVis() {
                 color: 'green',
             },
         },
-        initial_cypher: `match(n:Customer) return n limit 100;`,
+        initial_cypher: `match(c:Customer)
+        with collect(c) as customers
+        call apoc.algo.betweenness(['TRANSACTION'], customers, 'BOTH')
+        yield node, score
+        return node, score
+        order by score desc
+        limit 10`,
         arrows: true,
         hierarchical_layout: true,
         hierarchical_sort_method: 'directed',
     };
+    $('#result').css('color', 'black');
+    $('#result').text('Abfrage wird ausgeführt...');
+    global_Algorithmtype = 'Verdächtige Kunden [Betweenness Algorithmus]';
 
     window.vis = new NeoVis.default(config);
     window.vis.render();
@@ -111,11 +122,12 @@ $(document).ready(() => {
     window.vis.registerOnEvent('completed', (values) => {
         if (values.record_count > 0) {
             resultText.css('color', 'green');
-            resultText.text(`Query completed, ${values.record_count} results!`);
+            resultText.text(`Abfrage abgeschlossen, ${values.record_count} Ergebnisse!`);
         } else {
             resultText.css('color', 'orange');
-            resultText.text('Query completed, no results!');
+            resultText.text('Abfrage abgeschlossen, keine Ergebnisse!');
         }
+        $('#algorithmtype').text(global_Algorithmtype);
     });
 
     $('#stabilize').click(() => {
@@ -124,7 +136,7 @@ $(document).ready(() => {
 
     $('#queryBetweenness').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                           with collect(c) as customers
@@ -132,12 +144,13 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        global_Algorithmtype = 'Verdächtige Kunden [Betweenness Algorithmus]';
         window.vis.renderWithCypher(cypher);
     });
 
     $('#queryCloseness').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                           with collect(c) as customers
@@ -145,12 +158,13 @@ $(document).ready(() => {
                           yield node, score
                           return node, score
                           order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        global_Algorithmtype = 'Verdächtige Kunden [Closeness Algorithmus]';
         window.vis.renderWithCypher(cypher);
     });
 
     $('#queryPagerank').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit1').val(), 10);
         const cypher = `match(c:Customer)
                          with collect(c) as customers
@@ -158,12 +172,13 @@ $(document).ready(() => {
                          yield node, score
                          return node, score
                          order by score desc ${limit ? `limit ${limit}` : ';'}`;
+        global_Algorithmtype = 'Verdächtige Kunden [Pagerank Algorithmus]';
         window.vis.renderWithCypher(cypher);
     });
 
     $('#queryCustomer').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const limit = parseInt($('#limit2').val(), 10);
         const from = $('#from').is(':checked') ? '>' : '';
         const to = $('#to').is(':checked') ? '<' : '';
@@ -171,13 +186,13 @@ $(document).ready(() => {
                                 ${to}-[r:TRANSACTION]-${from}
                                 (c2:Customer)
                           return c, r, c2 ${limit ? `limit ${limit}` : ';'}`;
-
+        global_Algorithmtype = `Transaktionen von ${$('#name').val()}`;
         window.vis.renderWithCypher(cypher);
     });
 
     $('#queryIdentity').click(() => {
         resultText.css('color', 'black');
-        resultText.text('Executing Query... ');
+        resultText.text('Abfrage wird ausgeführt...');
         const checked = [$('#idAddress')[0].checked,
         $('#idPhone')[0].checked, $('#idSSN')[0].checked, $('#idCreditCard')[0].checked];
 
@@ -201,6 +216,7 @@ $(document).ready(() => {
                             where labels(n2) <> labels(n)
                             return n, r, n2, r2, n3`;
         }
+        global_Algorithmtype = 'Kunden mit gleichen Daten';
 
         window.vis.renderWithCypher(cypher);
     });

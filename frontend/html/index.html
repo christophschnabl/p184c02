@@ -29,7 +29,7 @@
         <div class="uk-navbar-left">
             <ul class="uk-navbar-nav" id="customerList">
                 <li>
-                    <a href="#">About</a>
+                    <a href="#">Über den Prototypen</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li uk-toggle="target: #algorithm">
@@ -41,28 +41,24 @@
                         </ul>
                     </div>
                 </li>
-                <li>
-                    <a href="#">Stammdaten</a>
-                    <div class="uk-navbar-dropdown">
-                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                            <li uk-toggle="target: #identity" class="">
-                                <a href="#">Identity Fraud</a>
-                            </li>
-                        </ul>
-                    </div>
+                <li uk-toggle="target: #identity" class="">
+                    <a href="#">Identitätsbetrug</a>
                 </li>
                 <li>
                     <a href="">Transaktionen</a>
                     <div class="uk-navbar-dropdown">
                         <ul class="uk-nav uk-navbar-dropdown-nav">
                             <li uk-toggle="target: #suspicious" class="">
-                                <a href="#">Suspicious Customer</a>
+                                <a href="#">Verdächtige Kunden</a>
                             </li>
                             <li uk-toggle="target: #customer">
-                                <a href="#">Query Customer</a>
+                                <a href="#">Kundenabfrage</a>
                             </li>
                         </ul>
                     </div>
+                </li>
+                <li>
+                    <a href="">Synchronisation</a>
                 </li>
             </ul>
 
@@ -82,7 +78,7 @@
                 <input id="name" type="text" />
                 <br>
             </div>
-            <div class="dialogtext">Transaction&nbsp;Limit:</div>
+            <div class="dialogtext">Maximale Anzahl an Ergebnissen:</div>
             <div class="dialoginput">
                 <input id="limit2" type="number" value="50" />
                 <br>
@@ -166,7 +162,7 @@
                         Peter Kain</i>
                 </li>
             </ul>
-            <button class="uk-button uk-modal-close" type="button">Close</button>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
     </div>
 
@@ -184,8 +180,11 @@
                 <li uk-toggle="target: #pageRankInfo">
                     <a>PageRank Algorithmus</a>
                 </li>
+                <li uk-toggle="target: #identityFraudInfo">
+                    <a>Identitätsbetrug</a>
+                </li>
             </ul>
-            <button class="uk-button uk-modal-close" type="button">Close</button>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
     </div>
 
@@ -204,7 +203,7 @@
                 man
                 <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier.</a>
             </p>
-            <button class="uk-button uk-modal-close" type="button">Close</button>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
     </div>
 
@@ -222,7 +221,7 @@
                 man
                 <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier.</a>
             </p>
-            <button class="uk-button uk-modal-close" type="button">Close</button>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
     </div>
 
@@ -240,14 +239,30 @@
                 man
                 <a target="external" href="https://neo4j-contrib.github.io/neo4j-apoc-procedures/#centrality">hier.</a>
             </p>
-            <button class="uk-button uk-modal-close" type="button">Close</button>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
         </div>
+    </div>
+
+    <div id="identityFraudInfo" stack="true" uk-modal>
+        <div class="uk-modal-dialog uk-modal-body">
+            <h2 class="uk-modal-title">Identitätsbetrug</h2>
+            <p>
+                Betrugserkennung kann höchst komplex sein - außer Identitätsbetrug. Diese Art von Betrug ist simpel:
+                Kundendaten haben Zusammenhänge oder höchst ungewöhnlichen Vernetzungen. Durch den Reiter 'Identitätsbetrug' 
+                liefert Ihnen das System diese zurück, sodass Sie jene genauer untersuchen können.
+            </p>
+            <button class="uk-button uk-modal-close" type="button">Schließen</button>
+        </div>
+    </div>
+
+    <div>
+        <p id="algorithmtype"></p>
     </div>
 
     <div id="vis"></div>
     <div style="height: 10px"></div>
 
-    <button id="stabilize" class="uk-button uk-button-primary" style="position: absolute; bottom: 10px; right: 10px;">Stabilize</button>
+    <button id="stabilize" class="uk-button uk-button-primary">Graph stabilisieren</button>
 </body>
 
 </html>
