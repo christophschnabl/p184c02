@@ -7,6 +7,8 @@ const neo4jPASS = 'neo4j';
 
 let global_Algorithmtype = '';
 
+let router;
+
 /**
  * draw function
  */
@@ -75,33 +77,37 @@ function initNeoVis() {
 }
 
 /**
+ * set Content function
+ * @param {String} site
+ */
+async function setContent(site) {
+    const res = await fetch(`${site}.html`);
+    const text = await res.text();
+    const html = $.parseHTML(text);
+    $('body').html(html);
+}
+
+/**
+ * navigates to a site
+ * @param {String} site
+ */
+function navigateTo(site) {
+    router.navigate(site);
+}
+
+/**
  * Initializes router
  */
 function initRouter() {
-    const root = null;
-    const useHash = true; // Defaults to: false
-    const hash = '#!'; // Defaults to: '#'
-    const router = new Navigo(root, useHash, hash);
-
-    router
-        .on('/abteilungsleiter', () => {
-            // display all the products
-        })
-        .resolve();
-
-    router
-        .on(() => {
-            // show home page here
-        })
-        .resolve();
+    router = new Navigo();
 
     router
         .on({
-            abteilungsleiter: () => {
-                setContent('About');
+            testseite1: () => {
+                setContent('testseite1');
             },
             '*': () => {
-                setContent('Home');
+                setContent('index');
             },
         })
         .resolve();

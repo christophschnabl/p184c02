@@ -40,7 +40,7 @@ async function importFromMysql() {
         console.log('\nInserting ' + customers.length + ' customer rows...\n');
 
         for (let i = 0; i < customers.length; i++) {
-            //console.log(`Inserting row number ${i}..`);
+            console.log(`${i}/${customers.length}`);
 
             const customer = customers[i];
 
@@ -90,7 +90,11 @@ async function importFromMysql() {
 
         console.log('Inserting Credit Card data...');
 
+        let j = 0;
+
         for (const creditcard of creditcards) {
+            console.log(`${j}/${creditcards.length}`);
+
             await session.run(`MERGE (creditcard: CreditCard {
                 cardNumber: {CardNumber},
                 issuingNetwork: {IssuingNetwork},
@@ -108,22 +112,30 @@ async function importFromMysql() {
                     CardNumber: creditcard.CardNumber
                 }
             );
+
+            j++;
         }
 
         console.log('\nInserted ' + customers.length + ' rows.');
         console.log('Inserting Transaction data...');
 
+        let k = 0;
+
         for (const transaction of transactions) {
+            console.log(`${k}/${transactions.length}`);
+
             await session.run(`
-                MATCH (a:Customer {id: $cuuidSender}),(b:Customer {id: $cuuidReciever})
-                CREATE (a)-[r:TRANSACTION {transactionID: $tid, amount: $amount, date: $datestr}]->(b)
-                RETURN type(r)`, {
+                MATCH(a: Customer { id: $cuuidSender }), (b: Customer { id: $cuuidReciever })
+                CREATE (a) - [r: TRANSACTION { transactionID: $tid, amount: $amount, date: $datestr }] -> (b)
+                RETURN type(r) `, {
                     cuuidSender: transaction.CustomerUUIDSender,
                     cuuidReciever: transaction.CustomerUUIDReciever,
                     tid: transaction.TransactionID,
                     amount: transaction.Amount,
                     datestr: transaction.Date.toString()
                 });
+
+            k++;
         }
 
         console.log('\nInserted ' + transactions.length + ' rows.');
